@@ -27,12 +27,9 @@ const signupdata = ref({
 
 
 const handlesubmit = async () => {
-  signupdata.value.program = searchQuery.value;
+  
+console.log(signupdata);
 
-  if (signupdata.value.password !== signupdata.value.repeatpassword) {
-    errorresponce.value = "Passwords do not match";
-    error.value = true;
-  } else {
     try {
       const response = await axios.post("/api/user/signup", signupdata.value);
       console.log(response.data);
@@ -50,7 +47,7 @@ const handlesubmit = async () => {
       errorresponce.value = "An error occurred";
       error.value = true;
     }
-  }
+  
 };
 </script>
 
@@ -88,6 +85,8 @@ const handlesubmit = async () => {
             required
             v-model="signupdata.department"
             placeholder="Department"
+            pattern="^[A-Za-z ]+$"
+            title="Symbols are not allowed"
             type="text"
           />
 
@@ -97,7 +96,8 @@ const handlesubmit = async () => {
               type="text"
               required
               v-model="signupdata.program"
-            
+               pattern="^[A-Za-z ]+$"
+            title="Symbols are not allowed"
               placeholder="Program"
              
             />
