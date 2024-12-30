@@ -31,4 +31,18 @@ function validation(fullname, username, department, program, password, repeatpas
 }
 
 
-export {validation}
+function validationsignin(username, password) {
+   
+
+    if (!usernamePattern.test(username)) {
+        return false
+    }
+
+
+    if (!passwordPattern.test(password)) {
+        return false
+    }
+    
+}
+
+export {validation,validationsignin}

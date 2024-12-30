@@ -1,14 +1,14 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import axios from "axios";
-import router from "@/router";
+
 import confirm from "@/components/success.vue"
-import api from "@/api";
+
 const searchQuery = ref("");
 const errorresponce = ref("");
 const error = ref(false);
-
-
+const successmsg=ref(false);
+const successmessage=ref("")
 
 
 
@@ -34,9 +34,22 @@ console.log(signupdata);
       const response = await axios.post("/api/user/signup", signupdata.value);
       console.log(response.data);
       if (response.data.success) {
-        errorresponce.value="Account Has Been Created Successfully";
-        
-        
+
+
+        successmsg.value=true
+        successmessage.value=response.data.message
+        setTimeout(() => {
+          
+          signupdata.value={
+            fullname:"",
+            username: "",
+            department: "",
+            program: "",
+            password: "",
+            repeatpassword: "",
+            
+          }
+        }, 3000);
 
       } else {
         errorresponce.value = response.data.message || "An error occurred";
@@ -57,7 +70,7 @@ console.log(signupdata);
     <div class="logo">
       <h1>Timetablr</h1>
     </div>
-<!-- <confirm :messagevalue="confirmfationcheck"/> -->
+<confirm v-if="successmsg" :messagevalue="successmessage"/>
     <section class="signupsec">
       <form @submit.prevent="handlesubmit" class="signupform" action="">
         <h2>Create Account</h2>

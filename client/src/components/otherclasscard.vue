@@ -6,7 +6,7 @@
       </h5>
       <h5>
         Venu:
-        <p>{{ prop.notclass.location }}</p>
+        <p>{{ prop.notclass.venue }}</p>
       </h5>
       <h5>
         Time:

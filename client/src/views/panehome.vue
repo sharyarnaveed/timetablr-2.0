@@ -25,7 +25,7 @@ const theday = ref({
 });
 const getdata = async (day) => {
   try {
-    theday.value.day = day;
+    theday.value.day = "Wednesday";
     const response = await api.post("/api/user/home", theday.value, {
       withCredentials: true,
     });
@@ -64,7 +64,7 @@ onMounted(async () => {
     console.log("in panel home 2",usetimetable.notcurrentclass[0]);
     noclass.value = usetimetable.notcurrentclass[0];
     subject.value = noclass.value.course_name;
-    venu.value = noclass.value.location;
+    venu.value = noclass.value.venue;
 console.log(noclass.value.start_time);
     starttime.value = noclass.value.start_time;
     endtime.value = noclass.value.end_time;

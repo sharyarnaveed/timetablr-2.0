@@ -15,14 +15,7 @@ const signup = async (req, res) => {
       password,
       repeatpassword,
     } = req.body;
-    console.log(
-      fullname,
-      username,
-      department,
-      program,
-      password,
-      repeatpassword
-    );
+   
 // check all fields are entered
     if (!username || !department || !program || !password) {
       res.json({
@@ -79,6 +72,10 @@ else{
     }
   } catch (error) {
     console.log("error in signing up", error);
+    res.json({
+      message: "Error",
+      success: false,
+    });
   }
 };
 
