@@ -32,7 +32,7 @@ onMounted(() => {
   currentclass.value = timetable.currentClass;
  
   subject.value = currentclass.value.course_name;
-  venu.value = currentclass.value.location;
+  venu.value = currentclass.value.venue;
   starttime.value = currentclass.value.start_time;
   endtime.value = currentclass.value.end_time;
  

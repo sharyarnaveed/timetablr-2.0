@@ -1,7 +1,14 @@
-import { pool } from "../database/conn.database.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { validationsignin } from "../utility/validationofinput.utility.js";
+// import { pool } from "../database/conn.database.js";
+// import bcrypt from "bcryptjs";
+// import jwt from "jsonwebtoken";
+// import { validationsignin } from "../utility/validationofinput.utility.js";
+
+const { pool } = require("../database/conn.database.js");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { validationsignin } = require("../utility/validationofinput.utility.js");
+
+
 
 const signin = async (req, res) => {
     try {
@@ -98,4 +105,33 @@ const signin = async (req, res) => {
 
 
 
-export { signin }
+
+const logout=async(req,res)=>
+{
+    try {
+        
+        const user_id = req.user.id;
+        const rf = "undefined";
+        await pool.query('UPDATE "user" SET refreshtoken =$1 WHERE user_id= $2', [
+          rf,
+          user_id,
+        ]);
+    
+        const options = {
+          httpOnly: true,
+          secure: true,
+        };
+    
+        res.clearCookie("accessToken", options);
+        res.clearCookie("refreshToken", options);
+        res.json({
+          message: "Logged out successfully",
+          success: true,
+        });
+      } catch (error) {
+        console.log("error in logout",error);
+      }
+}
+
+// export { signin,logout }
+module.exports = { signin,logout };

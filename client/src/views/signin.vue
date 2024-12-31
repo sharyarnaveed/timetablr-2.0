@@ -10,10 +10,14 @@ const signindata = ref({
 
 const siginerrorresponce = ref("");
 const signinerrorcheck = ref(false);
+const instance = axios.create({
+  baseURL: 'http://localhost:3000' // Adjusted with trailing slash
+
+});
 
 const handlesubmit = async () => {
   try {
-    const response = await api.post("/api/user/signin", signindata.value,{withCredentials:true});
+    const response = await instance.post("/api/user/signin", signindata.value,{withCredentials:true});
 
     if (response.data.success) {
         router.push("/home");

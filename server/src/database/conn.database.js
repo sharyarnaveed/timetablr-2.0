@@ -1,9 +1,12 @@
-import pkg from 'pg';
-import { DATABASE_NAME } from '../constants.js';
+// import pkg from 'pg';
+// import { DATABASE_NAME } from '../constants.js';
+// const { Pool } = pkg;
+const pkg = require('pg');
+const { DATABASE_NAME } = require('../constants.js');
 const { Pool } = pkg;
 
 
-const pool=new Pool({
+const pool= new Pool({
     user:'postgres',
     host:'localhost',
     database:DATABASE_NAME,
@@ -13,4 +16,5 @@ const pool=new Pool({
 // console.log(`${process.env.HOST_NAME}`);
 
 
-export {pool}
+// export {pool}
+module.exports = { pool };

@@ -1,6 +1,10 @@
-import { app } from "./src/app.js";
-import { pool } from "./src/database/conn.database.js";
-import dotenv from 'dotenv'
+// import { app } from "./src/app.js";
+// import { pool } from "./src/database/conn.database.js";
+// import dotenv from 'dotenv'
+ 
+const { app } = require("./src/app.js");
+const  {pool}  = require("./src/database/conn.database");
+const dotenv = require("dotenv");
 
 dotenv.config({
   path: './.env'

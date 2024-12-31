@@ -27,11 +27,14 @@ const signupdata = ref({
 
 
 const handlesubmit = async () => {
-  
+  const instance = axios.create({
+  baseURL: 'http://localhost:3000' // Adjusted with trailing slash
+
+});
 console.log(signupdata);
 
     try {
-      const response = await axios.post("/api/user/signup", signupdata.value);
+      const response = await instance.post("/api/user/signup", signupdata.value);
       console.log(response.data);
       if (response.data.success) {
 

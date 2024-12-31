@@ -1,4 +1,5 @@
-import { pool } from "../database/conn.database.js";
+// import { pool } from "../database/conn.database.js";
+const { pool } = require("../database/conn.database.js");
 
 
 const getusername = async (user) => {
@@ -38,4 +39,5 @@ res.json({
     }
 }
 
-export {homedata}
+// export {homedata}
+module.exports = { homedata };

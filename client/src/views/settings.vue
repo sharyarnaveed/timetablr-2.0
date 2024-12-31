@@ -62,20 +62,24 @@ padding: 5px 10px;
   font-family: var(--majorfont);
   height: 70%;
   width: 40%;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border: 1px solid #ccc;
+  /* border-top-left-radius: 3px;
+  border-top-right-radius: 3px; */
+  /* border: 1px solid #ccc; */
   cursor: pointer;
-  background: var(--skyblue);
+  background: black;
+  color: white;
+  border-radius: 7px;
   margin-bottom: -1px;
   margin-right: -1px;
   font-size: .9rem;
 }
 .tab-button:hover {
-  background: #e0e0e0;
+  background: white;
+  color: black;
 }
 .tab-button.active {
-  background: #e0e0e0;
+  background: white;
+  color: black;
 }
 .TheFormOpen{
     /* border: 2px solid green; */

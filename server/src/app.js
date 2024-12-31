@@ -1,7 +1,11 @@
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import dotenv from 'dotenv'
+// import express from "express";
+// import cors from "cors";
+// import cookieParser from "cookie-parser";
+const express = require("express");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
+// import dotenv from 'dotenv'
 
 // dotenv.config({
 //     path: './.env'
@@ -24,9 +28,13 @@ app.use(cookieParser());
 
 // routes
 
-import userroutes from './routes/user.routes.js'
+// import userroutes from './routes/user.routes.js'
+const userroutes = require('./routes/user.routes.js');
+
 
 app.use("/api/user",userroutes)
 
 
-export { app }
+module.exports = { app };
+
+// export { app }

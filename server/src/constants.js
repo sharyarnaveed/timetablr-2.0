@@ -1,1 +1,1 @@
-export const DATABASE_NAME="timetablr"
+module.exports.DATABASE_NAME = "timetablr";

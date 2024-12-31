@@ -1,6 +1,9 @@
-import jwt, { decode } from 'jsonwebtoken';
+// import jwt, { decode } from 'jsonwebtoken';\
+const jwt = require('jsonwebtoken');
+const { decode } = jwt;
 
-export const verifyjwt = async (req, res, next) => {
+
+ const verifyjwt = async (req, res, next) => {
     try {
         // Get tokens from cookies or Authorization header
         const accessToken = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
@@ -9,7 +12,7 @@ export const verifyjwt = async (req, res, next) => {
 
         // Helper function to generate new access token
         const generateNewAccessToken = async (userData) => {
-            // console.log("auth user data",userData);
+            console.log("auth user data",userData);
             const newAccessToken = jwt.sign(
                 { id: userData.id, program: userData.program },
                 process.env.ACCESS_TOKEN_KEY,
@@ -40,7 +43,7 @@ export const verifyjwt = async (req, res, next) => {
             // // Try to verify refresh token and generate new access token
             try {
                 const refreshData = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
-            //   console.log("refresh data",refreshData);
+              console.log("refresh data",refreshData);
                  await generateNewAccessToken(refreshData);
                 
                 // res.json({
@@ -61,7 +64,7 @@ export const verifyjwt = async (req, res, next) => {
         // Case 2: Access token present
         try {
             const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY);
-            // console.log("auth",decoded);
+            console.log("auth",decoded);
             req.user = decoded;
             return next();
         } catch (accessError) {
@@ -95,3 +98,5 @@ export const verifyjwt = async (req, res, next) => {
         });
     }
 };
+
+module.exports = { verifyjwt };

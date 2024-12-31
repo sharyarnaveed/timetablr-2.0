@@ -1,6 +1,10 @@
-import { pool } from "../database/conn.database.js";
-import { validation } from "../utility/validationofinput.utility.js";
-import bcrypt from "bcryptjs";
+// import { pool } from "../database/conn.database.js";
+// import { validation } from "../utility/validationofinput.utility.js";
+// import bcrypt from "bcryptjs";
+
+const { pool } = require("../database/conn.database.js");
+const { validation } = require("../utility/validationofinput.utility.js");
+const bcrypt = require("bcryptjs");
 
 const signup = async (req, res) => {
   
@@ -79,4 +83,6 @@ else{
   }
 };
 
-export { signup };
+// export { signup };
+module.exports = { signup };
+
