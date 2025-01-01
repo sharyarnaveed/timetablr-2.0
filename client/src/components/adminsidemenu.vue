@@ -17,28 +17,16 @@
         </button>
         <div v-show="dropdown" class="dropdown-container">
           <router-link class="dropdown" to="/totheadmindashboard/addcategory">
-            Add Class</router-link
+            Add Program</router-link
           >
-          <router-link class="dropdown" to="/totheadmindashboard/teacher">
-             Teacher</router-link
-          >
-          <router-link class="dropdown" to="/totheadmindashboard/addcourse">
-            Add Course</router-link
-          >
-          <router-link class="dropdown" to="/totheadmindashboard/addVenu">
-            Add Class Rooms</router-link
-          >
-
-          <router-link class="dropdown" to="/totheadmindashboard/addtimetable">
-            Upload Timetable</router-link
-          >
+        
         </div>
       </li>
 
       <li class="asideoptions">
         <button @click="generatetimetable" class="optionslink">
           <img src="@/assets/people.svg" alt="" />
-          Gen Timetable</button>
+          Upload Timetable</button>
       </li>
 
       <li @click="logout" class="asideoptions">

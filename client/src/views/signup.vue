@@ -1,19 +1,30 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import axios from "axios";
-
+import router from "@/router";
 import confirm from "@/components/success.vue"
-
 const searchQuery = ref("");
 const errorresponce = ref("");
 const error = ref(false);
 const successmsg=ref(false);
 const successmessage=ref("")
+const options = ref([]);
 
+const getprogramoptions = async () => {
+  try {
+    const response = await axios.post("/api/user/getprogramfromdb");
+    options.value = response.data;
+  } catch (err) {
+    console.error("Error fetching programs:", err);
+  }
+};
 
+onMounted(async () => {
+  await getprogramoptions();
+});
 
-
-
+const filteredOptions = ref([]);
+const showOptions = ref(false);
 
 const signupdata = ref({
   fullname:"",
@@ -24,21 +35,30 @@ const signupdata = ref({
   repeatpassword: "",
 });
 
+const filterOptions = () => {
+  filteredOptions.value = options.value.filter((option) =>
+    option.program_name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+};
 
+watch(searchQuery, filterOptions);
+
+const selectOption = (option) => {
+  searchQuery.value = option;
+  showOptions.value = false;
+};
 
 const handlesubmit = async () => {
-  const instance = axios.create({
-  baseURL: 'http://localhost:3000' // Adjusted with trailing slash
+  signupdata.value.program = searchQuery.value;
 
-});
-console.log(signupdata);
-
+  if (signupdata.value.password !== signupdata.value.repeatpassword) {
+    errorresponce.value = "Passwords do not match";
+    error.value = true;
+  } else {
     try {
-      const response = await instance.post("/api/user/signup", signupdata.value);
+      const response = await axios.post("/api/user/signup", signupdata.value);
       console.log(response.data);
       if (response.data.success) {
-
-
         successmsg.value=true
         successmessage.value=response.data.message
         setTimeout(() => {
@@ -47,23 +67,22 @@ console.log(signupdata);
             fullname:"",
             username: "",
             department: "",
-            program: "",
+          
             password: "",
             repeatpassword: "",
-            
           }
-        }, 3000);
+          },3000)
 
       } else {
         errorresponce.value = response.data.message || "An error occurred";
-        error.value = true;
+        error.value = false;
       }
     } catch (err) {
       console.error("Error during signup:", err);
       errorresponce.value = "An error occurred";
       error.value = true;
     }
-  
+  }
 };
 </script>
 
@@ -73,7 +92,7 @@ console.log(signupdata);
     <div class="logo">
       <h1>Timetablr</h1>
     </div>
-<confirm v-if="successmsg" :messagevalue="successmessage"/>
+    <confirm v-if="successmsg" :messagevalue="successmessage"/>
     <section class="signupsec">
       <form @submit.prevent="handlesubmit" class="signupform" action="">
         <h2>Create Account</h2>
@@ -101,24 +120,29 @@ console.log(signupdata);
             required
             v-model="signupdata.department"
             placeholder="Department"
-            pattern="^[A-Za-z ]+$"
-            title="Symbols are not allowed"
             type="text"
           />
 
           <!-- search filter -->
-          
+          <div class="searchfilter">
             <input
               type="text"
               required
-              v-model="signupdata.program"
-               pattern="^[A-Za-z ]+$"
-            title="Symbols are not allowed"
+              v-model="searchQuery"
+              @input="filterOptions"
               placeholder="Program"
-             
+              @focus="showOptions = true"
             />
-          
-           
+            <ul v-if="showOptions && filteredOptions.length">
+              <li
+                v-for="(option, index) in filteredOptions"
+                :key="index"
+                @click="selectOption(option.program_name)"
+              >
+                {{ option.program_name }}
+              </li>
+            </ul>
+          </div>
 
           <input
             required

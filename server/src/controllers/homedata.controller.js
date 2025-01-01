@@ -27,10 +27,10 @@ const homedata=async(req,res)=>
         // console.log(day);
 const TimetableQuery=`SELECT * FROM timetable where day=$1`;
 const TimetableResult=await pool.query(TimetableQuery,[day]);
-// console.log(TimetableResult.rows);
+console.log(TimetableResult.rows);
 const username = await getusername(req.user)
 // console.log("from home",username);
-res.json({
+return res.json({
   timetable: TimetableResult.rows,
   username: username
 });

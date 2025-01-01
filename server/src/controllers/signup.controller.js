@@ -83,6 +83,20 @@ else{
   }
 };
 
+
+const getprogram = async (req, res) => {
+  try {
+    
+    // // console.log(thedb);
+    const result = await pool.query(`SELECT * FROM programs`);
+     console.log(result.rows);
+    res.json(result.rows);
+  } catch (error) {
+    console.log("error in getting programs", error);
+  }
+};
+
+
 // export { signup };
-module.exports = { signup };
+module.exports = { signup, getprogram };
 
