@@ -7,7 +7,7 @@ import Loadmore from '@/views/loadmore.vue'
 import adminsignin from "@/views/admin/signin.vue"
 import admindashboard from "@/views/admin/dashboard.vue"
 import addcategory from "@/views/admin/addcategory.vue"
-import addtimetable from "@/views/admin/addtimetabele.vue"
+import addtimetable from "@/views/admin/addtimetable.vue"
 
 import adminhome from "@/views/admin/adminhome.vue"
 import Settings from '@/views/settings.vue'
@@ -67,9 +67,10 @@ component:adminhome
       component:addcategory
     },
     {
-      path:"addtimetable",
+      path:"uploadtimetable",
       component:addtimetable
-    }
+    },
+
     
   
   ]

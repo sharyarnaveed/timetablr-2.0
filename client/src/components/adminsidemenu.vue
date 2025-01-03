@@ -19,15 +19,14 @@
           <router-link class="dropdown" to="/totheadmindashboard/addcategory">
             Add Program</router-link
           >
-        
+          <router-link class="dropdown" to="/totheadmindashboard/uploadtimetable">
+            Upload timetable</router-link
+          >
         </div>
+        
       </li>
 
-      <li class="asideoptions">
-        <button @click="generatetimetable" class="optionslink">
-          <img src="@/assets/people.svg" alt="" />
-          Upload Timetable</button>
-      </li>
+    
 
       <li @click="logout" class="asideoptions">
         <button style="cursor: pointer" type="submit" class="optionslink" to="">
