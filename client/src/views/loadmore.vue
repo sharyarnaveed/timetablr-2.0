@@ -28,7 +28,7 @@ const theday = ref({
 
 const getdata = async (day) => {
   try {
-    theday.value.day = "Monday";
+    theday.value.day = day;
     const response = await api.post("/api/user/home", theday.value, {
       withCredentials: true,
     });

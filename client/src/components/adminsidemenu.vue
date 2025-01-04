@@ -22,6 +22,9 @@
           <router-link class="dropdown" to="/totheadmindashboard/uploadtimetable">
             Upload timetable</router-link
           >
+          <router-link class="dropdown" to="/totheadmindashboard/viewtimetable">
+            View timetable</router-link
+          >
         </div>
         
       </li>

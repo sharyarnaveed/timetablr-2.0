@@ -11,6 +11,7 @@ import addtimetable from "@/views/admin/addtimetable.vue"
 
 import adminhome from "@/views/admin/adminhome.vue"
 import Settings from '@/views/settings.vue'
+import Viewtimetable from '@/views/admin/viewtimetable.vue'
 
 
 
@@ -69,6 +70,10 @@ component:adminhome
     {
       path:"uploadtimetable",
       component:addtimetable
+    },
+    {
+      path:"viewtimetable",
+      component:Viewtimetable
     },
 
     

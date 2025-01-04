@@ -1,11 +1,17 @@
 const { Router } = require("express");
-const { addprogram, deletprogram, graph, uploadtimetable } = require("../controllers/admin.controller");
+const { addprogram, deletprogram, graph, uploadtimetable, adminsigin, logout } = require("../controllers/admin.controller");
+const { adminverifyjwt } = require("../middleware/adminauth.middleware");
+const { gettimetable, deletetimetable } = require("../controllers/admintimetable.controller");
 
 const router=Router();
 
-router.route("/addprogram").post(addprogram)
-router.route("/deleteprogram").post(deletprogram)
-router.route("/graphdata").post(graph);
-router.route("/uploadtimetable").post(uploadtimetable);
+router.route("/addprogram").post(adminverifyjwt,addprogram)
+router.route("/deleteprogram").post(adminverifyjwt,deletprogram)
+router.route("/graphdata").post(adminverifyjwt,graph);
+router.route("/uploadtimetable").post(adminverifyjwt,uploadtimetable);
+router.route("/adminlogin").post(adminsigin)
+router.route("/adminlogut").post(adminverifyjwt,logout)
+router.route("/timetabledata").post(adminverifyjwt,gettimetable)
+router.route("/deletetimetabledata").post(adminverifyjwt,deletetimetable)
 
 module.exports = router;

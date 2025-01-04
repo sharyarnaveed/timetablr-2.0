@@ -89,7 +89,7 @@ const getprogram = async (req, res) => {
     
     // // console.log(thedb);
     const result = await pool.query(`SELECT * FROM programs`);
-     console.log(result.rows);
+    
     res.json(result.rows);
   } catch (error) {
     console.log("error in getting programs", error);
