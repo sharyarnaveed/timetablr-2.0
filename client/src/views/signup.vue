@@ -14,6 +14,7 @@ const getprogramoptions = async () => {
   try {
     const response = await axios.post("/api/user/getprogramfromdb");
     options.value = response.data;
+    console.log(options.value);
   } catch (err) {
     console.error("Error fetching programs:", err);
   }
@@ -75,7 +76,7 @@ const handlesubmit = async () => {
 
       } else {
         errorresponce.value = response.data.message || "An error occurred";
-        error.value = false;
+        error.value = true;
       }
     } catch (err) {
       console.error("Error during signup:", err);
@@ -120,6 +121,7 @@ const handlesubmit = async () => {
             required
             v-model="signupdata.department"
             placeholder="Department"
+            pattern="^[A-Za-z ]+$"
             type="text"
           />
 
@@ -128,6 +130,7 @@ const handlesubmit = async () => {
             <input
               type="text"
               required
+              pattern="^[A-Za-z0-9 ]+$"
               v-model="searchQuery"
               @input="filterOptions"
               placeholder="Program"

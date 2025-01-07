@@ -6,11 +6,11 @@ const gettimetable=async(req,res)=>{
         const{program_id}=req.body;
         console.log(program_id);
    
-const sql="SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where programs.program_id=$1 ";
+const sql="SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where programs.program_id=? ";
 
-const responce=await pool.query(sql,[program_id]);
+const [responce]=await pool.query(sql,[program_id]);
 res.json({
-    timetable:responce.rows
+    timetable:responce
 })
 // console.log( responce.rows);
 
@@ -27,9 +27,9 @@ const deletetimetable=async(req,res)=>
         const{program_id}=req.body;
         console.log(program_id);
    
-const sql="DELETE from timetable where program_name=$1";
+const sql="DELETE from timetable where program_name=?";
 
-const responce=await pool.query(sql,[program_id]);
+const [responce]=await pool.query(sql,[program_id]);
 if(responce)
 {
 

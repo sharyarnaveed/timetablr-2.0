@@ -1,7 +1,4 @@
-// import { pool } from "../database/conn.database.js";
-// import bcrypt from "bcryptjs";
-// import jwt from "jsonwebtoken";
-// import { validationsignin } from "../utility/validationofinput.utility.js";
+
 
 const { pool } = require("../database/conn.database.js");
 const bcrypt = require("bcryptjs");
@@ -30,18 +27,18 @@ const signin = async (req, res) => {
         }
 
         // console.log(username);
-        const checkusernamequery = 'SELECT * FROM "user" WHERE username= $1';
-        const responce = await pool.query(checkusernamequery, [username]);
-        //   console.log(responce);
-        if (responce.rows.length > 0) {
-            const hashedpassword = responce.rows[0].password;
+        const checkusernamequery = 'SELECT * FROM user WHERE username= ?';
+        const [responce] = await pool.query(checkusernamequery, [username]);
+          console.log(responce);
+        if (responce.length > 0) {
+            const hashedpassword = responce[0].password;
             // console.log(hashedpassword);
             // console.log(responce.rows);
             const comparepassword = await bcrypt.compare(password, hashedpassword);
             if (comparepassword) {
-                const user_id = responce.rows[0].user_id;
-                // console.log(user_id);
-                const userprogram = responce.rows[0].program;
+                const user_id = responce[0].user_id;
+                const userprogram = responce[0].program;
+                console.log(user_id,userprogram);
                 // generate access token
                 const accesstoken = await jwt.sign(
                     { id: user_id, program: userprogram },
@@ -56,11 +53,11 @@ const signin = async (req, res) => {
                     process.env.REFRESH_TOKEN_KEY,
                     { expiresIn: process.env.REFRESH_TIME }
                 );
-
-                await pool.query(
-                    'UPDATE "user" SET refreshtoken =$1 WHERE user_id= $2',
-                    [refreshtoken, user_id]
-                );
+console.log(refreshtoken);
+await pool.query(
+    "UPDATE user SET refreshtoken =? WHERE user_id= ?",
+    [refreshtoken, user_id]
+  );
 
                 const options = {
                     httpOnly: true,
@@ -112,7 +109,7 @@ const logout=async(req,res)=>
         
         const user_id = req.user.id;
         const rf = "undefined";
-        await pool.query('UPDATE "user" SET refreshtoken =$1 WHERE user_id= $2', [
+        await pool.query('UPDATE user SET refreshtoken =? WHERE user_id= ?', [
           rf,
           user_id,
         ]);

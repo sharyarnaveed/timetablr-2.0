@@ -35,11 +35,11 @@ ChartJS.register(
 
 // Reactive chart data
 const chartData = ref({
-  labels: [], // X-axis labels
+  labels: [], 
   datasets: [
     {
       label: "Users Data",
-      data: [], // Y-axis data
+      data: [],
       fill: false,
       borderColor: "rgb(75, 192, 192)",
       tension: 0.1,
@@ -47,7 +47,7 @@ const chartData = ref({
   ],
 });
 
-// Chart options
+
 const chartOptions = ref({
   responsive: true,
   plugins: {
@@ -61,21 +61,20 @@ const chartOptions = ref({
   },
 });
 
-// Fetch graph data
+
 const getGraphData = async () => {
   try {
     const response = await axios.post("/api/admin/graphdata");
-    const responseData = response.data; // Extract the first array from the response
-    console.log(responseData);
-    // Map data to chart format
-    const labels = responseData.map((item) => item.month); // Extract 'month' values for labels
-    const data = responseData.map((item) => item.usercount); // Extract 'userCount' values for dataset
+    const responseData = response.data; 
+   
+  
+    const labels = responseData.map((item) => item.month); 
+    const data = responseData.map((item) => item.userCount); 
 
-    // Update chartData ref
+   
     chartData.value.labels = labels;
     chartData.value.datasets[0].data = data;
 
-    // Debug dataset
   } catch (error) {
     console.error("Error getting graph data:", error);
   }

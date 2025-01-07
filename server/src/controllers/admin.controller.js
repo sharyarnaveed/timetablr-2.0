@@ -7,13 +7,14 @@ const addprogram = async (req, res) => {
   try {
     const { programname } = req.body;
 
-    console.log(programname);
+    // console.log(programname);
     // Insert program into the programs table
-    const sql = `INSERT INTO programs (program_name) VALUES ($1)`;
-    const inserted = await pool.query(sql, [programname]);
-    //   console.log(inserted);
-    if (inserted.rowCount > 0) {
-      res.status(200).json({
+    const sql = `INSERT INTO programs (program_name) VALUES (?)`;
+    const [inserted] = await pool.query(sql, [programname]);
+    console.log(inserted);
+    if (inserted.affectedRows > 0) {
+      console.log(inserted);
+     return res.json({
         message: "Program added ",
         success: true,
       });
@@ -37,10 +38,10 @@ const deletprogram = async (req, res) => {
     const id = req.body.id;
 
     console.log(id);
-    const sql = `DELETE FROM programs WHERE program_id=$1`;
-    const deleted = await pool.query(sql, [id]);
+    const sql = `DELETE FROM programs WHERE program_id=?`;
+    const [deleted] = await pool.query(sql, [id]);
     console.log(deleted);
-    if (deleted.rowCount > 0) {
+    if (deleted.affectedRows > 0) {
       res.status(200).json({
         message: "Program deleted ",
         success: true,
@@ -58,19 +59,19 @@ const deletprogram = async (req, res) => {
 
 const graph = async (req, res) => {
   const query = `
-     SELECT
-    TO_CHAR(time, 'YYYY-MM-01') AS month, 
-    COUNT(*) AS userCount
-FROM "user"
+   SELECT
+  DATE_FORMAT(time, '%Y-%m-01') AS month, -- Extracts the month as 'YYYY-MM-01'
+  COUNT(*) AS userCount
+FROM user
 GROUP BY month
 ORDER BY month ASC;
 
       
         `;
   try {
-    const result = await pool.query(query);
-    res.json(result.rows);
-    console.log(result.rows);
+    const [result] = await pool.query(query);
+    res.json(result);
+    console.log(result);
   } catch (error) {
     console.log(error);
   }
@@ -80,7 +81,7 @@ const uploadtimetable = async (req, res) => {
   try {
     const data = req.body;
     const sql =
-      "INSERT INTO timetable (day,start_time,end_time,program_name,course_name,teacher_name,venue) VALUES ($1,$2,$3,$4,$5,$6,$7) ";
+      "INSERT INTO timetable (day,start_time,end_time,program_name,course_name,teacher_name,venue) VALUES (?,?,?,?,?,?,?) ";
 
     await data.forEach(async (element) => {
       const days = element[0];
@@ -92,7 +93,7 @@ const uploadtimetable = async (req, res) => {
       const teacher_name = element[4];
       const venue = element[5];
       const program_name = element[6];
-      const submition = await pool.query(sql, [
+      const [submition] = await pool.query(sql, [
         days,
         Cstarttime,
         Cendtime,
@@ -102,6 +103,7 @@ const uploadtimetable = async (req, res) => {
         venue,
       ]);
     });
+    
     res.json({
       message: "Timetable Upload",
       success: true,
@@ -117,15 +119,15 @@ const adminsigin = async (req, res) => {
   try {
     const { username, password } = req.body;
     console.log(username, password);
-    const query = "SELECT * FROM admin WHERE admin_username = $1";
-    const result1 = await pool.query(query, [username]);
-    if (result1.rowCount > 0) {
-      console.log(result1.rows);
-      const hashedPassword = result1.rows[0].admin_password;
+    const query = "SELECT * FROM admin WHERE admin_username = ?";
+    const [result1] = await pool.query(query, [username]);
+    if (result1.length > 0) {
+      console.log(result1);
+      const hashedPassword = result1[0].admin_password;
       console.log(hashedPassword);
       const isValid = await bcrypt.compare(password, hashedPassword);
       if (isValid) {
-        const admin_id = result1.rows[0].admin_id;
+        const admin_id = result1[0].admin_id;
         // // generatge access tooken
         const accesstoken = await jwt.sign(
           { id: admin_id },
@@ -142,7 +144,7 @@ const adminsigin = async (req, res) => {
 
         // // update refresh token in database
         await pool.query(
-          "UPDATE admin SET refreshtoken =$1 WHERE admin_id= $2",
+          "UPDATE admin SET refreshtoken =? WHERE admin_id= ?",
           [refreshtoken, admin_id]
         );
 
@@ -177,7 +179,7 @@ const logout = async (req, res) => {
     const admin_id = req.user.admin_id;
     console.log(admin_id);
     const rf = "undefined";
-    await pool.query("UPDATE admin SET refreshtoken =$1 WHERE admin_id= $2", [
+    await pool.query("UPDATE admin SET refreshtoken =? WHERE admin_id= ?", [
       rf,
       admin_id,
     ]);

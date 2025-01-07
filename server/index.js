@@ -9,16 +9,23 @@ const dotenv = require("dotenv");
 dotenv.config({
   path: './.env'
 })
-// console.log(process.env.HOST_NAME);
-pool.connect()
-.then(() => {
-    console.log("database connected");
-app.listen(process.env.PORT||8000,()=>
-{
-  console.log("server is running at ",`${process.env.PORT}` );
-})
 
-}).catch((err) => {
+// console.log(process.env.HOST_NAME);
+async function connectToDatabase() {
+  try {
+ 
+    const connection = await pool.getConnection();
+    console.log('Database connected successfully');
     
-    console.log(err,"database not connected");
-});
+ 
+    connection.release();
+    
+  
+    app.listen(`${process.env.PORT}`||8000, () => {
+      console.log(`Server running at http://localhost:${process.env.PORT}`);
+    });
+  } catch (err) {
+    console.log(err)
+  }
+}
+connectToDatabase();

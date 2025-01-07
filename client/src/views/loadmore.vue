@@ -26,34 +26,39 @@ const theday = ref({
   day: "",
 });
 
-const getdata = async (day) => {
-  try {
-    theday.value.day = day;
-    const response = await api.post("/api/user/home", theday.value, {
-      withCredentials: true,
-    });
+// const getdata = async (day) => {
+//   try {
+//     theday.value.day = day;
+//     const response = await api.post("/api/user/home", theday.value, {
+//       withCredentials: true,
+//     });
    
-    return response.data.timetable;
-  } catch (error) {
-    console.error("Error fetching data:", error.message);
-    return [];
-  }
-};
+//     return response.data.timetable;
+//   } catch (error) {
+//     console.error("Error fetching data:", error.message);
+//     return [];
+//   }
+// };
 
 
 onMounted(async () => {
-  const today = new Date();
-  const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
-  // console.log(dayName);
-  const fetcheddata = await getdata(dayName);
+  // const today = new Date();
+  // const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
+  // // console.log(dayName);
+  // const fetcheddata = await getdata(dayName);
 
-  timetable.setClasses(fetcheddata);
+  // timetable.setClasses(fetcheddata);
 
   //   usetimetable.findCurrentClass();
-  timetable.findnotcurrent();
+  await timetable.findnotcurrent();
   notcurrentclass.value = timetable.notcurrentclass;
   console.log("in load more",notcurrentclass.value);
 });
+
+const [navigation]=performance.getEntriesByType("navigation")
+
+
+
 
 //  console.log(nocurrentclass);
 </script>

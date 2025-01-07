@@ -1,17 +1,16 @@
 // import pkg from 'pg';
 // import { DATABASE_NAME } from '../constants.js';
 // const { Pool } = pkg;
-const pkg = require('pg');
-const { DATABASE_NAME } = require('../constants.js');
-const { Pool } = pkg;
+const mysql = require('mysql2/promise');
 
 
-const pool= new Pool({
-    user:'postgres',
-    host:'localhost',
-    database:DATABASE_NAME,
-    password:'1234',
-})
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'timetablr',
+   
+  });
 
 // console.log(`${process.env.HOST_NAME}`);
 

@@ -9,9 +9,9 @@ const getusername = async (user) => {
     //   console.log("in home data",user.id);
   
   
-      const query = 'SELECT username FROM "user" WHERE USER_ID =$1'
-      const getUserName = await pool.query(query, [userID]);
-      return getUserName.rows
+      const query = 'SELECT username FROM user WHERE USER_ID =?'
+      const [getUserName] = await pool.query(query, [userID]);
+      return getUserName
   
     
   }
@@ -25,13 +25,13 @@ const homedata=async(req,res)=>
         // console.log("from home",user);
         const { day } = req.body;
         // console.log(day);
-const TimetableQuery=`SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where day=$1 And programs.program_name=$2`;
-const TimetableResult=await pool.query(TimetableQuery,[day,user.program]);
-console.log(TimetableResult.rows);
+const TimetableQuery=`SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where day=? And programs.program_name=?`;
+const [TimetableResult]=await pool.query(TimetableQuery,[day,user.program]);
+// console.log(TimetableResult);
 const username = await getusername(req.user)
 // console.log("from home",username);
 return res.json({
-  timetable: TimetableResult.rows,
+  timetable: TimetableResult,
   username: username
 });
     } catch (error) {

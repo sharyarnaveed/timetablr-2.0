@@ -2,7 +2,7 @@ import axios from 'axios';
 import router from './router'; // Import your Vue router
 import Cookies from 'js-cookie';
 const api = axios.create({
-  baseURL: 'http://localhost:3000', // Your backend API base URL
+  baseURL: 'https://timetable.pharmder.com', // Your backend API base URL
 });
 
 // Attach access token to each request

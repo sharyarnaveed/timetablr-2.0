@@ -1,6 +1,4 @@
-// import { pool } from "../database/conn.database.js";
-// import { validation } from "../utility/validationofinput.utility.js";
-// import bcrypt from "bcryptjs";
+
 
 const { pool } = require("../database/conn.database.js");
 const { validation } = require("../utility/validationofinput.utility.js");
@@ -20,6 +18,12 @@ const signup = async (req, res) => {
       repeatpassword,
     } = req.body;
    
+    console.log(   fullname,
+      username,
+      department,
+      program,
+      password,
+      repeatpassword,);
 // check all fields are entered
     if (!username || !department || !program || !password) {
       res.json({
@@ -30,6 +34,7 @@ const signup = async (req, res) => {
 const responce=validation(fullname,username,department,program,password,repeatpassword)
         if(responce===false)
 {
+  console.log(responce);
 res.json({
     message: "Invalid Input",
     success: false,
@@ -46,10 +51,10 @@ else{
       } else {
         // check if user name already exsist or not
         const checkuserQuery =
-          'SELECT username from "user" WHERE username = $1';
-        const CheckResult = await pool.query(checkuserQuery, [username]);
-        if (CheckResult.rows.length > 0) {
-          console.log(CheckResult.rows.length);
+          'SELECT username from user WHERE username = ?';
+        const [CheckResult] = await pool.query(checkuserQuery, [username]);
+        if (CheckResult.length > 0) {
+          console.log(CheckResult.length);
           res.json({
             message: "Username Already Exist",
             success: false,
@@ -57,15 +62,15 @@ else{
         } else {
           const hashedPassword = await bcrypt.hash(password, 10);
           const query =
-            'INSERT INTO "user" (full_name, username, department, program,password) VALUES ($1, $2, $3, $4, $5) RETURNING*';
-          const user = await pool.query(query, [
+            'INSERT INTO user (full_name, username, department, program,password) VALUES (?, ?, ?, ?, ?)';
+          const [user] = await pool.query(query, [
             fullname,
             username,
             department,
             program,
             hashedPassword,
           ]);
-
+console.log(user);
           res.json({
             message: "User Created Successfully",
             success: true,
@@ -88,9 +93,10 @@ const getprogram = async (req, res) => {
   try {
     
     // // console.log(thedb);
-    const result = await pool.query(`SELECT * FROM programs`);
+    const [result] = await pool.query(`SELECT * FROM programs`);
     
-    res.json(result.rows);
+    res.json(result);
+    console.log(result);
   } catch (error) {
     console.log("error in getting programs", error);
   }

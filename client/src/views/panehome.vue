@@ -31,6 +31,7 @@ const getdata = async (day) => {
     });
     username.value = response.data.username[0]?.username || "Unknown User";
     console.log("in panel home",response.data.timetable);
+   
     return response.data.timetable;
   } catch (error) {
     console.error("Error fetching data:", error.message);
