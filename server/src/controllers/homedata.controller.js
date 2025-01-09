@@ -25,7 +25,7 @@ const homedata=async(req,res)=>
         // console.log("from home",user);
         const { day } = req.body;
         // console.log(day);
-const TimetableQuery=`SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where day=? And programs.program_name=?`;
+const TimetableQuery=`SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where day=? And programs.program_name=? ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')`;
 const [TimetableResult]=await pool.query(TimetableQuery,[day,user.program]);
 // console.log(TimetableResult);
 const username = await getusername(req.user)

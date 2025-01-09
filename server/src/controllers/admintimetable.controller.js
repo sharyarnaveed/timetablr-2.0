@@ -6,7 +6,7 @@ const gettimetable=async(req,res)=>{
         const{program_id}=req.body;
         console.log(program_id);
    
-const sql="SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where programs.program_id=? ";
+const sql="SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where programs.program_id=? ORDER BY FIELD(day,'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'),STR_TO_DATE(start_time, '%H:%i:%s')";
 
 const [responce]=await pool.query(sql,[program_id]);
 res.json({
