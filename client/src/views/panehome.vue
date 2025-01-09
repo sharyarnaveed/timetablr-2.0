@@ -23,14 +23,30 @@ const username=ref()
 const theday = ref({
   day: "",
 });
+
+const trancatenate=(name,maxlength)=>
+{
+if(name.length>maxlength)
+{
+  return name.slice(0,maxlength-3)+'...'
+}
+return name
+}
+
+
+
 const getdata = async (day) => {
   try {
     theday.value.day = day;
     const response = await api.post("/api/user/home", theday.value, {
       withCredentials: true,
     });
-    username.value = response.data.username[0]?.username || "Unknown User";
-    console.log("in panel home",response.data.timetable);
+
+    
+username.value=response.data.username[0]?.username || "Unknown User"
+    username.value = await trancatenate(username.value,8);
+   
+
    
     return response.data.timetable;
   } catch (error) {
@@ -85,11 +101,11 @@ console.log(noclass.value.start_time);
 <template>
   <main class="homepanelmain">
     <div class="hometop">
-      <router-link to="/settings" class="settings">
+      <div class="settings">
         <img style="width: 30px; height: 30px;" src="../assets/profile.png" alt="" />
      <p style="color: black; font-family: var(--majorfont);">{{ username }}</p>   
-
-      </router-link>
+</div>
+    
 
       <button @click="logout" class="logout">
         <img src="../assets/material-symbols_logout.svg" alt="" />
@@ -115,6 +131,8 @@ console.log(noclass.value.start_time);
       </div>
 
       <div class="laterconn">
+        <h4>Next Class</h4>
+
         <otherclass
           v-if="usetimetable.notcurrentclass.length"
           :subject="subject"
@@ -124,7 +142,7 @@ console.log(noclass.value.start_time);
         />
         <h2 class="noclasstext" v-else>No Next Class</h2>
 
-        <!-- <otherclass/> -->
+     
       </div>
       <div class="speeddailcon">
 
@@ -216,7 +234,10 @@ console.log(noclass.value.start_time);
     flex-direction: column;
     height: 60%;
   }
-
+  .laterconn h4 {
+    font-size: 1.1rem;
+    font-family: var(--majorfont);
+  }
   .bottomtable {
     /* border: 2px solid purple; */
     height: 50%;
@@ -326,7 +347,10 @@ gap: 15px;
     flex-direction: column;
     height: 100%;
   }
-
+  .laterconn h4 {
+    font-size: 1.1rem;
+    font-family: var(--majorfont);
+  }
   .bottomtable {
     /* border: 2px solid purple; */
     height: 50%;
@@ -435,7 +459,10 @@ gap: 15px;
     flex-direction: column;
     height: 100%;
   }
-
+  .laterconn h4 {
+    font-size: 1.1rem;
+    font-family: var(--majorfont);
+  }
   .bottomtable {
     /* border: 2px solid purple; */
     height: 50%;

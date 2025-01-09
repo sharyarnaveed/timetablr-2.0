@@ -1,20 +1,26 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
+import { useProgramsStore } from "@/stores/programs";
 import axios from "axios";
 import router from "@/router";
-import confirm from "@/components/success.vue"
+import confirm from "@/components/success.vue";
 const searchQuery = ref("");
 const errorresponce = ref("");
+const look=ref(false)
 const error = ref(false);
-const successmsg=ref(false);
-const successmessage=ref("")
+const successmsg = ref(false);
+const successmessage = ref("");
 const options = ref([]);
+
+const myprograms = useProgramsStore();
 
 const getprogramoptions = async () => {
   try {
     const response = await axios.post("/api/user/getprogramfromdb");
-    options.value = response.data;
-    console.log(options.value);
+    await myprograms.setprograms(response.data);
+    const returnval = await myprograms.programs;
+
+    options.value = returnval;
   } catch (err) {
     console.error("Error fetching programs:", err);
   }
@@ -28,7 +34,7 @@ const filteredOptions = ref([]);
 const showOptions = ref(false);
 
 const signupdata = ref({
-  fullname:"",
+  fullname: "",
   username: "",
   department: "",
   program: "",
@@ -49,6 +55,17 @@ const selectOption = (option) => {
   showOptions.value = false;
 };
 
+const checkprogram = async (userval) => {
+  const thecheck = options.value.some((thepro) => {
+    if (thepro.program_name === userval) {
+      return true;
+    }
+    return false;
+  });
+
+  return thecheck;
+};
+
 const handlesubmit = async () => {
   signupdata.value.program = searchQuery.value;
 
@@ -56,44 +73,68 @@ const handlesubmit = async () => {
     errorresponce.value = "Passwords do not match";
     error.value = true;
   } else {
-    try {
-      const response = await axios.post("/api/user/signup", signupdata.value);
-      console.log(response.data);
-      if (response.data.success) {
-        successmsg.value=true
-        successmessage.value=response.data.message
+
+
+
+     look.value = await checkprogram(signupdata.value.program);
+   if(look.value===false)
+   {
+     errorresponce.value =  "Choose Correct Program from Options";
+     setTimeout(() => {
+       
+       error.value = false;
+    }, 3000);
+   }
+else{
+
+  try {
+    const response = await axios.post("/api/user/signup", signupdata.value);
+    console.log(response.data);
+    if (response.data.success) {
+        successmsg.value = true;
+        successmessage.value = response.data.message;
         setTimeout(() => {
-          
-          signupdata.value={
-            fullname:"",
+          signupdata.value = {
+            fullname: "",
             username: "",
             department: "",
-          
+            
             password: "",
             repeatpassword: "",
-          }
-          },3000)
-
+          };
+        }, 3000);
       } else {
         errorresponce.value = response.data.message || "An error occurred";
         error.value = true;
+        setTimeout(() => {
+       
+       error.value = false;
+    }, 3000);
       }
     } catch (err) {
       console.error("Error during signup:", err);
       errorresponce.value = "An error occurred";
       error.value = true;
+      setTimeout(() => {
+       
+       error.value = false;
+    }, 3000);
     }
   }
+}
+
+
+
+
 };
 </script>
-
 
 <template>
   <main class="signupconn">
     <div class="logo">
       <h1>Timetablr</h1>
     </div>
-    <confirm v-if="successmsg" :messagevalue="successmessage"/>
+    <confirm v-if="successmsg" :messagevalue="successmessage" />
     <section class="signupsec">
       <form @submit.prevent="handlesubmit" class="signupform" action="">
         <h2>Create Account</h2>
@@ -105,16 +146,16 @@ const handlesubmit = async () => {
             v-model="signupdata.fullname"
             placeholder="Full Name"
             type="text"
-           pattern="^[A-Za-z ]+$"
+            pattern="^[A-Za-z ]+$"
             title="Symbols are not allowed"
           />
-     
+
           <input
             required
             v-model="signupdata.username"
             placeholder="Username"
             type="text"
-           pattern="^[A-Za-z0-9_]+$"
+            pattern="^[A-Za-z0-9_]+$"
             title="Symbols ' - = are not allowed"
           />
           <input
@@ -133,7 +174,7 @@ const handlesubmit = async () => {
               pattern="^[A-Za-z0-9 ]+$"
               v-model="searchQuery"
               @input="filterOptions"
-              placeholder="Program"
+              placeholder="Choose Your Program From Options"
               @focus="showOptions = true"
             />
             <ul v-if="showOptions && filteredOptions.length">
@@ -154,7 +195,7 @@ const handlesubmit = async () => {
             type="password"
             minlength="8"
             maxlength="20"
-           pattern="^[A-Za-z0-9_]+$"
+            pattern="^[A-Za-z0-9_]+$"
             title="Symbols ' - = are not allowed"
           />
           <input
@@ -174,7 +215,6 @@ const handlesubmit = async () => {
     </section>
   </main>
 </template>
-
 
 <style scoped>
 @media only screen and (max-width: 349px) {

@@ -5,7 +5,9 @@
       </button>
   
       <transition-group name="slide" tag="ul" class="speed-dial-options">
-        <a href="https://forms.gle/hVzXaLUziZ88mXNv5" to="/" v-show="isOpen" :key="1" class="speed-dial-item">FeedBack</a>
+        <router-link   to="/settings" v-show="isOpen" :key="1" class="speed-dial-item">Settings</router-link >
+
+        <a href="https://forms.gle/hVzXaLUziZ88mXNv5"  v-show="isOpen" :key="1" class="speed-dial-item">FeedBack</a>
         
       </transition-group>
     </div>

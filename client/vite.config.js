@@ -10,7 +10,7 @@ export default defineConfig({
 
   server:{
     proxy:{
-      '/api':'http://timetable.pharmder.com'
+      '/api':'http://localhost:3000'
     }
   },
 
