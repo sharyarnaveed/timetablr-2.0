@@ -60,7 +60,7 @@ const deletprogram = async (req, res) => {
 const graph = async (req, res) => {
   const query = `
    SELECT
-  DATE_FORMAT(time, '%Y-%m-01') AS month, -- Extracts the month as 'YYYY-MM-01'
+  DATE_FORMAT(time, '%Y-%m-%d') AS month, -- Extracts the month as 'YYYY-MM-01'
   COUNT(*) AS userCount
 FROM user
 GROUP BY month

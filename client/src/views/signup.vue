@@ -4,36 +4,21 @@ import { useProgramsStore } from "@/stores/programs";
 import axios from "axios";
 import router from "@/router";
 import confirm from "@/components/success.vue";
+
+// Form state
 const searchQuery = ref("");
-const errorresponce = ref("");
-const look=ref(false)
+const errorResponse = ref(""); 
+const look = ref(false);
 const error = ref(false);
-const successmsg = ref(false);
-const successmessage = ref("");
+const successMsg = ref(false); 
+const successMessage = ref(""); 
 const options = ref([]);
-
-const myprograms = useProgramsStore();
-
-const getprogramoptions = async () => {
-  try {
-    const response = await axios.post("/api/user/getprogramfromdb");
-    await myprograms.setprograms(response.data);
-    const returnval = await myprograms.programs;
-
-    options.value = returnval;
-  } catch (err) {
-    console.error("Error fetching programs:", err);
-  }
-};
-
-onMounted(async () => {
-  await getprogramoptions();
-});
-
 const filteredOptions = ref([]);
 const showOptions = ref(false);
 
-const signupdata = ref({
+const myprograms = useProgramsStore();
+
+const signupData = ref({ // Consistent camelCase naming
   fullname: "",
   username: "",
   department: "",
@@ -42,7 +27,30 @@ const signupdata = ref({
   repeatpassword: "",
 });
 
+// Fetch program options
+const getProgramOptions = async () => { // Consistent camelCase naming
+  try {
+    const response = await axios.post("/api/user/getprogramfromdb");
+    await myprograms.setprograms(response.data);
+    options.value = await myprograms.programs;
+  } catch (err) {
+    console.error("Error fetching programs:", err);
+    errorResponse.value = "Failed to load programs"; // Added error handling for users
+    error.value = true;
+  }
+};
+
+onMounted(async () => {
+  await getProgramOptions();
+});
+
+
 const filterOptions = () => {
+  if (!searchQuery.value) {
+    filteredOptions.value = options.value; 
+    return;
+  }
+  
   filteredOptions.value = options.value.filter((option) =>
     option.program_name.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
@@ -52,80 +60,81 @@ watch(searchQuery, filterOptions);
 
 const selectOption = (option) => {
   searchQuery.value = option;
+  signupData.value.program = option; 
   showOptions.value = false;
 };
 
-const checkprogram = async (userval) => {
-  const thecheck = options.value.some((thepro) => {
-    if (thepro.program_name === userval) {
-      return true;
-    }
-    return false;
-  });
-
-  return thecheck;
+const checkProgram = async (userval) => { 
+  return options.value.some((thepro) => thepro.program_name === userval);
 };
 
-const handlesubmit = async () => {
-  signupdata.value.program = searchQuery.value;
+const handleSubmit = async () => { 
+  error.value = false; 
+  errorResponse.value = "";
+  
 
-  if (signupdata.value.password !== signupdata.value.repeatpassword) {
-    errorresponce.value = "Passwords do not match";
+  if (!signupData.value.fullname || !signupData.value.username || 
+      !signupData.value.department || !searchQuery.value || 
+      !signupData.value.password || !signupData.value.repeatpassword) {
+    errorResponse.value = "Please fill in all fields";
     error.value = true;
-  } else {
+    return;
+  }
 
+  // Password validation
+  if (signupData.value.password !== signupData.value.repeatpassword) {
+    errorResponse.value = "Passwords do not match";
+    error.value = true;
+    return;
+  }
 
+  signupData.value.program = searchQuery.value;
+  look.value = await checkProgram(signupData.value.program);
 
-     look.value = await checkprogram(signupdata.value.program);
-   if(look.value===false)
-   {
-     errorresponce.value =  "Choose Correct Program from Options";
-     setTimeout(() => {
-       
-       error.value = false;
+  if (!look.value) {
+    errorResponse.value = "Choose Correct Program from Options";
+    error.value = true;
+    setTimeout(() => {
+      error.value = false;
     }, 3000);
-   }
-else{
+    return;
+  }
 
   try {
-    const response = await axios.post("/api/user/signup", signupdata.value);
-    console.log(response.data);
+    const response = await axios.post("/api/user/signup", signupData.value);
+    
     if (response.data.success) {
-        successmsg.value = true;
-        successmessage.value = response.data.message;
-        setTimeout(() => {
-          signupdata.value = {
-            fullname: "",
-            username: "",
-            department: "",
-            
-            password: "",
-            repeatpassword: "",
-          };
-        }, 3000);
-      } else {
-        errorresponce.value = response.data.message || "An error occurred";
-        error.value = true;
-        setTimeout(() => {
-       
-       error.value = false;
-    }, 3000);
-      }
-    } catch (err) {
-      console.error("Error during signup:", err);
-      errorresponce.value = "An error occurred";
+      successMsg.value = true;
+      successMessage.value = response.data.message;
+      
+     
+      setTimeout(() => {
+        signupData.value = {
+          fullname: "",
+          username: "",
+          department: "",
+          program: "",
+          password: "",
+          repeatpassword: "",
+        };
+        searchQuery.value = ""; 
+        successMsg.value = false; 
+      }, 3000);
+    } else {
+      errorResponse.value = response.data.message || "An error occurred";
       error.value = true;
       setTimeout(() => {
-       
-       error.value = false;
-    }, 3000);
+        error.value = false;
+      }, 3000);
     }
+  } catch (err) {
+    console.error("Error during signup:", err);
+    errorResponse.value = err.response?.data?.message || "An error occurred";
+    error.value = true;
+    setTimeout(() => {
+      error.value = false;
+    }, 3000);
   }
-}
-
-
-
-
 };
 </script>
 
@@ -134,39 +143,45 @@ else{
     <div class="logo">
       <h1>Timetablr</h1>
     </div>
-    <confirm v-if="successmsg" :messagevalue="successmessage" />
+    
+    <confirm v-if="successMsg" :messagevalue="successMessage" />
+    
     <section class="signupsec">
-      <form @submit.prevent="handlesubmit" class="signupform" action="">
+      <form @submit.prevent="handleSubmit" class="signupform">
         <h2>Create Account</h2>
 
         <div class="signupinputs">
-          <p v-if="error" class="error">{{ errorresponce }}</p>
+          <p v-if="error" class="error" role="alert">{{ errorResponse }}</p>
+          
           <input
             required
-            v-model="signupdata.fullname"
+            v-model="signupData.fullname"
             placeholder="Full Name"
             type="text"
             pattern="^[A-Za-z ]+$"
-            title="Symbols are not allowed"
+            title="Only letters and spaces are allowed"
+            aria-label="Full Name"
           />
 
           <input
             required
-            v-model="signupdata.username"
+            v-model="signupData.username"
             placeholder="Username"
             type="text"
             pattern="^[A-Za-z0-9_]+$"
-            title="Symbols ' - = are not allowed"
+            title="Only letters, numbers and underscore are allowed"
+            aria-label="Username"
           />
+          
           <input
             required
-            v-model="signupdata.department"
+            v-model="signupData.department"
             placeholder="Department"
             pattern="^[A-Za-z ]+$"
             type="text"
+            aria-label="Department"
           />
 
-          <!-- search filter -->
           <div class="searchfilter">
             <input
               type="text"
@@ -176,12 +191,17 @@ else{
               @input="filterOptions"
               placeholder="Choose Your Program From Options"
               @focus="showOptions = true"
+              aria-label="Program"
+              aria-expanded="showOptions"
+              role="combobox"
             />
-            <ul v-if="showOptions && filteredOptions.length">
+            <ul v-if="showOptions && filteredOptions.length" role="listbox">
               <li
                 v-for="(option, index) in filteredOptions"
                 :key="index"
                 @click="selectOption(option.program_name)"
+                role="option"
+                :aria-selected="searchQuery === option.program_name"
               >
                 {{ option.program_name }}
               </li>
@@ -190,25 +210,29 @@ else{
 
           <input
             required
-            v-model="signupdata.password"
+            v-model="signupData.password"
             placeholder="Password"
             type="password"
             minlength="8"
             maxlength="20"
             pattern="^[A-Za-z0-9_]+$"
-            title="Symbols ' - = are not allowed"
+            title="Only letters, numbers and underscore are allowed"
+            aria-label="Password"
           />
+          
           <input
             required
-            v-model="signupdata.repeatpassword"
+            v-model="signupData.repeatpassword"
             placeholder="Re-Password"
             type="password"
+            aria-label="Confirm Password"
           />
+          
           <button type="submit">Sign Up</button>
         </div>
 
         <div class="alreadyacc">
-          Already Have an Account ?
+          Already Have an Account?
           <router-link to="/signin">Sign In</router-link>
         </div>
       </form>

@@ -38,7 +38,7 @@ const installapp = async () => {
         <div class="buttons">
           <button @click="installapp" class="homebuttons">Download</button>
           <button class="homebuttons">
-            <a style="  color: black; text-decoration: none;" href="https://forms.gle/BExGqK2f7hzvtX1G7">Feedback</a>
+            <a style="  color: black; text-decoration: none;" href="https://timetable.pharmder.com/signin">Sign In</a>
             </button>
         </div>
       </div>
