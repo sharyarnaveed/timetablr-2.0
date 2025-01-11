@@ -59,7 +59,14 @@ export const useTimetableStore = defineStore("timetable", {
       
       // console.log("Not current classes:", this.notcurrentclass);
     },
-
-
+storelocal()
+{
+localStorage.setItem('classes',JSON.stringify(this.classes))
+},
+getlocal()
+{
+const stored= localStorage.getItem('classes')
+return JSON.parse(stored);
+}
   },
 });

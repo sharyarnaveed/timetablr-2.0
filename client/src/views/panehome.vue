@@ -38,32 +38,29 @@ return name
 const getdata = async (day) => {
   try {
     theday.value.day = day;
-    const response = await api.post("/api/user/home", theday.value, {
-      withCredentials: true,
-    });
-
+    const response = await api.post("/api/user/home", theday.value);
     
-username.value=response.data.username[0]?.username || "Unknown User"
-    username.value = await trancatenate(username.value,8);
-   
-
-   
+    username.value = response.data.username[0]?.username || "Unknown User";
+    username.value = await trancatenate(username.value, 8);
+    
     return response.data.timetable;
   } catch (error) {
     console.error("Error fetching data:", error.message);
+    if (error.response?.status === 401) {
+      router.push('/signin');
+    }
     return [];
   }
 };
 
-
-
-
-
-// for the logout
 const logout = async () => {
-  const thelog = await axios.post("/api/user/logout");
-
-  if (thelog.data.success) {
+  try {
+    const response = await api.post("/api/user/logout");
+    if (response.data.success) {
+      router.push("/signin");
+    }
+  } catch (error) {
+    console.error("Logout error:", error);
     router.push("/signin");
   }
 };
@@ -74,7 +71,7 @@ onMounted(async () => {
 
   const fetcheddata = await getdata(dayName);
   await usetimetable.setClasses(fetcheddata);
-
+await usetimetable.storelocal();
   await usetimetable.findCurrentClass();
   await usetimetable.findnotcurrent();
   if (usetimetable.notcurrentclass.length > 0) {

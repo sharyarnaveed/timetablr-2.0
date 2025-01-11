@@ -1,8 +1,9 @@
 <script setup>
 import UserName from '@/components/changeusername.vue';
 import Password from "@/components/changepassword.vue";
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import GoingBack from "@/components/backhomeComp.vue"
+import api from '@/api';
 const currenttab=ref('Password');
 
 const tabs={
@@ -10,7 +11,15 @@ const tabs={
     UserName
 }
 
-
+onMounted(async()=>
+{
+  try {
+    const responce=await api.get("/api/user/loadall");
+    console.log("responce",responce.data);
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 </script>
 <template>

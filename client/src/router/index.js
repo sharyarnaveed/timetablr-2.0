@@ -8,7 +8,7 @@ import adminsignin from "@/views/admin/signin.vue"
 import admindashboard from "@/views/admin/dashboard.vue"
 import addcategory from "@/views/admin/addcategory.vue"
 import addtimetable from "@/views/admin/addtimetable.vue"
-
+import Daywise from "@/views/Daywise.vue"
 import adminhome from "@/views/admin/adminhome.vue"
 import Settings from '@/views/settings.vue'
 import Viewtimetable from '@/views/admin/viewtimetable.vue'
@@ -52,6 +52,11 @@ const router = createRouter({
     path:"/settings",
     name:"settings",
     component:Settings
+  },
+  {
+    path:"/daywise",
+    name:"daywise",
+    component:Daywise
   }
 ,{
   path:"/totheadmindashboard",

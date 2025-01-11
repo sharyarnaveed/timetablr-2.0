@@ -1,28 +1,17 @@
 import axios from 'axios';
-import router from './router'; // Import your Vue router
-import Cookies from 'js-cookie';
+import router from './router';
+
 const api = axios.create({
-  baseURL: 'http://localhost:3000', // Your backend API base URL
+  baseURL: 'https://timetable.pharmder.com',
+  withCredentials: true // Enable sending credentials by default
 });
 
-// Attach access token to each request
-api.interceptors.request.use(config => {
-    const accessToken = Cookies.get('accessToken');
-     // Or cookies if you're using cookies
-  if (accessToken) {
-    config.headers['Authorization'] = `Bearer ${accessToken}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
-
-// Handle 401 Unauthorized and redirect to login page
+// Interceptor for handling authentication
 api.interceptors.response.use(
-  response => response,
-  async error => {
-    if (error.response && error.response.status === 401) {
-      // Token is invalid or expired, redirect to login page
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      // Clear any stored auth state if needed
       router.push('/signin');
     }
     return Promise.reject(error);

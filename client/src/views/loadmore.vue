@@ -26,33 +26,20 @@ const theday = ref({
   day: "",
 });
 
-// const getdata = async (day) => {
-//   try {
-//     theday.value.day = day;
-//     const response = await api.post("/api/user/home", theday.value, {
-//       withCredentials: true,
-//     });
-   
-//     return response.data.timetable;
-//   } catch (error) {
-//     console.error("Error fetching data:", error.message);
-//     return [];
-//   }
-// };
+
 
 
 onMounted(async () => {
-  // const today = new Date();
-  // const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
-  // // console.log(dayName);
-  // const fetcheddata = await getdata(dayName);
 
-  // timetable.setClasses(fetcheddata);
-
-  //   usetimetable.findCurrentClass();
   await timetable.findnotcurrent();
   notcurrentclass.value = timetable.notcurrentclass;
   console.log("in load more",notcurrentclass.value);
+  try {
+    const responce=await api.get("/api/user/loadall");
+    console.log("responce",responce.data);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const [navigation]=performance.getEntriesByType("navigation")

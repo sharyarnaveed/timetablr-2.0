@@ -39,5 +39,32 @@ return res.json({
     }
 }
 
+
+const getalltimetable=async(req,res)=>
+{
+try {
+  
+const UserProgram=req.user.program;
+console.log(UserProgram);
+
+const sql="SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where programs.program_name=? ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')"
+const [responce]=await pool.query(sql,[UserProgram]);
+
+
+res.json({
+  timetable: responce
+})
+
+
+
+
+} catch (error) {
+  console.log("error in getting all timetable",error);
+}
+}
+
+
+
+
 // export {homedata}
-module.exports = { homedata };
+module.exports = { homedata,getalltimetable };

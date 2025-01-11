@@ -2,7 +2,7 @@
 const { Router } = require("express");
 const { signup, getprogram } = require("../controllers/signup.controller.js");
 const { logout, signin } = require("../controllers/sigin.controller.js");
-const { homedata } = require("../controllers/homedata.controller.js");
+const { homedata, getalltimetable } = require("../controllers/homedata.controller.js");
 const { verifyjwt } = require("../middleware/auth.middleware.js");
 const { changepassword, changeusername } = require("../controllers/settings.controller.js");
 
@@ -17,6 +17,8 @@ router.route('/logout').post(verifyjwt,logout)
 router.route('/changepassword').post(verifyjwt,changepassword)
 router.route('/changeusername').post(verifyjwt,changeusername)
 router.route('/getprogramfromdb').post(getprogram)
+router.route('/alltimetable').post(verifyjwt,getalltimetable)
+router.route('/loadall').get(verifyjwt)
 
 
 module.exports = router;
