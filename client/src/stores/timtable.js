@@ -67,6 +67,15 @@ getlocal()
 {
 const stored= localStorage.getItem('classes')
 return JSON.parse(stored);
+},
+storednotclocal()
+{
+  localStorage.setItem('notcurrent',JSON.stringify(this.notcurrentclass))
+},
+getnotclocal()
+{
+const stored= localStorage.getItem('notcurrent')
+return JSON.parse(stored);
 }
   },
 });

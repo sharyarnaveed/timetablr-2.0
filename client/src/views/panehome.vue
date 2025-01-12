@@ -72,10 +72,11 @@ onMounted(async () => {
   const fetcheddata = await getdata(dayName);
   await usetimetable.setClasses(fetcheddata);
 await usetimetable.storelocal();
-  await usetimetable.findCurrentClass();
-  await usetimetable.findnotcurrent();
+await usetimetable.findCurrentClass();
+await usetimetable.findnotcurrent();
+await usetimetable.storednotclocal();
   if (usetimetable.notcurrentclass.length > 0) {
-    console.log("in panel home 2",usetimetable.notcurrentclass[0]);
+  
     noclass.value = usetimetable.notcurrentclass[0];
     subject.value = noclass.value.course_name;
     venu.value = noclass.value.venue;

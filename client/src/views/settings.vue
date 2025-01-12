@@ -14,7 +14,7 @@ const tabs={
 onMounted(async()=>
 {
   try {
-    const responce=await api.get("/api/user/loadall");
+    const responce=await api.post("/api/user/loadall");
     console.log("responce",responce.data);
   } catch (error) {
     console.log(error);

@@ -31,12 +31,12 @@ const theday = ref({
 
 onMounted(async () => {
 
-  await timetable.findnotcurrent();
-  notcurrentclass.value = timetable.notcurrentclass;
-  console.log("in load more",notcurrentclass.value);
+  notcurrentclass.value=await timetable.getnotclocal();
+
+  
   try {
-    const responce=await api.get("/api/user/loadall");
-    console.log("responce",responce.data);
+    const responce=await api.post("/api/user/loadall");
+  
   } catch (error) {
     console.log(error);
   }
