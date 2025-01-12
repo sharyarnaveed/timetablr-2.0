@@ -12,7 +12,7 @@ import Daywise from "@/views/Daywise.vue"
 import adminhome from "@/views/admin/adminhome.vue"
 import Settings from '@/views/settings.vue'
 import Viewtimetable from '@/views/admin/viewtimetable.vue'
-
+import Seeusers from '@/views/admin/SeeUsers.vue'
 
 
 const router = createRouter({
@@ -63,6 +63,7 @@ const router = createRouter({
   name:"admindashboard",
   component:admindashboard,
   children:[
+
  {
 path:"",
 component:adminhome
@@ -80,7 +81,10 @@ component:adminhome
       path:"viewtimetable",
       component:Viewtimetable
     },
-
+{
+  path:"seeusers",
+  component:Seeusers
+}
     
   
   ]

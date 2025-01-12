@@ -10,6 +10,12 @@
           Dashboard</router-link
         >
       </li>
+      <li class="asideoptions">
+        <router-link class="optionslink" to="/totheadmindashboard/seeusers">
+          
+          Users</router-link
+        >
+      </li>
 
       <li class="asideoptions">
         <button @click="toggle" style="cursor: pointer" class="optionslink">

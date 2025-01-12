@@ -48,5 +48,24 @@ if(responce)
 }
 
 
+const getuserinfo=async(req,res)=>
+{
+    try {
+        const sql="SELECT * FROM user";
+const [responce]=await pool.query(sql);
+// console.log(responce);/
+res.json({
+    user:responce
+    })
 
-module.exports={gettimetable,deletetimetable}
+
+    } catch (error) {
+        console.log("error in getting users",error);
+    }
+}
+
+
+
+
+
+module.exports={gettimetable,deletetimetable,getuserinfo}
