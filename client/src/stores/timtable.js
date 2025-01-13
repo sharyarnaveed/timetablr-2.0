@@ -57,8 +57,8 @@ export const useTimetableStore = defineStore("timetable", {
         return Totalmins < classStart; // Classes after current time
       });
 
-      
-      if(this.notcurrentclass.length==0)
+
+      if(this.notcurrentclass.length===0)
       {
       const notlocalclass= this.getnotclocal();
         this.storednotclocal(notlocalclass)
@@ -69,37 +69,58 @@ this.storednotclocal(this.notcurrentclass)
       }
      
     },
-storelocal()
-{
-localStorage.setItem('classes',JSON.stringify(this.classes))
-},
-getlocal()
-{
-const stored= localStorage.getItem('classes')
-return JSON.parse(stored);
-},
-storednotclocal(Notclass)
-{
-  localStorage.setItem('notcurrent',JSON.stringify(Notclass))
-},
-getnotclocal()
-{
-const stored= localStorage.getItem('notcurrent')
-return JSON.parse(stored);
-},
+    storelocal() {
+      try {
+        localStorage.setItem('classes', JSON.stringify(this.classes));
+      } catch (error) {
+        console.error('Error storing classes in localStorage:', error);
+      }
+    },
 
-storedaywiseinlocal(timetable)
-{
-localStorage.setItem('daywise',JSON.stringify(timetable))
+    getlocal() {
+      try {
+        const stored = localStorage.getItem('classes');
+        return stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        console.error('Error retrieving classes from localStorage:', error);
+        return [];
+      }
+    },
 
-},
-getdaywiseinlocal()
-{
-const stored= localStorage.getItem('daywise')
-return JSON.parse(stored);
-}
+    storednotclocal(Notclass) {
+      try {
+        localStorage.setItem('notcurrent', JSON.stringify(Notclass));
+      } catch (error) {
+        console.error('Error storing notcurrent classes:', error);
+      }
+    },
 
+    getnotclocal() {
+      try {
+        const stored = localStorage.getItem('notcurrent');
+        return stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        console.error('Error retrieving notcurrent classes:', error);
+        return [];
+      }
+    },
 
+    storedaywiseinlocal(timetable) {
+      try {
+        localStorage.setItem('daywise', JSON.stringify(timetable));
+      } catch (error) {
+        console.error('Error storing daywise timetable:', error);
+      }
+    },
 
+    getdaywiseinlocal() {
+      try {
+        const stored = localStorage.getItem('daywise');
+        return stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        console.error('Error retrieving daywise timetable:', error);
+     
+      }
+    }
   },
 });
