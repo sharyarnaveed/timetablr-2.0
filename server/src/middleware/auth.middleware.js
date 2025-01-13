@@ -21,8 +21,10 @@ const verifyjwt = async (req, res, next) => {
 
       // Set cookie options
       const cookieOptions = {
-        httpOnly: true,
-        secure: true, // Only true in production
+          httpOnly: true,
+          secure: true,
+          sameSite:'strict',
+          maxAge:7*24*60*1000// Only true in production
       };
 
       res.cookie("accessToken", newAccessToken, cookieOptions);

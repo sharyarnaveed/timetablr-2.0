@@ -6,14 +6,17 @@ const TimetableData=ref([]);
 const Daysgroup=['Monday','Tuesday',"Wednesday","Thursday","Friday"]
 import otherclasscard from '@/components/otherclasscard.vue';
 import GoingBack from "@/components/backhomeComp.vue";
-
-
+import { useTimetableStore } from '@/stores/timtable';
+const usetimetable=useTimetableStore();
 
 const getAllTimetable = async () => {
   try {
     const response = await api.post("/api/user/alltimetable");
-    console.log(response.data);
- TimetableData.value=response.data.timetable
+    // console.log(response.data);
+    usetimetable.storedaywiseinlocal(response.data.timetable)
+
+ console.log(TimetableData.value);
+ 
   } catch (error) {
     console.error("Error in getting timetable:", error);
     if (error.response?.status === 401) {
@@ -30,6 +33,10 @@ return TimetableData.value.filter((entry)=>entry.day===day)
 
 onMounted(async () => {
   await getAllTimetable();
+ TimetableData.value=usetimetable.getdaywiseinlocal();
+ 
+
+
 });
 </script>
 

@@ -1,6 +1,6 @@
 <script setup>
-import { computed, defineAsyncComponent, watch } from "vue";
-import Speeddail from "@/components/speeddail.vue"
+import { defineAsyncComponent } from "vue";
+import Speeddail from "@/components/speeddail.vue";
 const infocard = defineAsyncComponent(() =>
   import("@/components/infocard.vue")
 );
@@ -12,42 +12,38 @@ import { useTimetableStore } from "@/stores/timtable";
 import api from "@/api";
 import { onMounted, ref } from "vue";
 import router from "@/router";
-import axios from "axios";
 const usetimetable = useTimetableStore();
 const noclass = ref({});
 const subject = ref("");
 const venu = ref("");
 const starttime = ref("");
 const endtime = ref("");
-const username=ref()
+const username = ref();
 const theday = ref({
   day: "",
 });
+const NotCurrentstatus = ref(false);
 
-const trancatenate=(name,maxlength)=>
-{
-if(name.length>maxlength)
-{
-  return name.slice(0,maxlength-3)+'...'
-}
-return name
-}
-
-
+const trancatenate = (name, maxlength) => {
+  if (name.length > maxlength) {
+    return name.slice(0, maxlength - 3) + "...";
+  }
+  return name;
+};
 
 const getdata = async (day) => {
   try {
     theday.value.day = day;
     const response = await api.post("/api/user/home", theday.value);
-    
+
     username.value = response.data.username[0]?.username || "Unknown User";
     username.value = await trancatenate(username.value, 8);
-    
+
     return response.data.timetable;
   } catch (error) {
     console.error("Error fetching data:", error.message);
     if (error.response?.status === 401) {
-      router.push('/signin');
+      router.push("/signin");
     }
     return [];
   }
@@ -71,39 +67,45 @@ onMounted(async () => {
 
   const fetcheddata = await getdata(dayName);
   await usetimetable.setClasses(fetcheddata);
-await usetimetable.storelocal();
-await usetimetable.findCurrentClass();
-await usetimetable.findnotcurrent();
-await usetimetable.storednotclocal();
+  await usetimetable.storelocal();
+  await usetimetable.findCurrentClass();
+  await usetimetable.findnotcurrent();
+
+  const NotcurrentClass = await usetimetable.getnotclocal();
+
   if (usetimetable.notcurrentclass.length > 0) {
-  
     noclass.value = usetimetable.notcurrentclass[0];
     subject.value = noclass.value.course_name;
     venu.value = noclass.value.venue;
-console.log(noclass.value.start_time);
+
+    starttime.value = noclass.value.start_time;
+    endtime.value = noclass.value.end_time;
+    NotCurrentstatus.value = true;
+  } else {
+    NotCurrentstatus.value = true;
+
+    noclass.value = NotcurrentClass[0];
+    subject.value = noclass.value.course_name;
+    venu.value = noclass.value.venue;
+
     starttime.value = noclass.value.start_time;
     endtime.value = noclass.value.end_time;
   }
-  
-
-
-
-
 });
-
-
-
-
-
 </script>
 <template>
   <main class="homepanelmain">
     <div class="hometop">
       <div class="settings">
-        <img style="width: 30px; height: 30px;" src="../assets/profile.png" alt="" />
-     <p style="color: black; font-family: var(--majorfont);">{{ username }}</p>   
-</div>
-    
+        <img
+          style="width: 30px; height: 30px"
+          src="../assets/profile.png"
+          alt=""
+        />
+        <p style="color: black; font-family: var(--majorfont)">
+          {{ username }}
+        </p>
+      </div>
 
       <button @click="logout" class="logout">
         <img src="../assets/material-symbols_logout.svg" alt="" />
@@ -116,7 +118,7 @@ console.log(noclass.value.start_time);
       <div class="currentconoutisde">
         <h4>Current</h4>
 
-        <infocard v-if="usetimetable.currentClass"  />
+        <infocard v-if="usetimetable.currentClass" />
         <h2 class="noclasstext" v-else>No Class Right Now</h2>
       </div>
     </div>
@@ -132,19 +134,16 @@ console.log(noclass.value.start_time);
         <h4>Next Class</h4>
 
         <otherclass
-          v-if="usetimetable.notcurrentclass.length"
+          v-if="NotCurrentstatus"
           :subject="subject"
           :venu="venu"
           :starttime="starttime"
           :endtime="endtime"
         />
         <h2 class="noclasstext" v-else>No Next Class</h2>
-
-     
       </div>
       <div class="speeddailcon">
-
-        <Speeddail/>
+        <Speeddail />
       </div>
     </div>
   </main>
@@ -285,7 +284,7 @@ console.log(noclass.value.start_time);
     /* border: 2px solid red; */
     height: 100%;
     width: 40%;
-gap: 15px;
+    gap: 15px;
     display: flex;
     justify-content: center;
     align-items: center;

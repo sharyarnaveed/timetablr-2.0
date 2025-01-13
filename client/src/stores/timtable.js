@@ -56,8 +56,18 @@ export const useTimetableStore = defineStore("timetable", {
         // console.log("Class start time in minutes:", classStart);
         return Totalmins < classStart; // Classes after current time
       });
+
       
-      // console.log("Not current classes:", this.notcurrentclass);
+      if(this.notcurrentclass.length==0)
+      {
+      const notlocalclass= this.getnotclocal();
+        this.storednotclocal(notlocalclass)
+      }
+      else{
+
+this.storednotclocal(this.notcurrentclass)
+      }
+     
     },
 storelocal()
 {
@@ -68,14 +78,28 @@ getlocal()
 const stored= localStorage.getItem('classes')
 return JSON.parse(stored);
 },
-storednotclocal()
+storednotclocal(Notclass)
 {
-  localStorage.setItem('notcurrent',JSON.stringify(this.notcurrentclass))
+  localStorage.setItem('notcurrent',JSON.stringify(Notclass))
 },
 getnotclocal()
 {
 const stored= localStorage.getItem('notcurrent')
 return JSON.parse(stored);
+},
+
+storedaywiseinlocal(timetable)
+{
+localStorage.setItem('daywise',JSON.stringify(timetable))
+
+},
+getdaywiseinlocal()
+{
+const stored= localStorage.getItem('daywise')
+return JSON.parse(stored);
 }
+
+
+
   },
 });
