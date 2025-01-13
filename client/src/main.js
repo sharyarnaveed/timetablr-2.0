@@ -42,6 +42,8 @@ function removeOfflineMessage() {
   const offlineMessage = document.getElementById("offline-message");
   if (offlineMessage) {
     document.body.removeChild(offlineMessage);
+    window.location.reload();
+
   }
 }
 
