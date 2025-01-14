@@ -6,7 +6,7 @@
   
       <transition-group name="slide" tag="ul" class="speed-dial-options">
         <router-link   to="/settings" v-show="isOpen" :key="1" class="speed-dial-item">Settings</router-link >
-          <router-link   to="/daywise" v-show="isOpen" :key="2" class="speed-dial-item">Day Wise</router-link >
+          <router-link   to="/daywise" v-show="isOpen" :key="2" class="speed-dial-item">Whole Timetable</router-link >
 
         <a href="https://forms.gle/hVzXaLUziZ88mXNv5"  v-show="isOpen" :key="3" class="speed-dial-item">FeedBack</a>
         

@@ -45,15 +45,19 @@ export const useTimetableStore = defineStore("timetable", {
           const classStart = startHours * 60 + startMinutes;
           return Totalmins < classStart;
         })
-       
+        .sort((a, b) => {
+          const [aHours, aMinutes] = a.start_time.split(":").map(Number);
+          const [bHours, bMinutes] = b.start_time.split(":").map(Number);
+          return (aHours * 60 + aMinutes) - (bHours * 60 + bMinutes);
+        });
 
       // Store in localStorage after filtering and sorting
       this.storednotclocal(this.notcurrentclass);
     },
 
-    storelocal() {
+    storelocal(data) {
       try {
-        localStorage.setItem('classes', JSON.stringify(this.classes));
+        localStorage.setItem('classes', JSON.stringify(data));
       } catch (error) {
         console.error('Error storing classes in localStorage:', error);
       }

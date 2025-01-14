@@ -2,7 +2,7 @@ import axios from 'axios';
 import router from './router';
 
 const api = axios.create({
-  baseURL: 'https://timetable.pharmder.com',
+  baseURL: 'http://localhost:3000',
   withCredentials: true // Enable sending credentials by default
 });
 

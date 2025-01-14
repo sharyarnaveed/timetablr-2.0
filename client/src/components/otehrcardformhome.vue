@@ -10,7 +10,7 @@
     </h5>
     <h5>
       Time:
-      <p>{{ starttime }}-{{ endtime }}</p>
+      <p>{{ newsttime }}-{{ endtimenew }}</p>
     </h5>
   </div>
 </template>
@@ -18,8 +18,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
 
-
-
+const newsttime=ref('')
+const endtimenew = ref('')
 
 
 const prop = defineProps({
@@ -28,10 +28,19 @@ const prop = defineProps({
   starttime: String,
   endtime:String, 
 });
+function convertTo12HourFormat(time24) {
+    const [hours, minutes] = time24.split(':');
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const hours12 = hours % 12 || 12; // Convert 0 or 12 to 12 in 12-hour format
+    return `${hours12}:${minutes} ${period}`;
+}
+
 
 onMounted(async()=>
 {
 
+ newsttime.value=convertTo12HourFormat(prop.starttime);
+ endtimenew.value= convertTo12HourFormat(prop.endtime);
 
 })
 

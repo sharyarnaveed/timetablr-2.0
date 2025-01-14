@@ -9,16 +9,18 @@ const otherclass = defineAsyncComponent(() =>
   import("@/components/otehrcardformhome.vue")
 );
 import { useTimetableStore } from "@/stores/timtable";
+import { useUserStore } from "@/stores/userinfo";
 import api from "@/api";
 import { onMounted, ref } from "vue";
 import router from "@/router";
 const usetimetable = useTimetableStore();
+const useUser=useUserStore();
 const noclass = ref({});
 const subject = ref("");
 const venu = ref("");
 const starttime = ref("");
 const endtime = ref("");
-const username = ref();
+const username = ref("");
 const theday = ref({
   day: "",
 });
@@ -35,14 +37,18 @@ const getdata = async (day) => {
   try {
     theday.value.day = day;
     const response = await api.post("/api/user/home", theday.value);
-
+//user in local
     username.value = response.data.username[0]?.username || "Unknown User";
-    username.value = await trancatenate(username.value, 8);
+    const storeuser=await trancatenate(username.value, 8);
+    useUser.storeusername(storeuser)
+ 
 
     return response.data.timetable;
   } catch (error) {
     console.error("Error fetching data:", error.message);
     if (error.response?.status === 401) {
+    localStorage.clear();
+
       router.push("/signin");
     }
     return [];
@@ -53,10 +59,12 @@ const logout = async () => {
   try {
     const response = await api.post("/api/user/logout");
     if (response.data.success) {
+      localStorage.clear();
       router.push("/signin");
     }
   } catch (error) {
     console.error("Logout error:", error);
+    
     router.push("/signin");
   }
 };
@@ -64,14 +72,31 @@ const logout = async () => {
 onMounted(async () => {
   const today = new Date();
   const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
+  const GetLocalclass=await usetimetable.getlocal();
 
+  
+if(!Array.isArray(GetLocalclass) || GetLocalclass.length === 0 || GetLocalclass[0]?.day !== dayName)
+{
   const fetcheddata = await getdata(dayName);
-  await usetimetable.setClasses(fetcheddata);
-  await usetimetable.storelocal();
+    await usetimetable.storelocal(fetcheddata);
+    await usetimetable.setClasses(fetcheddata);
+    
+}else{
+  await usetimetable.setClasses(GetLocalclass);
+}
+
+
+  
+  // get user from local
+  username.value=await useUser.getusername()
   await usetimetable.findCurrentClass();
   await usetimetable.findnotcurrent();
+ 
 
-  // Get not current classes from localStorage
+
+
+
+
   const notCurrentClasses = usetimetable.getnotclocal();
   
   if (notCurrentClasses.length > 0) {
@@ -85,6 +110,16 @@ onMounted(async () => {
     NotCurrentstatus.value = false;
   }
 });
+
+setTimeout(async() => {
+  await usetimetable.findCurrentClass();
+  await usetimetable.findnotcurrent();
+  console.log("in timeout");
+  
+}, 1000000);
+
+
+
 </script>
 <template>
   <main class="homepanelmain">
@@ -133,7 +168,7 @@ onMounted(async () => {
           :starttime="starttime"
           :endtime="endtime"
         />
-        <h2 class="noclasstext" v-else>No Next Class</h2>
+        <h2 class="noclasstext" v-else>No Next Class. See </h2>
       </div>
       <div class="speeddailcon">
         <Speeddail />
