@@ -71,25 +71,18 @@ onMounted(async () => {
   await usetimetable.findCurrentClass();
   await usetimetable.findnotcurrent();
 
-  const NotcurrentClass = await usetimetable.getnotclocal();
-
-  if (usetimetable.notcurrentclass.length > 0) {
-    noclass.value = usetimetable.notcurrentclass[0];
+  // Get not current classes from localStorage
+  const notCurrentClasses = usetimetable.getnotclocal();
+  
+  if (notCurrentClasses.length > 0) {
+    NotCurrentstatus.value = true;
+    noclass.value = notCurrentClasses[0];
     subject.value = noclass.value.course_name;
     venu.value = noclass.value.venue;
-
     starttime.value = noclass.value.start_time;
     endtime.value = noclass.value.end_time;
-    NotCurrentstatus.value = true;
   } else {
-    NotCurrentstatus.value = true;
-
-    noclass.value = NotcurrentClass[0];
-    subject.value = noclass.value.course_name;
-    venu.value = noclass.value.venue;
-
-    starttime.value = noclass.value.start_time;
-    endtime.value = noclass.value.end_time;
+    NotCurrentstatus.value = false;
   }
 });
 </script>
