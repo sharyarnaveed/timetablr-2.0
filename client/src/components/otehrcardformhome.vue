@@ -2,11 +2,15 @@
   <div back class="currentconnlater">
     <h5 id="subject">
       Subject:
-      <p>{{ prop.subject }}</p>
+      <p>{{ subject }}</p>
     </h5>
     <h5>
       Venu:
       <p>{{ prop.venu }}</p>
+    </h5>
+    <h5>
+      Teacher:
+      <p>{{ prop.teachername }}</p>
     </h5>
     <h5>
       Time:
@@ -20,11 +24,12 @@ import { onMounted, ref } from "vue";
 
 const newsttime=ref('')
 const endtimenew = ref('')
-
+const subject=ref("")
 
 const prop = defineProps({
   subject: String,
   venu: String,
+  teachername:String,
   starttime: String,
   endtime:String, 
 });
@@ -35,10 +40,16 @@ function convertTo12HourFormat(time24) {
     return `${hours12}:${minutes} ${period}`;
 }
 
+const trancatenate = (name, maxlength) => {
+  if (name.length > maxlength) {
+    return name.slice(0, maxlength - 3) + "...";
+  }
+  return name;
+};
 
 onMounted(async()=>
 {
-
+subject.value=trancatenate(prop.subject,27)
  newsttime.value=convertTo12HourFormat(prop.starttime);
  endtimenew.value= convertTo12HourFormat(prop.endtime);
 
@@ -49,8 +60,8 @@ onMounted(async()=>
 <style scoped>
 .currentconnlater {
   /* border: 2px solid red; */
-  height: 115px;
-  padding: 0px 3px;
+  height: 155px;
+  padding: 0px 6px;
   border-radius: 10px;
   background-color: var(--violet);
 }
@@ -61,7 +72,7 @@ onMounted(async()=>
   width: 100%;
   height: 20%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   font-family: var(--majorfont);
 }
@@ -79,7 +90,7 @@ onMounted(async()=>
 }
 
 #subject {
-  height: 55%;
+  height: 35%;
   /* max-height: 40%; */
 }
 #subject p {
@@ -106,12 +117,12 @@ onMounted(async()=>
   }
 
   #subject {
-    height: 45%;
+    height: 30%;
   }
   #subject p {
     height: 100%;
     align-items: center;
-    padding: 1px 2px;
+    padding: 1px 5px;
     /* justify-content: space-between; */
     display: flex;
     font-size: 1.1rem;
@@ -142,7 +153,7 @@ onMounted(async()=>
   }
 
   #subject {
-    height: 45%;
+    height: 27%;
   }
   #subject p {
     height: 100%;

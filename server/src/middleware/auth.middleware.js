@@ -24,7 +24,8 @@ const verifyjwt = async (req, res, next) => {
           httpOnly: true,
           secure: true,
           sameSite:'strict',
-          maxAge:7*24*60*1000// Only true in production
+          maxAge:7*24*60*60*1000
+          // Only true in production
       };
 
       res.cookie("accessToken", newAccessToken, cookieOptions);

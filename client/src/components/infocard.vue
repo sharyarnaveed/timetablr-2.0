@@ -9,6 +9,10 @@
       <p>{{ venu }}</p>
     </h5>
     <h5>
+      Teacehr:
+      <p>{{ teachername }}</p>
+    </h5>
+    <h5>
       Time:
       <p>{{ newsttime }} - {{  endtimenew }}</p>
     </h5>
@@ -25,7 +29,7 @@ const starttime = ref('');
 const endtime = ref('');
 const newsttime=ref('')
 const endtimenew = ref('')
-
+const teachername=ref('')
 
 function convertTo12HourFormat(time24) {
     const [hours, minutes] = time24.split(':');
@@ -33,6 +37,13 @@ function convertTo12HourFormat(time24) {
     const hours12 = hours % 12 || 12; // Convert 0 or 12 to 12 in 12-hour format
     return `${hours12}:${minutes} ${period}`;
 }
+
+const trancatenate = (name, maxlength) => {
+  if (name.length > maxlength) {
+    return name.slice(0, maxlength - 3) + "...";
+  }
+  return name;
+};
 
 
 onMounted(() => {
@@ -43,8 +54,8 @@ onMounted(() => {
   venu.value = currentclass.value.venue;
   starttime.value = currentclass.value.start_time;
   endtime.value = currentclass.value.end_time;
-
-
+teachername.value=currentclass.value.teacher_name
+subject.value=trancatenate(subject.value,30)
 
   newsttime.value=convertTo12HourFormat(starttime.value);
   endtimenew.value= convertTo12HourFormat( endtime.value);
@@ -55,8 +66,8 @@ onMounted(() => {
 <style scoped>
 .currentconn {
   /* border: 2px solid red; */
-  height: 79%;
-  padding: 0px 3px;
+  height: 82%;
+  padding: 0px 5px;
   border-radius: 10px;
   background-color: var(--skyblue);
 }
@@ -85,7 +96,7 @@ onMounted(() => {
 }
 
 #subject {
-  min-height: 55%;
+  min-height: 38%;
   /* max-height: 40%; */
 }
 #subject p {

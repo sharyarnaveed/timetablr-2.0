@@ -19,6 +19,7 @@ const noclass = ref({});
 const subject = ref("");
 const venu = ref("");
 const starttime = ref("");
+const teacehrname=ref("")
 const endtime = ref("");
 const username = ref("");
 const theday = ref({
@@ -106,6 +107,7 @@ if(!Array.isArray(GetLocalclass) || GetLocalclass.length === 0 || GetLocalclass[
     venu.value = noclass.value.venue;
     starttime.value = noclass.value.start_time;
     endtime.value = noclass.value.end_time;
+    teacehrname.value=noclass.value.teacher_name
   } else {
     NotCurrentstatus.value = false;
   }
@@ -137,6 +139,7 @@ setTimeout(async() => {
 
       <button @click="logout" class="logout">
         <img src="../assets/material-symbols_logout.svg" alt="" />
+        <p>Logout</p>
       </button>
     </div>
 
@@ -165,6 +168,7 @@ setTimeout(async() => {
           v-if="NotCurrentstatus"
           :subject="subject"
           :venu="venu"
+          :teachername="teacehrname"
           :starttime="starttime"
           :endtime="endtime"
         />
@@ -180,7 +184,7 @@ setTimeout(async() => {
 <style scoped>
 @media only screen and (max-width: 349px) {
   .settings {
-    border: 2px solid red;
+    /* border: 2px solid red; */
     height: 100%;
     width: 45%;
     gap: 15px;
@@ -199,14 +203,23 @@ setTimeout(async() => {
     font-family: var(--majorfont);
   }
   .logout {
-    /* border: 2px solid red;/ */
-    background-color: transparent;
+    /* border: 2px solid blue; */
+    width: 26%;
     border: none;
-    width: 12%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 5px;
+    background-color: transparent;
+    /* border: none; */
     height: 100%;
   }
+  .logout p{
+    font-family: var(--majorfont);
+    font-size: 1rem;
+  }
   .logout img {
-    height: 69%;
+    height: 77%;
   }
   .homepanelmain {
     /* border: 2px solid red; */
@@ -221,7 +234,7 @@ setTimeout(async() => {
     height: 8%;
     display: flex;
     justify-content: space-between;
-    padding: 2px 2px;
+    padding: 2px 5px;
     align-items: center;
   }
   .headingandcurrent {
@@ -298,15 +311,23 @@ setTimeout(async() => {
     font-family: var(--majorfont);
   }
   .logout {
-    /* border: 2px solid pink; */
-    width: 10%;
+    /* border: 2px solid blue; */
+    width: 25%;
     border: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 5px;
     background-color: transparent;
     /* border: none; */
     height: 100%;
   }
+  .logout p{
+    font-family: var(--majorfont);
+    font-size: 1rem;
+  }
   .logout img {
-    height: 71%;
+    height: 73%;
   }
   .settings {
     /* border: 2px solid red; */
@@ -334,7 +355,7 @@ setTimeout(async() => {
     height: 8%;
     display: flex;
     justify-content: space-between;
-
+padding: 2px 5px;
     align-items: center;
   }
   .headingandcurrent {
@@ -412,14 +433,25 @@ setTimeout(async() => {
 
 @media only screen and (min-width: 576px) {
   .logout {
-    /* border: 2px solid pink; */
+    /* border: 2px solid blue; */
+    width: 18%;
+    border: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 5px;
     background-color: transparent;
-    width: 5%;
+    /* border: none; */
     cursor: pointer;
+
     height: 100%;
   }
+  .logout p{
+    font-family: var(--majorfont);
+    font-size: 1rem;
+  }
   .logout img {
-    height: 78%;
+    height: 73%;
   }
   .settings {
     /* border: 2px solid red; */
@@ -512,6 +544,29 @@ setTimeout(async() => {
   .speeddiler {
     /* border: 2px solid red; */
     height: 35%;
+  }
+}
+
+@media only screen and (min-width: 764px) {
+  .logout {
+    /* border: 2px solid blue; */
+    width: 13%;
+    border: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 5px;
+    background-color: transparent;
+    /* border: none; */
+    height: 100%;
+    cursor: pointer;
+  }
+  .logout p{
+    font-family: var(--majorfont);
+    font-size: 1rem;
+  }
+  .logout img {
+    height: 73%;
   }
 }
 </style>

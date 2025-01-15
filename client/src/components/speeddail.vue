@@ -48,7 +48,21 @@
   align-items: center;
   transition: transform 0.3s ease;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  animation: change-color-anim 10s linear infinite;
 }
+
+
+@keyframes change-color-anim {
+	0%,100%{
+		background-color: #ff5252;
+	}
+	50%{
+		background-color: #b9278d;
+	}
+}
+
+
+
 
 .plus-icon {
   transform: rotate(0deg);
