@@ -13,7 +13,7 @@ import adminhome from "@/views/admin/adminhome.vue"
 import Settings from '@/views/settings.vue'
 import Viewtimetable from '@/views/admin/viewtimetable.vue'
 import Seeusers from '@/views/admin/SeeUsers.vue'
-
+import edittimetable from '@/views/admin/edittimetable.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -84,6 +84,12 @@ component:adminhome
 {
   path:"seeusers",
   component:Seeusers
+},
+{
+  path:"edittimetable/:id",
+  props:true,
+  name:"edittimetable",
+component:edittimetable
 }
     
   

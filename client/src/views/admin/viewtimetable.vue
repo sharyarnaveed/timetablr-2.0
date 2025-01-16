@@ -6,6 +6,9 @@
       </select>
 <button @click="gettimetable" type="submit">Search</button>
 <button @click="deletetimetable" type="submit">Delete Timetable</button>
+<!-- <router-link :to="{name:'edittimetable'}">Edit time table</router-link> -->
+<button @click="edittimetable" type="submit">edit Timetable</button>
+
     </div>
 
     <table>
@@ -42,6 +45,7 @@
 
   const options = ref([]); 
   import axios from "axios";
+import router from "@/router";
 const timetable=ref()
 
   const getprogramoptions = async () => {
@@ -86,7 +90,10 @@ const deletetimetable=async()=>
     }
 }
 
-
+const edittimetable=()=>
+{
+router.push(`/totheadmindashboard/edittimetable/${selectedOption.value}`)
+}
 
 </script>
 

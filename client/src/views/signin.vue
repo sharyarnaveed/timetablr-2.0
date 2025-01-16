@@ -11,12 +11,14 @@ const signindata = ref({
 const siginerrorresponce = ref("");
 const signinerrorcheck = ref(false);
 const instance = axios.create({
-  baseURL: 'https://timetable.pharmder.com' // Adjusted with trailing slash
+  baseURL: 'http://localhost:3000' // Adjusted with trailing slash
 
 });
+const buttoncon=ref(false)
 
 const handlesubmit = async () => {
   try {
+    buttoncon.value=true
     const response = await instance.post("/api/user/signin", signindata.value,{withCredentials:true});
 
     if (response.data.success) {
@@ -27,6 +29,9 @@ const handlesubmit = async () => {
       }
   } catch (error) {
     console.log("error in making request", error);
+  }
+  finally{
+    buttoncon.value=false
   }
 };
 </script>
@@ -60,7 +65,10 @@ const handlesubmit = async () => {
             type="password"
           />
 
-          <button>Sign In</button>
+          <button :disabled="buttoncon">
+{{ buttoncon?"Signing In":"Sign In" }}
+
+          </button>
         </div>
 
         <div class="alreadyacc">
@@ -170,6 +178,13 @@ const handlesubmit = async () => {
     /* border: 2px solid blue; */
   }
 }
+
+.signupinputs button:disabled{
+  background-color: var(--peach_color);
+  border: 2px solid black;
+  color: black;
+}
+
 
 @media only screen and (min-width: 350px) {
   .error {

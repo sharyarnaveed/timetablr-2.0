@@ -4,7 +4,7 @@ import { useProgramsStore } from "@/stores/programs";
 import axios from "axios";
 import router from "@/router";
 import confirm from "@/components/success.vue";
-
+const buttoncon=ref(false)
 // Form state
 const searchQuery = ref("");
 const errorResponse = ref(""); 
@@ -69,8 +69,7 @@ const checkProgram = async (userval) => {
 };
 
 const handleSubmit = async () => { 
-  error.value = false; 
-  errorResponse.value = "";
+  buttoncon.value=true;
   
 
   if (!signupData.value.fullname || !signupData.value.username || 
@@ -81,7 +80,7 @@ const handleSubmit = async () => {
     return;
   }
 
-  // Password validation
+
   if (signupData.value.password !== signupData.value.repeatpassword) {
     errorResponse.value = "Passwords do not match";
     error.value = true;
@@ -134,6 +133,10 @@ const handleSubmit = async () => {
     setTimeout(() => {
       error.value = false;
     }, 3000);
+  }
+  finally{
+  buttoncon.value=false;
+
   }
 };
 </script>
@@ -228,7 +231,7 @@ const handleSubmit = async () => {
             aria-label="Confirm Password"
           />
           
-          <button type="submit">Sign Up</button>
+          <button type="submit" :disabled="buttoncon">{{buttoncon?"Signing up":"Sign Up"}}</button>
         </div>
 
         <div class="alreadyacc">
@@ -323,6 +326,7 @@ const handleSubmit = async () => {
     font-family: var(--majorfont);
     font-size: 1rem;
   }
+
   .alreadyacc {
     /* border: 2px solid blue; */
     width: 100%;
@@ -363,6 +367,12 @@ const handleSubmit = async () => {
   li:hover {
     background-color: #eee;
   }
+}
+
+.signupinputs button:disabled{
+  background-color: var(--peach_color);
+  border: 2px solid black;
+  color: black;
 }
 
 @media only screen and (min-width: 350px) {
