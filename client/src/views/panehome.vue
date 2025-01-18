@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent,Suspense  } from "vue";
 import Speeddail from "@/components/speeddail.vue";
 const infocard = defineAsyncComponent(() =>
   import("@/components/infocard.vue")
@@ -13,6 +13,7 @@ import { useUserStore } from "@/stores/userinfo";
 import api from "@/api";
 import { onMounted, ref } from "vue";
 import router from "@/router";
+import Morecurrent from "@/components/Morecurrent.vue";
 const usetimetable = useTimetableStore();
 const useUser=useUserStore();
 const noclass = ref({});
@@ -26,7 +27,8 @@ const theday = ref({
   day: "",
 });
 const NotCurrentstatus = ref(false);
-
+const ClashStatus=ref(false);
+const storeclasdata=ref({})
 const trancatenate = (name, maxlength) => {
   if (name.length > maxlength) {
     return name.slice(0, maxlength - 3) + "...";
@@ -94,11 +96,20 @@ if(!Array.isArray(GetLocalclass) || GetLocalclass.length === 0 || GetLocalclass[
   await usetimetable.findnotcurrent();
  
 
+const getclashes=await usetimetable.getclashes();
 
 
+if(getclashes.length>1)
+{
+ClashStatus.value=true;
+storeclasdata.value=getclashes[1];
 
 
-  const notCurrentClasses = usetimetable.getnotclocal();
+}else{
+  ClashStatus.value=false;
+}
+
+  const notCurrentClasses = await usetimetable.getnotclocal();
   
   if (notCurrentClasses.length > 0) {
     NotCurrentstatus.value = true;
@@ -118,7 +129,7 @@ setTimeout(async() => {
   await usetimetable.findnotcurrent();
   console.log("in timeout");
   
-}, 1000000);
+}, 10000);
 
 
 
@@ -160,8 +171,17 @@ setTimeout(async() => {
           >Load All -></router-link
         >
       </div>
-
-      <div class="laterconn">
+      <div v-if="ClashStatus" class="laterconn">
+      <Suspense>
+        <template #default>
+          <Morecurrent :clashdata="storeclasdata" />
+        </template>
+        <template #fallback>
+          <div>Loading...</div>
+        </template>
+      </Suspense>
+    </div>
+      <div v-else class="laterconn">
         <h4>Next Class</h4>
 
         <otherclass

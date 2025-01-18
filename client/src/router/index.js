@@ -14,6 +14,7 @@ import Settings from '@/views/settings.vue'
 import Viewtimetable from '@/views/admin/viewtimetable.vue'
 import Seeusers from '@/views/admin/SeeUsers.vue'
 import edittimetable from '@/views/admin/edittimetable.vue'
+import AddPreviousCourse from '@/views/addPreviousCourse.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +58,11 @@ const router = createRouter({
     path:"/daywise",
     name:"daywise",
     component:Daywise
+  },
+  {
+    path:"/addrepatingcourse",
+    name:"addrepatingcourse",
+    component:AddPreviousCourse
   }
 ,{
   path:"/totheadmindashboard",

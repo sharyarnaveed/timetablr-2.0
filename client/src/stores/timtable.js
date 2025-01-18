@@ -5,6 +5,7 @@ export const useTimetableStore = defineStore("timetable", {
     classes: [],
     currentClass: null,
     notcurrentclass: [],
+    morecurrentclass:[]
   }),
   actions: {
     setClasses(classes) {
@@ -107,6 +108,27 @@ export const useTimetableStore = defineStore("timetable", {
         console.error('Error retrieving daywise timetable:', error);
         return [];
       }
-    }
+    },
+    getclashes() {
+      const now = new Date();
+      const currenthours = now.getHours();
+      const currentminutes = now.getMinutes();
+      const Totalmins = currenthours * 60 + currentminutes;
+
+      if (!Array.isArray(this.classes)) {
+        console.error("this.classes is not an array:", this.classes);
+        return;
+      }
+
+     this.morecurrentclass = this.classes.filter((c) => {
+        const [startHours, startMinutes] = c.start_time.split(":").map(Number);
+        const [endHours, endMinutes] = c.end_time.split(":").map(Number);
+        const classStart = startHours * 60 + startMinutes;
+        const classEnd = endHours * 60 + endMinutes;
+        return Totalmins >= classStart && Totalmins <= classEnd;
+      });
+      
+       return this.morecurrentclass;
+  }
   },
 });

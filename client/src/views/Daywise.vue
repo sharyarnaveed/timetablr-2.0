@@ -1,10 +1,11 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { defineAsyncComponent, onMounted, ref } from 'vue';
 import api from '@/api';
 import router from '@/router';
 const TimetableData=ref([]);
 const Daysgroup=['Monday','Tuesday',"Wednesday","Thursday","Friday"]
-import otherclasscard from '@/components/otherclasscard.vue';
+const otherclasscard=defineAsyncComponent(()=>import('@/components/otherclasscard.vue'));
+
 import GoingBack from "@/components/backhomeComp.vue";
 import { useTimetableStore } from '@/stores/timtable';
 const usetimetable=useTimetableStore();

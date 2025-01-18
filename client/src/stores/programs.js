@@ -10,7 +10,6 @@ actions:{
 
     setprograms(prog)
     {
-        console.log(prog);
         this.programs=prog
     }
 }
