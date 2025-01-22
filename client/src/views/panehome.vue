@@ -1,64 +1,100 @@
 <script setup>
-import { defineAsyncComponent,Suspense  } from "vue";
+import {
+  defineAsyncComponent,
+  Suspense,
+  ref,
+  onMounted,
+  onUnmounted,
+} from "vue";
 import Speeddail from "@/components/speeddail.vue";
-const infocard = defineAsyncComponent(() =>
-  import("@/components/infocard.vue")
-);
-
-const otherclass = defineAsyncComponent(() =>
-  import("@/components/otehrcardformhome.vue")
-);
 import { useTimetableStore } from "@/stores/timtable";
 import { useUserStore } from "@/stores/userinfo";
 import api from "@/api";
-import { onMounted, ref } from "vue";
 import router from "@/router";
 import Morecurrent from "@/components/Morecurrent.vue";
-const usetimetable = useTimetableStore();
-const useUser=useUserStore();
+
+const InfoCard = defineAsyncComponent(() =>
+  import("@/components/infocard.vue")
+);
+const OtherCard = defineAsyncComponent(() =>
+  import("@/components/otehrcardformhome.vue")
+);
+
+const timetableStore = useTimetableStore();
+const userStore = useUserStore();
+
 const noclass = ref({});
-const subject = ref("");
-const venu = ref("");
-const starttime = ref("");
-const teacehrname=ref("")
-const endtime = ref("");
-const username = ref("");
-const theday = ref({
-  day: "",
+const classInfo = ref({
+  subject: "",
+  venue: "",
+  startTime: "",
+  teacherName: "",
+  endTime: "",
 });
-const NotCurrentstatus = ref(false);
-const ClashStatus=ref(false);
-const storeclasdata=ref({})
-const trancatenate = (name, maxlength) => {
-  if (name.length > maxlength) {
-    return name.slice(0, maxlength - 3) + "...";
+const username = ref("");
+const timeInfo = ref({
+  remaining: "",
+  current: "",
+  remainingHours: "",
+  remainingMinutes: "",
+});
+const statusFlags = ref({
+  remainingCheck: false,
+  notCurrent: false,
+  clash: false,
+});
+const themsg = ref("No Next Class");
+const theday = ref({ day: "" });
+const storeClassData = ref({});
+
+const truncateName = (name, maxLength) => {
+  if (name.length > maxLength) {
+    return name.slice(0, maxLength - 3) + "...";
   }
   return name;
 };
 
-const getdata = async (day) => {
+const calculateRemainingTime = (startTime) => {
+  if (!startTime) return;
+
+  const [hours, minutes] = startTime.split(":");
+  const totalMinutes = hours * 60 + parseInt(minutes);
+
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  const remaining = totalMinutes - currentMinutes;
+
+  timeInfo.value = {
+    remaining,
+    remainingHours: Math.floor(remaining / 60),
+    remainingMinutes: remaining % 60,
+  };
+};
+
+const fetchData = async (day) => {
   try {
     theday.value.day = day;
     const response = await api.post("/api/user/home", theday.value);
-//user in local
-    username.value = response.data.username[0]?.username || "Unknown User";
-    const storeuser=await trancatenate(username.value, 8);
-    useUser.storeusername(storeuser)
- 
+
+    const fetchedUsername =
+      response.data.username[0]?.username || "Unknown User";
+    username.value = fetchedUsername;
+    const truncatedUsername = truncateName(fetchedUsername, 8);
+    await userStore.storeusername(truncatedUsername);
 
     return response.data.timetable;
   } catch (error) {
-    console.error("Error fetching data:", error.message);
+    console.error("Error fetching data:", error);
     if (error.response?.status === 401) {
-    localStorage.clear();
-
+      localStorage.clear();
       router.push("/signin");
     }
     return [];
   }
 };
 
-const logout = async () => {
+const handleLogout = async () => {
   try {
     const response = await api.post("/api/user/logout");
     if (response.data.success) {
@@ -67,7 +103,6 @@ const logout = async () => {
     }
   } catch (error) {
     console.error("Logout error:", error);
-    
     router.push("/signin");
   }
 };
@@ -75,81 +110,78 @@ const logout = async () => {
 onMounted(async () => {
   const today = new Date();
   const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
-  const GetLocalclass=await usetimetable.getlocal();
+  const localClasses = await timetableStore.getlocal();
 
-  
-if(!Array.isArray(GetLocalclass) || GetLocalclass.length === 0 || GetLocalclass[0]?.day !== dayName)
-{
-  const fetcheddata = await getdata(dayName);
-    await usetimetable.storelocal(fetcheddata);
-    await usetimetable.setClasses(fetcheddata);
-    
-}else{
-  await usetimetable.setClasses(GetLocalclass);
-}
-
-
-  
-  // get user from local
-  username.value=await useUser.getusername()
-  await usetimetable.findCurrentClass();
-  await usetimetable.findnotcurrent();
- 
-
-const getclashes=await usetimetable.getclashes();
-
-
-if(getclashes.length>1)
-{
-ClashStatus.value=true;
-storeclasdata.value=getclashes[1];
-
-
-}else{
-  ClashStatus.value=false;
-}
-
-  const notCurrentClasses = await usetimetable.getnotclocal();
-  
-  if (notCurrentClasses.length > 0) {
-    NotCurrentstatus.value = true;
-    noclass.value = notCurrentClasses[0];
-    subject.value = noclass.value.course_name;
-    venu.value = noclass.value.venue;
-    starttime.value = noclass.value.start_time;
-    endtime.value = noclass.value.end_time;
-    teacehrname.value=noclass.value.teacher_name
+  if (
+    !Array.isArray(localClasses) ||
+    localClasses.length === 0 ||
+    localClasses[0]?.day !== dayName
+  ) {
+    const fetchedData = await fetchData(dayName);
+    await timetableStore.storelocal(fetchedData);
+    await timetableStore.setClasses(fetchedData);
   } else {
-    NotCurrentstatus.value = false;
+    await timetableStore.setClasses(localClasses);
   }
+
+  // Initialize component state
+  username.value = await userStore.getusername();
+  await timetableStore.findCurrentClass();
+  await timetableStore.findnotcurrent();
+
+  // Handle class clashes
+  const clashes = await timetableStore.getclashes();
+  statusFlags.value.clash = clashes.length > 1;
+  if (statusFlags.value.clash) {
+    storeClassData.value = clashes[1];
+  }
+
+  const notCurrentClasses = await timetableStore.getnotclocal();
+  if (notCurrentClasses.length > 0) {
+    statusFlags.value.notCurrent = true;
+    noclass.value = notCurrentClasses[0];
+    classInfo.value = {
+      subject: noclass.value.course_name,
+      venue: noclass.value.venue,
+      startTime: noclass.value.start_time,
+      endTime: noclass.value.end_time,
+      teacherName: noclass.value.teacher_name,
+    };
+
+    // Set up timer for remaining time calculation
+    if (noclass.value.start_time && !timetableStore.currentClass) {
+      statusFlags.value.remainingCheck = true;
+      calculateRemainingTime(noclass.value.start_time);
+
+      const remainingTimer = setInterval(() => {
+        calculateRemainingTime(noclass.value.start_time);
+      }, 60000);
+
+      onUnmounted(() => clearInterval(remainingTimer));
+    }
+  }
+
+  const updateInterval = setInterval(async () => {
+    await timetableStore.findCurrentClass();
+    await timetableStore.findnotcurrent();
+  }, 10000);
+
+  onUnmounted(async() => {
+    await clearInterval(updateInterval);
+  });
 });
-
-setTimeout(async() => {
-  await usetimetable.findCurrentClass();
-  await usetimetable.findnotcurrent();
-  console.log("in timeout");
-  
-}, 10000);
-
-
-
 </script>
+
 <template>
   <main class="homepanelmain">
     <div class="hometop">
       <div class="settings">
-        <img
-          style="width: 30px; height: 30px"
-          src="../assets/profile.png"
-          alt=""
-        />
-        <p style="color: black; font-family: var(--majorfont)">
-          {{ username }}
-        </p>
+        <img src="../assets/profile.png" alt="Profile" class="profile-img" />
+        <p class="username">{{ username }}</p>
       </div>
 
-      <button @click="logout" class="logout">
-        <img src="../assets/material-symbols_logout.svg" alt="" />
+      <button @click="handleLogout" class="logout">
+        <img src="../assets/material-symbols_logout.svg" alt="Logout" />
         <p>Logout</p>
       </button>
     </div>
@@ -160,61 +192,67 @@ setTimeout(async() => {
       <div class="currentconoutisde">
         <h4>Current</h4>
 
-        <infocard v-if="usetimetable.currentClass" />
-        <h2 class="noclasstext" v-else>No Class Right Now</h2>
+        <Suspense>
+          <InfoCard v-if="timetableStore.currentClass" />
+          <h2 v-else class="noclasstext">
+            <span v-if="statusFlags.remainingCheck">
+              Next Class In {{ timeInfo.remainingHours }}hr:{{
+                timeInfo.remainingMinutes
+              }}min
+            </span>
+            <span v-else>{{ themsg }}</span>
+          </h2>
+        </Suspense>
       </div>
     </div>
 
     <div class="bottomtable">
       <div class="loadall">
-        <router-link class="loadallrouterlink" to="/loadall"
+        <router-link to="/loadall" class="loadallrouterlink"
           >Load All -></router-link
         >
       </div>
-      <div v-if="ClashStatus" class="laterconn">
-      <Suspense>
-        <template #default>
-          <Morecurrent :clashdata="storeclasdata" />
-        </template>
-        <template #fallback>
-          <div>Loading...</div>
-        </template>
-      </Suspense>
-    </div>
-      <div v-else class="laterconn">
-        <h4>Next Class</h4>
 
-        <otherclass
-          v-if="NotCurrentstatus"
-          :subject="subject"
-          :venu="venu"
-          :teachername="teacehrname"
-          :starttime="starttime"
-          :endtime="endtime"
-        />
-        <h2 class="noclasstext" v-else>No Next Class. See </h2>
-      </div>
+      <Suspense>
+        <div v-if="statusFlags.clash" class="laterconn">
+          <Morecurrent :clashdata="storeClassData" />
+        </div>
+        <div v-else class="laterconn">
+          <h4>Next Class</h4>
+          <Suspense>
+            <OtherCard
+              v-if="statusFlags.notCurrent"
+              :subject="classInfo.subject"
+              :venu="classInfo.venue"
+              :teachername="classInfo.teacherName"
+              :starttime="classInfo.startTime"
+              :endtime="classInfo.endTime"
+            />
+            <h2 v-else class="noclasstext">No Further Classes For Today</h2>
+          </Suspense>
+        </div>
+      </Suspense>
+
       <div class="speeddailcon">
         <Speeddail />
       </div>
     </div>
   </main>
 </template>
-
 <style scoped>
 @media only screen and (max-width: 349px) {
   .settings {
     /* border: 2px solid red; */
     height: 100%;
-    width: 45%;
+    width: 37%;
     gap: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .settings img {
-    height: 100%;
-    width: 100%;
+    height: 79%;
+    width: 25%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -234,7 +272,7 @@ setTimeout(async() => {
     /* border: none; */
     height: 100%;
   }
-  .logout p{
+  .logout p {
     font-family: var(--majorfont);
     font-size: 1rem;
   }
@@ -342,7 +380,7 @@ setTimeout(async() => {
     /* border: none; */
     height: 100%;
   }
-  .logout p{
+  .logout p {
     font-family: var(--majorfont);
     font-size: 1rem;
   }
@@ -352,15 +390,15 @@ setTimeout(async() => {
   .settings {
     /* border: 2px solid red; */
     height: 100%;
-    width: 40%;
+    width: 35%;
     gap: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .settings img {
-    height: 100%;
-    width: 100%;
+    height: 85%;
+    width: 25%;
   }
   .homepanelmain {
     /* border: 2px solid red; */
@@ -375,7 +413,7 @@ setTimeout(async() => {
     height: 8%;
     display: flex;
     justify-content: space-between;
-padding: 2px 5px;
+    padding: 2px 5px;
     align-items: center;
   }
   .headingandcurrent {
@@ -466,7 +504,7 @@ padding: 2px 5px;
 
     height: 100%;
   }
-  .logout p{
+  .logout p {
     font-family: var(--majorfont);
     font-size: 1rem;
   }
@@ -581,7 +619,7 @@ padding: 2px 5px;
     height: 100%;
     cursor: pointer;
   }
-  .logout p{
+  .logout p {
     font-family: var(--majorfont);
     font-size: 1rem;
   }

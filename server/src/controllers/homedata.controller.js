@@ -1,4 +1,3 @@
-// import { pool } from "../database/conn.database.js";
 const { pool } = require("../database/conn.database.js");
 
 const getusername = async (user) => {
@@ -13,61 +12,88 @@ const getusername = async (user) => {
 const homedata = async (req, res) => {
   try {
     const user = req.user;
-    // console.log("from home",user);
+    const user_id = req.user.id;
     const { day } = req.body;
-    // console.log(day);
-    const TimetableQuery = `SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where day=? And programs.program_name=? ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')`;
-    const [TimetableResult] = await pool.query(TimetableQuery, [
-     day,
-      user.program,
-    ]);
-    // console.log(TimetableResult);
-    const username = await getusername(req.user);
-    // console.log("from home",username);
 
-const checkreatcourses="SELECT * FROM timetable INNER JOIN repeatcourses ON timetable.program_name=repeatcourses.program_id AND timetable.course_name=repeatcourses.course_name where day=?  ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')"
-const [checkrepeatcourses]=await pool.query(checkreatcourses,[day])
-console.log(checkrepeatcourses);
-const combinedcourse=[...TimetableResult,...checkrepeatcourses]
+  
+
+    const TimetableQuery = `
+      SELECT * FROM timetable 
+      INNER JOIN programs ON timetable.program_name = programs.program_id 
+      WHERE day = ? AND programs.program_name = ? 
+      ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')
+    `;
+    const [TimetableResult] = await pool.query(TimetableQuery, [day, user.program]);
+const username = await getusername(req.user);
+
+    const checkreatcourses = `
+      SELECT * FROM timetable 
+      INNER JOIN repeatcourses ON timetable.program_name = repeatcourses.program_id 
+      AND timetable.course_name = repeatcourses.course_name 
+      WHERE day = ? AND user_id = ? 
+      ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')
+    `;
+    const [checkrepeatcourses] = await pool.query(checkreatcourses, [day, user_id]);
+
+    
+    const combinedcourse = [...TimetableResult, ...checkrepeatcourses];
 
     return res.json({
+      success: true,
       timetable: combinedcourse,
-
-      username: username,
+      username:username
     });
+
   } catch (error) {
-    console.log("error in getting home data", error);
+    console.error("Error in getting home data:", error);
+    return res.status(500).json({ 
+      success: false, 
+      message: "Error in getting home data" 
+    });
   }
 };
 
 const getalltimetable = async (req, res) => {
   try {
     const UserProgram = req.user.program;
-    console.log(UserProgram);
+const user_id=req.user.id
+    if (!UserProgram) {
+      return res.status(400).json({
+        success: false,
+        message: "User program not specified"
+      });
+    }
 
-    const sql =
-      "SELECT * FROM timetable INNER JOIN programs ON timetable.program_name=programs.program_id where programs.program_name=? ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')";
+    const sql = `
+      SELECT * FROM timetable 
+      INNER JOIN programs ON timetable.program_name = programs.program_id 
+      WHERE programs.program_name = ? 
+      ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')
+    `;
     const [responce] = await pool.query(sql, [UserProgram]);
 
-    const checkreatcourses="SELECT * FROM timetable INNER JOIN repeatcourses ON timetable.program_name=repeatcourses.program_id AND timetable.course_name=repeatcourses.course_name  ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')"
-    const [checkrepeatcourses]=await pool.query(checkreatcourses)
-    console.log(checkrepeatcourses);
-    const combinedcourse=[...responce,...checkrepeatcourses]
+    const checkreatcourses = `
+      SELECT * FROM timetable 
+      INNER JOIN repeatcourses ON timetable.program_name = repeatcourses.program_id 
+      AND timetable.course_name = repeatcourses.course_name where user_id=?
+      ORDER BY STR_TO_DATE(start_time, '%H:%i:%s')
+    `;
+    const [checkrepeatcourses] = await pool.query(checkreatcourses,[user_id]);
+    const combinedcourse = [...responce, ...checkrepeatcourses];
 
-
-    res.json({
-      timetable: combinedcourse,
+    return res.json({
+      success: true,
+      timetable: combinedcourse
     });
+
   } catch (error) {
-    console.log("error in getting all timetable", error);
+    console.error("Error in getting all timetable:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in getting all timetable"
+    });
   }
 };
-
-
-
-const blank=async(req,res)=>{
-res.json("good")
-}
 
 
 const getcoursesfromdb = async (req, res) => {
@@ -122,6 +148,14 @@ const addCourse=async(req,res)=>
 
 
 
+const blank=async(req,res)=>{
+res.json("good")
+}
 
-// export {homedata}
-module.exports = { homedata, getalltimetable,blank,getcoursesfromdb,addCourse};
+module.exports = {
+  homedata,
+  getalltimetable,
+  getcoursesfromdb,
+  addCourse,
+  blank
+};
