@@ -7,6 +7,7 @@ import { defineAsyncComponent } from "vue";
 //  import LoadAll from "@/components/LoadAll.vue";
 const LoadAll=defineAsyncComponent(()=>import('@/components/LoadAll.vue'));
  import AddCourse from "./addPreviousCourse.vue";
+import Viewcourse from "./viewcourses.vue";
  
 
  const theday = ref({
@@ -16,7 +17,8 @@ const LoadAll=defineAsyncComponent(()=>import('@/components/LoadAll.vue'));
  const currentTab = ref('LoadAll');
  const tabs = {
    LoadAll,
-   AddCourse
+   AddCourse,
+   Viewcourse
  };
  
 
