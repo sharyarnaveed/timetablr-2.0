@@ -31,6 +31,9 @@
           <router-link class="dropdown" to="/totheadmindashboard/viewtimetable">
             View timetable</router-link
           >
+          <router-link class="dropdown" to="/totheadmindashboard/viewuserrepeat">
+            Repeat Courses</router-link
+          >
         </div>
         
       </li>

@@ -16,6 +16,7 @@ import Seeusers from '@/views/admin/SeeUsers.vue'
 import edittimetable from '@/views/admin/edittimetable.vue'
 import AddPreviousCourse from '@/views/addPreviousCourse.vue'
 import Viewcourses from '@/views/viewcourses.vue'
+import Viewuserrepeatcourses from '@/views/admin/viewuserrepeatcourses.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,7 +81,10 @@ component:Viewcourses
 path:"",
 component:adminhome
  },
-
+{
+  path:"viewuserrepeat",
+  component:Viewuserrepeatcourses
+},
     {
       path:"addcategory",
       component:addcategory

@@ -49,7 +49,7 @@ const installapp = async () => {
 <style scoped>
 @media only screen and (max-width: 349px) {
   nav {
-    border: 2px solid red;
+    /* border: 2px solid red; */
     max-height: 11%;
     min-height: 10%;
     display: flex;
@@ -63,7 +63,7 @@ const installapp = async () => {
     font-weight: 300;
   }
   .mainhomesec {
-    border: 2px solid yellow;
+    /* border: 2px solid yellow; */
     background-image: url("https://images.unsplash.com/photo-1701690774955-7d06cfd3f857?q=80&w=1563&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-position: 0%;
     background-size: cover;
@@ -72,11 +72,11 @@ const installapp = async () => {
     /* background-color: var(--peach_color); */
   }
   .contentsections {
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     height: 90%;
   }
   .images {
-    border: 2px solid purple;
+    /* border: 2px solid purple; */
     height: 50%;
     display: flex;
     justify-content: center;
@@ -87,10 +87,10 @@ const installapp = async () => {
     height: 90%;
 
     padding: 10px 10px;
-    border: 2px solid purple;
+    /* border: 2px solid purple; */
   }
   .writtencontent {
-    border: 2px solid orange;
+    /* border: 2px solid orange; */
     height: 100%;
  display: flex;
  flex-direction: column;
@@ -98,7 +98,7 @@ const installapp = async () => {
   }
 
   .slogan {
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     min-height: 20%;
     display: flex;
     align-items: center;
@@ -112,7 +112,7 @@ const installapp = async () => {
   }
 
   .buttons {
-    border: 2px solid green;
+    /* border: 2px solid green; */
     height: 22%;
     display: flex;
     justify-content: space-between;
@@ -121,7 +121,7 @@ const installapp = async () => {
   .homebuttons {
     width: 46%;
     height: 49%;
-    background-color: #A020F0;
+    /* background-color: #A020F0; */
     color: var(--peach_color);
     font-size: 1.2rem;
     font-family: var(--minorfont);

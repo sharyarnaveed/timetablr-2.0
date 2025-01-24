@@ -3,16 +3,20 @@
       <table>
         <tr>
           <th>User Id</th>
-          <th>Name</th>
+          <th>user Name</th>
+          <th>Full Name</th>
+
           <th>Program</th>
 
         </tr>
         <tr v-for="(user, index) in users" :key="user.user_id">
           <td>{{ user.user_id }}</td>
           <td>{{ user.username }}</td>
+          <td>{{ user.full_name }}</td>
           <td>
             {{ user.program }}
           </td>
+
         </tr>
       </table>
     </div>
