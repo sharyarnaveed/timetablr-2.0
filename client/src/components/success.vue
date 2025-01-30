@@ -1,57 +1,78 @@
 <template>
-     <div  class="message">
-    <h1>{{ messagevalue }}</h1>
-  </div>
+  <!-- <div  class="message">
+ <h1>{{ messagevalue }}</h1>
+</div> -->
+
+<div class="alert-container">
+<div class="alert alert-success">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+   <path d="M13 16h-1v-4h1m0-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+ </svg>
+ <p>Success - {{ messagevalue }}</p>
+</div>
+
+
+
+
+</div>
+
 </template>
 
 <script setup>
 defineProps({messagevalue:String});
 </script>
-<style scoped>
-@media only screen and (max-width: 349px) {
-  .message {
-    height: 45px;
-    margin: 15px 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: .6rem;
-    font-family: var(--majorfont);
-    background-color: green;
-    color: aliceblue;
-
-  }
-
-
+<style>
+.alert-container {
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+ padding: 16px;
 }
-@media only screen and (min-width: 350px) {
-  .message {
-    height: 55px;
-    margin: 15px 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: .7rem;
-    font-family: var(--majorfont);
-    background-color: green;
-    color: aliceblue;
 
-  }
-
-
+.alert {
+ display: flex;
+ align-items: center;
+ padding: 10px;
+ border-left: 4px solid;
+ border-radius: 6px;
+ transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
-@media only screen and (min-width: 748px){
-.message {
-    /* border: 2px solid purple; */
-    height: 80px;
-    margin: 15px 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    font-family: var(--majorfont);
-    background-color: green;
-    color: aliceblue;
-  }
+
+.alert:hover {
+ transform: scale(1.05);
+}
+
+.alert svg {
+ width: 20px;
+ height: 20px;
+ margin-right: 8px;
+}
+
+.alert p {
+ font-size: 12px;
+ font-weight: 600;
+ font-family: var(--majorfont);
+}
+
+.alert-success {
+ background: #d1fae5;
+ border-color: #10b981;
+ color: #065f46;
+}
+
+.alert-success:hover {
+ background: #a7f3d0;
+}
+
+
+.alert-error {
+ background: #fee2e2;
+ border-color: #ef4444;
+ color: #7f1d1d;
+ font-family: var(--majorfont);
+}
+
+.alert-error:hover {
+ background: #fecaca;
 }
 </style>
