@@ -124,7 +124,7 @@ const handleSubmit = async () => {
     return;
   }
 
-  // No need to set program_id here since it's already set in selectOption
+ 
   signupData.value.course = searchQueryCourses.value;
   
   look.value = await checkProgram(searchQuery.value) && 
@@ -145,7 +145,7 @@ const handleSubmit = async () => {
     if (response.data.success) {
       successMsg.value = true;
       successMessage.value = response.data.message;
-      
+      localStorage.removeItem("classes");
       setTimeout(() => {
         signupData.value = {
           program_id: "", // Reset with program_id instead of program
