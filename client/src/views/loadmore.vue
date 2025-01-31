@@ -51,8 +51,8 @@ import Viewcourse from "./viewcourses.vue";
    </main>
  </template>
 
-<style>
-/* From Uiverse.io by LightAndy1 */ 
+<style scoped>
+
 .wrapper {
   --font-color-dark: #323232;
   --font-color-light: #fff;

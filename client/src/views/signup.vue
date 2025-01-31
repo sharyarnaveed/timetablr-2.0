@@ -458,7 +458,7 @@ const handleSubmit = async () => {
     flex-direction: column;
     align-items: flex-start;
     height: 91%;
-
+width: 90%;
     justify-content: center;
     /* gap: px; */
     border-radius: 5px;
@@ -469,11 +469,14 @@ const handleSubmit = async () => {
     color: var(--font-color);
     font-weight: 900;
     font-size: 1.5rem;
+    font-family: var(--majorfont);
     margin-bottom: 1px;
   }
   .signupform span {
     color: var(--font-color-sub);
     font-weight: 600;
+    font-family: var(--majorfont);
+
     font-size: 1.3rem;
   }
   .signupinputs {
@@ -493,6 +496,8 @@ const handleSubmit = async () => {
     background-color: var(--bg-color);
     box-shadow: 4px 4px var(--main-color);
     font-size: 15px;
+    font-family: var(--majorfont);
+
     font-weight: 600;
     color: var(--font-color);
     padding: 5px 10px;
@@ -549,7 +554,7 @@ const handleSubmit = async () => {
     list-style: none;
     position: absolute;
     background-color: white;
-    width: 65%;
+    width: 60%;
     z-index: 1;
   }
 

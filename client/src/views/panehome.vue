@@ -233,9 +233,7 @@ onMounted(async () => {
         </div>
       </Suspense>
 
-      <div class="speeddailcon">
-        <Speeddail />
-      </div>
+     
     </div>
   </main>
 </template>
@@ -285,7 +283,8 @@ onMounted(async () => {
     justify-content: space-around;
     flex-direction: column;
     padding: 5px 10px;
-    height: 100vh;
+    height: 80vh;
+
   }
   .hometop {
     /* border: 2px solid purple; */
@@ -406,7 +405,7 @@ onMounted(async () => {
     justify-content: space-around;
     flex-direction: column;
     padding: 5px 10px;
-    height: 100vh;
+    height: 80vh;
   }
   .hometop {
     /* border: 2px solid purple; */

@@ -1,5 +1,6 @@
 <script setup>
 import api from "@/api";
+import Error from "@/components/error.vue";
 import router from "@/router";
 import axios from "axios";
 import { ref } from "vue";
@@ -26,9 +27,19 @@ const handlesubmit = async () => {
       } else {
         siginerrorresponce.value = response.data.message || "An error occurred";
         signinerrorcheck.value = true;
+        setTimeout(() => {
+        signinerrorcheck.value = false;
+          
+        }, 3000);
       }
   } catch (error) {
     console.log("error in making request", error);
+    signinerrorcheck.value = true;
+    setTimeout(() => {
+        signinerrorcheck.value = false;
+          
+        }, 3000);
+
   }
   finally{
     buttoncon.value=false
@@ -42,11 +53,11 @@ const handlesubmit = async () => {
       <h1>Timetablr</h1>
     </div>
     <section class="signupsec">
+      <Error v-if="signinerrorcheck" :messagevalue="siginerrorresponce"  />
       <form @submit.prevent="handlesubmit" class="signupform" action="">
         <h2>Sign In</h2>
 
         <div class="signupinputs">
-          <p class="error" v-if="signinerrorcheck">*{{siginerrorresponce}}</p>
           <input
             required
             pattern="^[A-Za-z0-9_]+$"
@@ -79,13 +90,9 @@ const handlesubmit = async () => {
   </main>
 </template>
 
-<style>
+<style scoped>
 @media only screen and (max-width: 349px) {
-  .error {
-    font-family: var(--majorfont);
-    font-size: 1rem;
-    color: red;
-  }
+
   .signupconn {
     /* border: 2px solid red; */
     height: 100vh;
@@ -107,61 +114,89 @@ const handlesubmit = async () => {
     /* border:2px solid purple; */
     height: 85%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 3%;
   }
 
   .signupform {
-    /* border: 2px solid brown; */
-    height: 75%;
-    border-radius: 10px;
-    align-items: center;
-    background-color: var(--peach_color);
-    display: flex;
-    padding: 8px 5px;
-    flex-direction: column;
-    width: 90%;
-  }
+        --input-focus: #2d8cf0;
+        --font-color: #323232;
+        --font-color-sub: #666;
+        --bg-color: #fff;
+        --main-color: #323232;
+        padding: 15px;
+        background: lightgrey;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        /* gap: 0px; */
+        height: 70%;
+        width: 90%;
+        border-radius: 5px;
+        border: 2px solid var(--main-color);
+        box-shadow: 4px 4px var(--main-color);
+    }
   .signupform h2 {
-    font-family: var(--majorfont);
-    font-size: 1.5rem;
+    color: var(--font-color);
+  font-weight: 900;
+  font-size: 1.5rem;
+  font-family: var(--majorfont);
+  /* margin-bottom: 2px; */
   }
 
   .signupinputs {
     /* border: 2px solid purple; */
     height: 87%;
     width: 100%;
+    margin: 15px 0px;
     display: flex;
     justify-content: space-around;
     flex-direction: column;
     align-items: center;
   }
   .signupinputs input {
-    width: 92%;
-    background-color: var(--peach_color);
-    border: none;
-    border-bottom: 2px dotted black;
-    height: 14%;
-    font-size: 1rem;
-    outline: none;
-    padding: 2px 5px;
-    font-family: var(--majorfont);
-    font-family: 500;
+    width: 95%;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 1rem;
+  /* gap: 10px; */
+  font-weight: 600;
+  color: var(--font-color);
+  font-family: var(--majorfont);
+  padding: 5px 10px;
+  outline: none;
   }
   .signupinputs input::placeholder {
-    color: black;
+    color: var(--font-color-sub);
+    opacity: 0.8;
   }
-
+  .signupinputs input:focus{
+    scale: 1.07;
+  }
   .signupinputs button {
-    height: 17%;
-    width: 50%;
-    background-color: black;
-    border: none;
-    border-radius: 5px;
-    color: var(--peach_color);
-    font-family: var(--majorfont);
-    font-size: 1rem;
+    margin: 0px auto 0 auto;
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--font-color);
+  cursor: pointer;
+  font-family: var(--majorfont);
   }
+  .signupinputs button:active {
+  box-shadow: 0px 0px var(--main-color);
+  transform: translate(3px, 3px);
+}
   .alreadyacc {
     /* border: 2px solid blue; */
     width: 100%;
@@ -179,19 +214,15 @@ const handlesubmit = async () => {
   }
 }
 
-.signupinputs button:disabled{
-  background-color: var(--peach_color);
+.signupinputs button:disabled {
+  background-color: var(--font-color-sub);
   border: 2px solid black;
-  color: black;
+  color: whitesmoke;
 }
 
 
 @media only screen and (min-width: 350px) {
-  .error {
-    font-family: var(--majorfont);
-    font-size: 1rem;
-    color: red;
-  }
+
   .signupconn {
     /* border: 2px solid red; */
     height: 100vh;
@@ -213,24 +244,37 @@ const handlesubmit = async () => {
     /* border:2px solid purple; */
     height: 85%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 3%;
   }
 
   .signupform {
-    /* border: 2px solid brown; */
-    height: 75%;
-    border-radius: 10px;
-    align-items: center;
-    background-color: var(--peach_color);
-    display: flex;
-    padding: 8px 5px;
-    flex-direction: column;
-    width: 90%;
-  }
+        --input-focus: #2d8cf0;
+        --font-color: #323232;
+        --font-color-sub: #666;
+        --bg-color: #fff;
+        --main-color: #323232;
+        padding: 15px;
+        background: lightgrey;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 13px;
+        width: 90%;
+        height: 60%;
+        border-radius: 5px;
+        border: 2px solid var(--main-color);
+        box-shadow: 4px 4px var(--main-color);
+    }
   .signupform h2 {
-    font-family: var(--majorfont);
-    font-size: 1.5rem;
+    color: var(--font-color);
+  font-weight: 900;
+  font-size: 1.5rem;
+  font-family: var(--majorfont);
+  /* margin-bottom: 2px; */
   }
 
   .signupinputs {
@@ -243,31 +287,44 @@ const handlesubmit = async () => {
     align-items: center;
   }
   .signupinputs input {
-    width: 92%;
-    background-color: var(--peach_color);
-    border: none;
-    border-bottom: 2px dotted black;
-    height: 14%;
-    font-size: 1rem;
-    outline: none;
-    padding: 2px 5px;
-    font-family: var(--majorfont);
-    font-family: 500;
+    width: 95%;
+  height: 20%;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--font-color);
+  font-family: var(--majorfont);
+  padding: 5px 10px;
+  outline: none;
   }
   .signupinputs input::placeholder {
-    color: black;
+    color: var(--font-color-sub);
+    opacity: 0.8;
   }
-
+  .signupinputs input:focus{
+    scale: 1.07;
+  }
   .signupinputs button {
-    height: 17%;
-    width: 50%;
-    background-color: black;
-    border: none;
-    border-radius: 5px;
-    color: var(--peach_color);
-    font-family: var(--majorfont);
-    font-size: 1rem;
+    margin: 0px auto 0 auto;
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--font-color);
+  cursor: pointer;
+  font-family: var(--majorfont);
   }
+  .signupinputs button:active {
+  box-shadow: 0px 0px var(--main-color);
+  transform: translate(3px, 3px);
+}
   .alreadyacc {
     /* border: 2px solid blue; */
     width: 100%;
@@ -307,29 +364,42 @@ const handlesubmit = async () => {
     /* border:2px solid purple; */
     height: 85%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 3%;
   }
 
   .signupform {
-    /* border: 2px solid brown; */
-    height: 75%;
-    border-radius: 10px;
-    align-items: center;
-    background-color: var(--peach_color);
-    display: flex;
-    padding: 8px 5px;
-    flex-direction: column;
-    width: 70%;
-  }
+        --input-focus: #2d8cf0;
+        --font-color: #323232;
+        --font-color-sub: #666;
+        --bg-color: #fff;
+        --main-color: #323232;
+        padding: 15px;
+        background: lightgrey;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 13px;
+        height: 75%;
+        width: 60%;
+        border-radius: 5px;
+        border: 2px solid var(--main-color);
+        box-shadow: 4px 4px var(--main-color);
+    }
   .signupform h2 {
-    font-family: var(--majorfont);
-    font-size: 1.5rem;
+    color: var(--font-color);
+  font-weight: 900;
+  font-size: 1.5rem;
+  font-family: var(--majorfont);
+  /* margin-bottom: 2px; */
   }
 
   .signupinputs {
     /* border: 2px solid purple; */
-    height: 87%;
+    height: 80%;
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -337,31 +407,44 @@ const handlesubmit = async () => {
     align-items: center;
   }
   .signupinputs input {
-    width: 92%;
-    background-color: var(--peach_color);
-    border: none;
-    border-bottom: 2px dotted black;
-    height: 14%;
-    font-size: 1rem;
-    outline: none;
-    padding: 2px 5px;
-    font-family: var(--majorfont);
-    font-family: 500;
+    width: 95%;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--font-color);
+  font-family: var(--majorfont);
+  padding: 5px 10px;
+  outline: none;
   }
   .signupinputs input::placeholder {
-    color: black;
+    color: var(--font-color-sub);
+    opacity: 0.8;
   }
-
+  .signupinputs input:focus{
+    scale: 1.07;
+  }
   .signupinputs button {
-    height: 17%;
-    width: 50%;
-    background-color: black;
-    border: none;
-    border-radius: 5px;
-    color: var(--peach_color);
-    font-family: var(--majorfont);
-    font-size: 1rem;
+    margin: 0px auto 0 auto;
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--font-color);
+  cursor: pointer;
+  font-family: var(--majorfont);
   }
+  .signupinputs button:active {
+  box-shadow: 0px 0px var(--main-color);
+  transform: translate(3px, 3px);
+}
   .alreadyacc {
     /* border: 2px solid blue; */
     width: 100%;

@@ -32,7 +32,7 @@ defineProps({messagevalue:String});
 .alert {
  display: flex;
  align-items: center;
- padding: 10px;
+ padding: 15px;
  border-left: 4px solid;
  border-radius: 6px;
  transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -49,7 +49,7 @@ defineProps({messagevalue:String});
 }
 
 .alert p {
- font-size: 12px;
+ font-size: 1rem;
  font-weight: 600;
  font-family: var(--majorfont);
 }
