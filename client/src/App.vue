@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import speeddail from './components/speeddail.vue';
+import speeddail from './components/navbar.vue';
 </script>
 
 <template>
@@ -17,11 +17,13 @@ import speeddail from './components/speeddail.vue';
 @media only screen and (max-width: 349px)
 {
   .speeddailcon {
+    box-sizing: border-box;
     border: 2px solid red;
-    height: 35%;
+    height: 15vh;
     display: flex;
-    justify-content: end;
-    align-items: center;
+    padding: 10px 10px;
+   justify-content: center;
+   align-items: center;
   }
 }
 
@@ -29,11 +31,13 @@ import speeddail from './components/speeddail.vue';
 @media only screen and (min-width: 350px)
 {
   .speeddailcon {
+    box-sizing: border-box;
     border: 2px solid red;
-    height: 35%;
-    display: flex;
-    justify-content: end;
-    align-items: center;
+    height: 15vh;
+   display: flex;
+   padding: 10px 10px;
+   justify-content: center;
+   align-items: center;
   }
 }
 </style>

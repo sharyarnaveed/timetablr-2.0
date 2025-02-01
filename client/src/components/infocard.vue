@@ -1,19 +1,19 @@
 <template>
   <div class="currentconn">
     <h5 id="subject">
-      Subject:
+     <b> Subject:</b>
       <p>{{ subject }}</p>
     </h5>
     <h5>
-      Venu:
+   <b>   Venue:</b>
       <p>{{ venu }}</p>
     </h5>
     <h5>
-      Teacehr:
+     <b> Teacher: </b>
       <p>{{ teachername }}</p>
     </h5>
     <h5>
-      Time:
+     <b> Time:</b>
       <p>{{ newsttime }} - {{  endtimenew }}</p>
     </h5>
   </div>
@@ -67,15 +67,17 @@ subject.value=trancatenate(subject.value,30)
 .currentconn {
   /* border: 2px solid red; */
   height: 82%;
-  padding: 0px 5px;
-  border-radius: 10px;
-  background-color: var(--skyblue);
+  padding: 8px 12px;
+  border-radius: 25px;
+  /* padding:/; */
+  background-color: #1B1B1D;
 }
 .currentconn h5 {
   font-size: 1.1rem;
   /* border: 2px solid green; */
   width: 100%;
   height: 20%;
+  color: whitesmoke;
   display: flex;
   font-family: var(--majorfont);
   align-items: center;
@@ -85,6 +87,7 @@ subject.value=trancatenate(subject.value,30)
   width: 80%;
   /* border: 2px solid black; */
   font-size: 1rem;
+  font-weight: 200;
 
   font-weight: 400;
   font-family: var(--majorfont);

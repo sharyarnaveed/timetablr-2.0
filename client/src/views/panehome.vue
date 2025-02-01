@@ -6,19 +6,19 @@ import {
   onMounted,
   onUnmounted,
 } from "vue";
-import Speeddail from "@/components/speeddail.vue";
+// import Speeddail from "@/components/speeddail.vue";
 import { useTimetableStore } from "@/stores/timtable";
 import { useUserStore } from "@/stores/userinfo";
 import api from "@/api";
 import router from "@/router";
-import Morecurrent from "@/components/Morecurrent.vue";
+// import Morecurrent from "@/components/Morecurrent.vue";
 
 const InfoCard = defineAsyncComponent(() =>
   import("@/components/infocard.vue")
 );
-const OtherCard = defineAsyncComponent(() =>
-  import("@/components/otehrcardformhome.vue")
-);
+// const OtherCard = defineAsyncComponent(() =>
+//   import("@/components/otehrcardformhome.vue")
+// );
 
 const timetableStore = useTimetableStore();
 const userStore = useUserStore();
@@ -80,7 +80,7 @@ const fetchData = async (day) => {
     const fetchedUsername =
       response.data.username[0]?.username || "Unknown User";
     username.value = fetchedUsername;
-    const truncatedUsername = truncateName(fetchedUsername, 8);
+    const truncatedUsername = truncateName(fetchedUsername, 9);
     await userStore.storeusername(truncatedUsername);
 
     return response.data.timetable;
@@ -176,21 +176,29 @@ onMounted(async () => {
   <main class="homepanelmain">
     <div class="hometop">
       <div class="settings">
-        <img src="../assets/profile.png" alt="Profile" class="profile-img" />
-        <p class="username">{{ username }}</p>
+       
+        <p class="username"><span>Welcome, </span>{{ username }}</p>
       </div>
 
-      <button @click="handleLogout" class="logout">
+      <div class="profileimg">
+        <img src="../assets/koala.png" alt="">
+      </div>
+      <!-- <button @click="handleLogout" class="logout">
         <img src="../assets/material-symbols_logout.svg" alt="Logout" />
         <p>Logout</p>
-      </button>
+      </button> -->
     </div>
 
     <div class="headingandcurrent">
-      <h1>TimeTablr</h1>
+
+     
+    </div>
+
+    <div class="bottomtable">
+
 
       <div class="currentconoutisde">
-        <h4>Current</h4>
+        <h4>Current Class -></h4>
 
         <Suspense>
           <InfoCard v-if="timetableStore.currentClass" />
@@ -204,34 +212,6 @@ onMounted(async () => {
           </h2>
         </Suspense>
       </div>
-    </div>
-
-    <div class="bottomtable">
-      <div class="loadall">
-        <router-link to="/loadall" class="loadallrouterlink"
-          >Load All -></router-link
-        >
-      </div>
-
-      <Suspense>
-        <div v-if="statusFlags.clash" class="laterconn">
-          <Morecurrent :clashdata="storeClassData" />
-        </div>
-        <div v-else class="laterconn">
-          <h4>Next Class</h4>
-          <Suspense>
-            <OtherCard
-              v-if="statusFlags.notCurrent"
-              :subject="classInfo.subject"
-              :venu="classInfo.venue"
-              :teachername="classInfo.teacherName"
-              :starttime="classInfo.startTime"
-              :endtime="classInfo.endTime"
-            />
-            <h2 v-else class="noclasstext">No Further Classes For Today</h2>
-          </Suspense>
-        </div>
-      </Suspense>
 
      
     </div>
@@ -239,43 +219,37 @@ onMounted(async () => {
 </template>
 <style scoped>
 @media only screen and (max-width: 349px) {
-  .settings {
-    /* border: 2px solid red; */
-    height: 100%;
-    width: 37%;
-    gap: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .settings img {
-    height: 79%;
-    width: 25%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
   .noclasstext {
     font-family: var(--majorfont);
   }
-  .logout {
-    /* border: 2px solid blue; */
-    width: 26%;
-    border: none;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 5px 5px;
-    background-color: transparent;
-    /* border: none; */
+
+
+  .settings {
+    /* border: 2px solid red; */
     height: 100%;
-  }
-  .logout p {
+    width: 50%;
+    gap: 15px;
     font-family: var(--majorfont);
-    font-size: 1rem;
+    font-size: .9rem;
+    display: flex;
+    color: #1B1B1D;
+    justify-content: center;
+    align-items: center;
   }
-  .logout img {
-    height: 77%;
+  .settings span{
+color: #1B1B1D;
+opacity: .7;
+  }
+  .profileimg{
+    /* border: 2px solid red; */
+
+    height: 40px;
+    width: 40px;
+   
+  }
+  .profileimg img {
+    height: 90%;
+    width: 100%;
   }
   .homepanelmain {
     /* border: 2px solid red; */
@@ -284,11 +258,10 @@ onMounted(async () => {
     flex-direction: column;
     padding: 5px 10px;
     height: 80vh;
-
   }
   .hometop {
     /* border: 2px solid purple; */
-    height: 8%;
+    height: 12%;
     display: flex;
     justify-content: space-between;
     padding: 2px 5px;
@@ -303,11 +276,7 @@ onMounted(async () => {
     align-items: center;
     justify-content: space-between;
   }
-  .headingandcurrent h1 {
-    font-size: 1.9rem;
-    font-family: var(--majorfont);
-    font-weight: 400;
-  }
+
   .currentconoutisde {
     /* border: 2px solid brown; */
     height: 90%;
@@ -315,36 +284,26 @@ onMounted(async () => {
     flex-direction: column;
     justify-content: space-around;
     width: 100%;
+    padding: 2px 5px;
   }
 
   .currentconoutisde h4 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-family: var(--majorfont);
+    /* border: 2px solid red; */
+    padding: 0px 10px;
   }
 
-  .laterconn {
-    /* border: 2px solid purple; */
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-    height: 60%;
-  }
-  .laterconn h4 {
-    font-size: 1.1rem;
-    font-family: var(--majorfont);
-  }
+  
   .bottomtable {
     /* border: 2px solid purple; */
     height: 50%;
     display: flex;
+color: #1B1B1D;
+
     flex-direction: column;
   }
-  .loadall {
-    /* border: 2px solid red; */
-    height: 10%;
-    display: flex;
-    justify-content: end;
-  }
+
 
   .loadallrouterlink {
     font-size: 1.1rem;
@@ -354,50 +313,38 @@ onMounted(async () => {
     font-family: var(--majorfont);
   }
 
-  .speeddailcon {
-    /* border: 2px solid red; */
-    height: 35%;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-  }
+
 }
 
 @media only screen and (min-width: 350px) {
   .noclasstext {
     font-family: var(--majorfont);
   }
-  .logout {
-    /* border: 2px solid blue; */
-    width: 25%;
-    border: none;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 5px 5px;
-    background-color: transparent;
-    /* border: none; */
-    height: 100%;
-  }
-  .logout p {
-    font-family: var(--majorfont);
-    font-size: 1rem;
-  }
-  .logout img {
-    height: 73%;
-  }
+
   .settings {
     /* border: 2px solid red; */
     height: 100%;
-    width: 35%;
+    width: 45%;
     gap: 15px;
+    font-family: var(--majorfont);
+    font-size: 1rem;
     display: flex;
+    color: #1B1B1D;
     justify-content: center;
     align-items: center;
   }
-  .settings img {
-    height: 85%;
-    width: 25%;
+  .settings span{
+color: #1B1B1D;
+opacity: .7;
+  }
+  .profileimg{
+    /* border: 2px solid red; */
+    height: 50px;
+    width: 50px;
+  }
+  .profileimg img {
+    height: 100%;
+    width: 100%;
   }
   .homepanelmain {
     /* border: 2px solid red; */
@@ -409,7 +356,7 @@ onMounted(async () => {
   }
   .hometop {
     /* border: 2px solid purple; */
-    height: 8%;
+    height: 12%;
     display: flex;
     justify-content: space-between;
     padding: 2px 5px;
@@ -424,11 +371,7 @@ onMounted(async () => {
     align-items: center;
     justify-content: space-between;
   }
-  .headingandcurrent h1 {
-    font-size: 1.9rem;
-    font-family: var(--majorfont);
-    font-weight: 400;
-  }
+
   .currentconoutisde {
     /* border: 2px solid brown; */
     height: 90%;
@@ -436,36 +379,26 @@ onMounted(async () => {
     flex-direction: column;
     justify-content: space-around;
     width: 100%;
+    padding: 2px 5px;
   }
 
   .currentconoutisde h4 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-family: var(--majorfont);
+    /* border: 2px solid red; */
+color: #1B1B1D;
+
+    padding: 0px 10px;
   }
 
-  .laterconn {
-    /* border: 2px solid purple; */
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-    height: 100%;
-  }
-  .laterconn h4 {
-    font-size: 1.1rem;
-    font-family: var(--majorfont);
-  }
+  
   .bottomtable {
     /* border: 2px solid purple; */
     height: 50%;
     display: flex;
     flex-direction: column;
   }
-  .loadall {
-    /* border: 2px solid red; */
-    height: 10%;
-    display: flex;
-    justify-content: end;
-  }
+
 
   .loadallrouterlink {
     font-size: 1.1rem;
@@ -475,50 +408,31 @@ onMounted(async () => {
     font-family: var(--majorfont);
   }
 
-  .speeddiler {
-    /* border: 2px solid red; */
-    height: 35%;
-  }
-  .speeddailcon {
-    /* border: 2px solid red; */
-    height: 35%;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-  }
+ 
 }
 
-@media only screen and (min-width: 576px) {
-  .logout {
-    /* border: 2px solid blue; */
-    width: 18%;
-    border: none;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 5px 5px;
-    background-color: transparent;
-    /* border: none; */
-    cursor: pointer;
+@media only screen and (min-width: 500px) {
 
-    height: 100%;
-  }
-  .logout p {
-    font-family: var(--majorfont);
-    font-size: 1rem;
-  }
-  .logout img {
-    height: 73%;
-  }
   .settings {
     /* border: 2px solid red; */
     height: 100%;
-    width: 10%;
+    width: 23%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .settings img {
+    height: 100%;
+    width: 100%;
+  }
+  .profileimg{
+    /* border: 2px solid red; */
+  
+    height: 50px;
+    width: 50px;
+  
+  }
+  .profileimg img {
     height: 100%;
     width: 100%;
   }
@@ -605,25 +519,20 @@ onMounted(async () => {
 }
 
 @media only screen and (min-width: 764px) {
-  .logout {
-    /* border: 2px solid blue; */
-    width: 13%;
-    border: none;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 5px 5px;
-    background-color: transparent;
-    /* border: none; */
+
+  .profileimg{
+    /* border: 2px solid red; */
+    height: 50px;
+    width: 50px;
+  }
+  .profileimg img {
     height: 100%;
-    cursor: pointer;
+    width: 100%;
   }
-  .logout p {
-    font-family: var(--majorfont);
-    font-size: 1rem;
-  }
-  .logout img {
-    height: 73%;
+  .currentconoutisde{
+    /* border:2px solid green; */
+    width: 90%;
+    margin: 0 auto;
   }
 }
 </style>
