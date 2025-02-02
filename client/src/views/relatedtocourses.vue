@@ -1,32 +1,30 @@
+<script setup>
+import AddCourse from '@/views/addPreviousCourse.vue';
+import ViewCourses from "@/views/viewcourses.vue";
+import { onMounted, ref } from 'vue';
+
+import api from '@/api';
+const currentTab=ref('AddCourse');
+
+const tabs={
+    AddCourse,
+    ViewCourses
+}
+
+onMounted(async()=>
+{
+  try {
+    const responce=await api.post("/api/user/loadall");
   
- <script setup>
- import api from "@/api";
-import { defineAsyncComponent } from "vue";
- import { ref, onMounted } from "vue";
- import GoingBack from "@/components/backhomeComp.vue";
-//  import LoadAll from "@/components/LoadAll.vue";
-const LoadAll=defineAsyncComponent(()=>import('@/components/LoadAll.vue'));
- import AddCourse from "./addPreviousCourse.vue";
-import Viewcourse from "./viewcourses.vue";
- 
+  } catch (error) {
+    console.log(error);
+  }
+})
 
- const theday = ref({
-   day: "",
- });
- 
- const currentTab = ref('LoadAll');
- const tabs = {
-   LoadAll,
-   AddCourse,
-   Viewcourse
- };
- 
+</script>
+<template>
+  <main class="loadmoremain">
 
- </script>
- 
- <template>
-   <main class="loadmoremain">
-     <GoingBack />
      <div class="wrapper">
        <div 
          v-for="(component, tab) in tabs" 
@@ -49,15 +47,15 @@ import Viewcourse from "./viewcourses.vue";
  
      <component :is="tabs[currentTab]"></component>
    </main>
- </template>
+</template>
 
 <style scoped>
 
 .wrapper {
-  --font-color-dark: #323232;
+  --font-color-dark: #1B1B1D;
   --font-color-light: #fff;
   --bg-color: #fff;
-  --main-color: #323232;
+  --main-color: #1B1B1D;
   --secondary-color: #505050;
   position: relative;
   width: 100%;
@@ -75,7 +73,7 @@ import Viewcourse from "./viewcourses.vue";
 
 .option {
   margin-right: 5px;
-  width: 80.5px;
+  width: 30%;
   height: 39px;
   position: relative;
   top: 2px;
@@ -134,14 +132,14 @@ import Viewcourse from "./viewcourses.vue";
 @media only screen and (max-width: 349px) {
   .notclasscon {
     /* border: 2px solid red; */
-    height: 75vh;
+    height: 65vh;
     overflow-y: auto;
     padding: 10px 15px;
     /* margin-top: -//px ; */
   }
   .loadmoremain {
     /* border: 2px solid red; */
-    height: 100vh;
+    height: 83vh;
     overflow-y: auto;
     display: flex;
     /* gap: 2%; */
@@ -167,7 +165,7 @@ import Viewcourse from "./viewcourses.vue";
   .backrouter {
     font-size: 1.1rem;
     font-family: var(--majorfont);
-    color: black;
+    color: #1B1B1D;
     /* border: 2px solid blue; */
   }
 }
@@ -175,21 +173,23 @@ import Viewcourse from "./viewcourses.vue";
 @media only screen and (min-width: 350px) {
   .notclasscon {
     /* border: 2px solid red; */
-    height: 78vh;
+    height:82%;
     overflow-y: auto;
+    width: 100%;
     padding: 10px 15px;
     margin-top: 10px ;
   }
   .loadmoremain {
     /* border: 2px solid red; */
-    height: 100vh;
+    height: 82vh;
     overflow-y: auto;
     display: flex;
+    width: 100%;
     /* gap: 2%; */
     padding: 10px 15px;
     flex-direction: column;
     justify-content: space-evenly;
-    /* align-items: center; */
+    align-items: center;
   }
   .comp {
     /* border: 2px solid red; */
@@ -200,7 +200,7 @@ import Viewcourse from "./viewcourses.vue";
   .backrouter {
     font-size: 1.1rem;
     font-family: var(--majorfont);
-    color: black;
+    color: #1B1B1D;
   }
   .router {
     /* border: 2px solid green; */
@@ -213,7 +213,7 @@ import Viewcourse from "./viewcourses.vue";
   .backrouter {
     font-size: 1.1rem;
     font-family: var(--majorfont);
-    color: black;
+    color: #1B1B1D;
     /* border: 2px solid blue; */
   }
 }

@@ -2,7 +2,7 @@
 import UserName from '@/components/changeusername.vue';
 import Password from "@/components/changepassword.vue";
 import { onMounted, ref } from 'vue';
-import GoingBack from "@/components/backhomeComp.vue"
+
 import api from '@/api';
 const currentTab=ref('Password');
 
@@ -24,7 +24,7 @@ onMounted(async()=>
 </script>
 <template>
   <main class="loadmoremain">
-     <GoingBack />
+
      <div class="wrapper">
        <div 
          v-for="(component, tab) in tabs" 

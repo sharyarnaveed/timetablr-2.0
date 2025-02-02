@@ -57,7 +57,7 @@ onMounted(async()=>
   height: 115px;
   padding: 0px 3px;
   border-radius: 10px;
-  background-color: var(--violet);
+  background-color:#1B1B1D;
 }
 
 .currentconnlater h5 {
@@ -65,6 +65,7 @@ onMounted(async()=>
   /* border: 2px solid green; */
   width: 100%;
   height: 20%;
+  color: whitesmoke;
   display: flex;
 justify-content: space-between;
 align-items: center;

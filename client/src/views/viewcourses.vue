@@ -2,7 +2,7 @@
   <main class="thecontainercheck">
     <Success v-if="deletedcheck" :messagevalue="deletemsg" />
 
-    <table>
+    <table class="styled-table">
       <thead>
         <tr>
           <th>Course Name</th>
@@ -14,7 +14,6 @@
           <td>{{ course.course_name }}</td>
           <td>
             <div class="actions">
-              <!-- <button  class="btn edit-btn">Edit</button> -->
               <button
                 @click="deletecourse(course.repeat_id)"
                 class="btn delete-btn"
@@ -41,10 +40,7 @@ const deletemsg = ref("");
 const getreapeatcourses = async () => {
   try {
     const responce = await api.post("/api/user/viewcourses");
-
     courses.value = responce.data.repeatcourses;
-
-    console.log(courses.value);
   } catch (error) {
     console.log("error in getting courses", error);
   }
@@ -52,17 +48,14 @@ const getreapeatcourses = async () => {
 
 const deletecourse = async (id) => {
   try {
-    console.log(id);
-
     const responce = await api.post("/api/user/deletecourse", { repeatId: id });
-
     if (responce.data.success === true) {
       deletedcheck.value = true;
       deletemsg.value = responce.data.message;
       localStorage.removeItem("classes");
       await getreapeatcourses();
       setTimeout(() => {
-        deletedcheck.value = true;
+        deletedcheck.value = false;
       }, 3000);
     }
   } catch (error) {
@@ -78,112 +71,72 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-@media only screen and (max-width: 349px) {
-}
 .thecontainercheck {
-  height: 75vh;
+  height: 65vh;
   overflow-y: auto;
-
-  /* border: 2px solid red; */
-  padding: 10px 5px;
+  width: 95%;
+  border: 2px solid #1b1b1d;
+  padding: 20px;
+  background: whitesmoke;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
-table {
-  /* border: 2px solid blue; */
-  height: 100%;
+
+.styled-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: var(--majorfont);
-  overflow-y: auto;
-
   background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 thead {
-  background-color: #e3f2fd;
-  border-bottom: 2px solid #cfd8dc;
-  height: 60px;
+  background-color: #1b1b1d;
+  color: whitesmoke;
+  text-transform: uppercase;
 }
 
 th,
 td {
-  padding: 0.2rem 0.5rem;
+  padding: 12px 15px;
   text-align: left;
-  color: #455a64;
-}
-
-th {
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.85rem;
   font-family: var(--majorfont);
-
-  letter-spacing: 0.5px;
-  color: #1e88e5;
+  font-size: 1rem;
 }
 
 tbody tr {
-  border-bottom: 1px solid #eceff1;
-  transition: all 0.2s ease;
+  border-bottom: 1px solid #ddd;
+  transition: all 0.3s ease;
 }
 
 tbody tr:hover {
-  background-color: rgba(227, 242, 253, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(30, 136, 229, 0.1);
+  background-color: #f5f5f5;
+  transform: scale(1.01);
 }
 
 .actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
 .btn {
-  padding: 0.5rem 1.2rem;
+  padding: 8px 15px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  font-family: var(--majorfont);
-
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.5px;
-}
-
-.edit-btn {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #c8e6c9;
-}
-
-.edit-btn:hover {
-  background-color: #c8e6c9;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .delete-btn {
-  background-color: #ffebee;
-  color: #c62828;
-  border: 1px solid #ffcdd2;
+  background-color: #c62828;
+  color: whitesmoke;
+  border: 1px solid #b71c1c;
 }
 
 .delete-btn:hover {
-  background-color: #ffcdd2;
-}
-
-.header {
-  padding: 1.8rem 2rem;
-  background: linear-gradient(135deg, #e3f2fd 0%, #f0f4f8 100%);
-  border-bottom: 1px solid #cfd8dc;
-}
-
-.header h1 {
-  color: #1a237e;
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin: 0;
-  font-family: var(--majorfont);
-
-  letter-spacing: -0.5px;
+  background-color: #b71c1c;
+  transform: scale(1.05);
 }
 </style>

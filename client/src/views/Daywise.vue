@@ -5,8 +5,6 @@ import router from '@/router';
 const TimetableData=ref([]);
 const Daysgroup=['Monday','Tuesday',"Wednesday","Thursday","Friday"]
 const otherclasscard=defineAsyncComponent(()=>import('@/components/otherclasscard.vue'));
-
-import GoingBack from "@/components/backhomeComp.vue";
 import { useTimetableStore } from '@/stores/timtable';
 const usetimetable=useTimetableStore();
 
@@ -45,16 +43,7 @@ onMounted(async () => {
 
 <template>
   <main class="homepanelmain">
-    
-    <div class="heading">
-      
-      <h1>Whole TimeTable</h1>
-    </div>
-
-    
 <div class="alltimecon">
-  <GoingBack class="goingback"/>
-
   <details v-for="(days,index) in Daysgroup" :key="index" >
     <summary>{{days}}</summary>
     <otherclasscard class="classcard" v-for="classentry in timetablebyday(days)" :key="classentry.timetable_id" :notclass="classentry"  />
@@ -75,7 +64,7 @@ onMounted(async () => {
     justify-content: space-around;
     flex-direction: column;
     padding: 5px 10px;
-    height: 100vh;
+    height: 65vh;
   }
   .alltimecon {
     /* border: 2px solid blue; */
@@ -141,7 +130,7 @@ summary::-webkit-details-marker {
 summary {
 
   border-radius: 5px;
-  color: #30353b;
+  color: #1B1B1D;
   
   
 }
@@ -149,8 +138,8 @@ summary {
 details[open] summary {border-radius: 5px 5px 0 0;}
 
 details {
-  background-color: var( --skyblue);
-
+  background-color:whitesmoke;
+border: 2px solid #1B1B1D;
   border-radius: 5px;
   padding: 1px 5px;
   margin: 10px 5px;
@@ -167,7 +156,7 @@ details {
     justify-content: space-around;
     flex-direction: column;
     padding: 5px 10px;
-    height: 100vh;
+    height: 65vh;
   }
   .alltimecon {
     /* border: 2px solid blue; */
@@ -233,7 +222,7 @@ summary::-webkit-details-marker {
 summary {
 
   border-radius: 5px;
-  color: #30353b;
+  color: #1B1B1D;
   
   
 }
@@ -241,8 +230,8 @@ summary {
 details[open] summary {border-radius: 5px 5px 0 0;}
 
 details {
-  background-color: var( --skyblue);
-
+  background-color: whitesmoke;
+border: 2px solid #1B1B1D;
   border-radius: 5px;
   padding: 5px 5px;
   margin: 10px 5px;

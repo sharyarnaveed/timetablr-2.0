@@ -16,7 +16,7 @@
       </svg>
     </router-link>
 
-    <router-link class="navlinks" to="/addrepatingcourse">
+    <router-link class="navlinks" to="/courses">
       <svg
         width="12"
         height="12"
@@ -46,7 +46,7 @@
       </svg>
     </router-link>
 
-    <router-link class="navlinks" to="/logout">
+    <div @click="handleLogout" class="navlinks">
       <svg
         width="20"
         height="20"
@@ -59,11 +59,30 @@
      
         />
       </svg>
-    </router-link>
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import axios from 'axios';
+import api from '@/api';
+import router from '@/router';
+
+const handleLogout = async () => {
+  try {
+    const response = await api.post("/api/user/logout");
+    if (response.data.success) {
+      localStorage.clear();
+      router.push("/signin");
+    }
+  } catch (error) {
+    console.error("Logout error:", error);
+    router.push("/signin");
+  }
+};
+
+
+</script>
 
 <style scoped>
 

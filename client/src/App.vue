@@ -18,7 +18,7 @@ import speeddail from './components/navbar.vue';
 {
   .speeddailcon {
     box-sizing: border-box;
-    border: 2px solid red;
+    /* border: 2px solid red; */
     height: 15vh;
     display: flex;
     padding: 10px 10px;
@@ -32,7 +32,7 @@ import speeddail from './components/navbar.vue';
 {
   .speeddailcon {
     box-sizing: border-box;
-    border: 2px solid red;
+    /* border: 2px solid red; */
     height: 15vh;
    display: flex;
    padding: 10px 10px;

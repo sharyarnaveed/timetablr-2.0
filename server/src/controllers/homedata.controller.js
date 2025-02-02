@@ -41,7 +41,8 @@ const username = await getusername(req.user);
     return res.json({
       success: true,
       timetable: combinedcourse,
-      username:username
+      username:username,
+      UserProgram:req.user.program
     });
 
   } catch (error) {
