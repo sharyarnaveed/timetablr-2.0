@@ -47,6 +47,12 @@ const installapp = async () => {
 </template>
 
 <style scoped>
+main
+{
+  overflow-y: none;
+  position: fixed;
+  width: 100%;
+}
 @media only screen and (max-width: 349px) {
   nav {
     /* border: 2px solid red; */
@@ -68,8 +74,13 @@ const installapp = async () => {
     background-position: 0%;
     background-size: cover;
     height: 100vh;
+    overflow:hidden;
     padding: 10px 10px;
     /* background-color: var(--peach_color); */
+  }
+  .speeddailcon[data-v-7a7a37b1]
+  {
+    display: none;
   }
   .contentsections {
     /* border: 2px solid blue; */
@@ -122,10 +133,12 @@ const installapp = async () => {
     width: 46%;
     height: 49%;
     /* background-color: #A020F0; */
-    color: var(--peach_color);
+    color: white;
+    background-color: black;
     font-size: 1.2rem;
     font-family: var(--minorfont);
     border: none;
+    border: 2px solid whitesmoke;
     border-radius: 5px;
   }
   .homebuttons:last-child {
@@ -137,6 +150,7 @@ const installapp = async () => {
 }
 
 @media only screen and (min-width: 350px) {
+  
   nav {
     /* border: 2px solid red; */
     max-height: 11%;
@@ -295,4 +309,5 @@ padding: 2% 5px;
     font-weight: 600;
   }
 }
+
 </style>
