@@ -59,7 +59,7 @@ onMounted(async()=>
   --secondary-color: #505050;
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 54px;
   background-color: var(--bg-color);
   border: 2px solid var(--main-color);
   border-radius: 34px;

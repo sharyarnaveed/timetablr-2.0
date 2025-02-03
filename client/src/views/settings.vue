@@ -50,16 +50,15 @@ onMounted(async()=>
 </template>
 
 <style scoped>
-
 .wrapper {
-  --font-color-dark: #323232;
+  --font-color-dark: #1B1B1D;
   --font-color-light: #fff;
   --bg-color: #fff;
-  --main-color: #323232;
+  --main-color: #1B1B1D;
   --secondary-color: #505050;
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 54px;
   background-color: var(--bg-color);
   border: 2px solid var(--main-color);
   border-radius: 34px;
@@ -73,7 +72,7 @@ onMounted(async()=>
 
 .option {
   margin-right: 5px;
-  width: 80.5px;
+  width: 30%;
   height: 39px;
   position: relative;
   top: 2px;
@@ -128,7 +127,6 @@ onMounted(async()=>
   color: var(--font-color-light);
   transition: 0.25s cubic-bezier(0, 0, 0, 1);
 }
-
 @media only screen and (max-width: 349px) {
   .notclasscon {
     /* border: 2px solid red; */
@@ -180,7 +178,7 @@ onMounted(async()=>
   }
   .loadmoremain {
     /* border: 2px solid red; */
-    height: 80vh;
+    height: 82vh;
     overflow-y: auto;
     display: flex;
     /* gap: 2%; */

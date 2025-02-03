@@ -52,7 +52,7 @@ const TodayMonth = ref("");
 const progress = ref(75);
 const sizeOfbar = ref(120);
 const barStroke = ref(10);
-
+import Morecurrent from "@/components/Morecurrent.vue";
 const truncateName = (name, maxLength) => {
   if (name.length > maxLength) {
     return name.slice(0, maxLength - 3) + "...";
@@ -130,6 +130,8 @@ onMounted(async () => {
   statusFlags.value.clash = clashes.length > 1;
   if (statusFlags.value.clash) {
     storeClassData.value = clashes[1];
+    console.log(storeClassData.value);
+    
   }
 
   const notCurrentClasses = await timetableStore.getnotclocal();
@@ -177,7 +179,13 @@ onMounted(async () => {
   <main class="homepanelmain">
     <div class="headingandcurrent">
       
-      <div class="statschart">
+      
+      <Suspense>
+        <div v-if="statusFlags.clash" class="currentconoutisde">
+          <Morecurrent :clashdata="storeClassData" />
+        </div>
+
+        <div v-else class="statschart">
        <span class="chartheading"> Daily Stats -></span>
 
         <div class="belowstats">
@@ -201,6 +209,8 @@ onMounted(async () => {
         </div>
       
       </div>
+      </Suspense>
+
     </div>
 
     <div class="bottomtable">
@@ -573,7 +583,7 @@ onMounted(async () => {
 
   .statschart {
     border: 2px solid #1b1b1d;
-    height: 90%;
+    height: 97%;
     border-radius: 20px;
     width: 100%;
     gap: 5px;

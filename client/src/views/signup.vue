@@ -255,15 +255,15 @@ const handleSubmit = async () => {
 
 <style scoped>
 @media only screen and (max-width: 349px) {
-  .error {
-    font-family: var(--majorfont);
-    font-size: 1.6rem;
-    color: red;
-  }
+
   .signupconn {
-    /* border: 2px solid red; */
-    height: 100vh;
-    padding: 10px 12px;
+    position: fixed;
+        background: white;
+        width: 100%;
+        /* border: 2px solid red; */
+        height: 100vh;
+        padding: 10px 12px;
+        z-index: 1;
   }
   .logo {
     /* border:2px solid green; */
@@ -277,15 +277,15 @@ const handleSubmit = async () => {
     font-weight: 500;
     font-size: 1.8rem;
   }
-  .signupsec[data-v-e85d65cb] {
+  .signupsec {
     /* border: 2px solid purple; */
     height: 100%;
     width: 100%;
     padding: 0px 10px;
     display: flex;
-    align-items: end;
+  
     justify-content: center;
-    align-items: center;
+    align-items: start;
   }
 
   .signupform {
@@ -311,12 +311,15 @@ const handleSubmit = async () => {
     color: var(--font-color);
     font-weight: 900;
     font-size: 1.5rem;
+    font-family: var(--majorfont);
+
     margin-bottom: 1px;
   }
   .signupform span {
     color: var(--font-color-sub);
     font-weight: 600;
     font-size: 1.3rem;
+    font-family: var(--majorfont);
   }
   .signupinputs {
     /* border: 2px solid purple; */
@@ -431,19 +434,23 @@ const handleSubmit = async () => {
     font-size: 1.8rem;
   }
   .signupconn {
-    /* border: 2px solid red; */
-    height: 100vh;
-    padding: 10px 10px;
+    position: fixed;
+        background: white;
+        width: 100%;
+        /* border: 2px solid red; */
+        height: 100vh;
+        padding: 10px 10px;
+        z-index: 1;
   }
 
-  .signupsec[data-v-e85d65cb] {
+  .signupsec{
     /* border: 2px solid purple; */
     height: 100%;
     width: 100%;
-    /* padding: 0px 10px; */
+    padding: 10px 5px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
   }
 
   .signupform {
@@ -577,20 +584,24 @@ width: 90%;
     color: red;
   }
   .signupconn {
-    /* border: 2px solid red; */
-    height: 100vh;
-    padding: 10px 12px;
+    position: fixed;
+        background: white;
+        width: 100%;
+        /* border: 2px solid red; */
+        height: 100vh;
+        padding: 10px 12px;
+        z-index: 1;
   }
 
-  .signupsec[data-v-e85d65cb] {
+  .signupsec{
     /* border: 2px solid purple; */
     height: 100%;
     width: 100%;
-    padding: 0px 10px;
+    padding: 10px 2px;
     display: flex;
-    align-items: end;
+    align-items: start;
     justify-content: center;
-    align-items: center;
+
   }
 
   .signupform {

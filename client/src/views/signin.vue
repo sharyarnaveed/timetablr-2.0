@@ -12,7 +12,7 @@ const signindata = ref({
 const siginerrorresponce = ref("");
 const signinerrorcheck = ref(false);
 const instance = axios.create({
-  baseURL: 'https://timetable.pharmder.com' // Adjusted with trailing slash
+  baseURL: 'http://localhost:3000' // Adjusted with trailing slash
 
 });
 const buttoncon=ref(false)
@@ -91,12 +91,17 @@ const handlesubmit = async () => {
 </template>
 
 <style scoped>
+
 @media only screen and (max-width: 349px) {
 
   .signupconn {
-    /* border: 2px solid red; */
-    height: 100vh;
-    padding: 10px 12px;
+    position: fixed;
+        background: white;
+        width: 100%;
+        /* border: 2px solid red; */
+        height: 100vh;
+        padding: 10px 12px;
+        z-index: 1;
   }
   .logo {
     /* border:2px solid green; */
@@ -224,9 +229,13 @@ const handlesubmit = async () => {
 @media only screen and (min-width: 350px) {
 
   .signupconn {
-    /* border: 2px solid red; */
-    height: 100vh;
-    padding: 10px 12px;
+    position: fixed;
+        background: white;
+        width: 100%;
+        /* border: 2px solid red; */
+        height: 100vh;
+        padding: 10px 12px;
+        z-index: 1;
   }
   .logo {
     /* border:2px solid green; */
@@ -344,9 +353,13 @@ const handlesubmit = async () => {
 
 @media only screen and (min-width: 567px) {
   .signupconn {
-    /* border: 2px solid red; */
-    height: 100vh;
-    padding: 10px 12px;
+    position: fixed;
+        background: white;
+        width: 100%;
+        /* border: 2px solid red; */
+        height: 100vh;
+        padding: 10px 12px;
+        z-index: 1;
   }
   .logo {
     /* border:2px solid green; */

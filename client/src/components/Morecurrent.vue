@@ -74,9 +74,11 @@ const usetimetable=await useTimetableStore();
   .currentconn {
     /* border: 2px solid red; */
     height: 82%;
-    padding: 0px 5px;
-    border-radius: 10px;
-    background-color: var(--skyblue);
+    padding: 10px 10px;
+    border-radius: 17px;
+    color: whitesmoke;
+
+    background-color:#1b1b1d;
   }
   .currentconn h5 {
     font-size: 1.1rem;
