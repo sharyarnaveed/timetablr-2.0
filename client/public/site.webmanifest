@@ -1,6 +1,6 @@
 {
-  "name": "Timetablr",
-  "short_name": "Timetablr",
+  "name": "timetablr",
+  "short_name": "timetablr",
   "icons": [
     {
       "src": "/pwa-192x192.png",
@@ -27,8 +27,8 @@
       "purpose": "maskable"
     }
   ],
-  "start_url": "/home",
-  "display": "standalone",
+  "start_url": "/",
+  "display": "fullscreen",
   "background_color": "#FFFFFF",
   "theme_color": "#FFFFFF"
 }

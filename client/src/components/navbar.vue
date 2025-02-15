@@ -46,17 +46,33 @@
       </svg>
     </router-link>
 
+    <a class="navlinks" href="https://forms.gle/bEmLBoy6xxHy2iq6A">
+      <svg
+        width="20"
+        height="19"
+        viewBox="0 0 20 19"
+        class="nav-icon"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4 16L1.7 18.3C1.38334 18.6167 1.02067 18.6877 0.612002 18.513C0.203335 18.3383 -0.000665038 18.0257 1.62866e-06 17.575V2C1.62866e-06 1.45 0.196002 0.979333 0.588002 0.588C0.980002 0.196667 1.45067 0.000666667 2 0H18C18.55 0 19.021 0.196 19.413 0.588C19.805 0.98 20.0007 1.45067 20 2V14C20 14.55 19.8043 15.021 19.413 15.413C19.0217 15.805 18.5507 16.0007 18 16H4ZM10 13C10.2833 13 10.521 12.904 10.713 12.712C10.905 12.52 11.0007 12.2827 11 12C10.9993 11.7173 10.9033 11.48 10.712 11.288C10.5207 11.096 10.2833 11 10 11C9.71667 11 9.47934 11.096 9.288 11.288C9.09667 11.48 9.00067 11.7173 9 12C8.99934 12.2827 9.09534 12.5203 9.288 12.713C9.48067 12.9057 9.718 13.0013 10 13ZM10 9C10.2833 9 10.521 8.904 10.713 8.712C10.905 8.52 11.0007 8.28267 11 8V4C11 3.71667 10.904 3.47933 10.712 3.288C10.52 3.09667 10.2827 3.00067 10 3C9.71734 2.99933 9.48 3.09533 9.288 3.288C9.096 3.48067 9 3.718 9 4V8C9 8.28333 9.096 8.521 9.288 8.713C9.48 8.905 9.71734 9.00067 10 9Z"
+          fill="white"
+           class="nav-icon-path"
+        />
+      </svg>
+    </a>
+
     <div @click="handleLogout" class="navlinks">
       <svg
         width="20"
         height="20"
         viewBox="0 0 20 20"
-       fill="white"
+        fill="white"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
           d="M14.1667 5.83333L12.9917 7.00833L15.1417 9.16667H6.66667V10.8333H15.1417L12.9917 12.9833L14.1667 14.1667L18.3333 10M3.33334 4.16667H10V2.5H3.33334C2.41667 2.5 1.66667 3.25 1.66667 4.16667V15.8333C1.66667 16.75 2.41667 17.5 3.33334 17.5H10V15.8333H3.33334V4.16667Z"
-     
         />
       </svg>
     </div>
@@ -64,9 +80,9 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import api from '@/api';
-import router from '@/router';
+import axios from "axios";
+import api from "@/api";
+import router from "@/router";
 
 const handleLogout = async () => {
   try {
@@ -80,12 +96,9 @@ const handleLogout = async () => {
     router.push("/signin");
   }
 };
-
-
 </script>
 
 <style scoped>
-
 .navcontainer {
   width: 97%;
   height: 65%;
@@ -105,10 +118,6 @@ const handleLogout = async () => {
   border-radius: 50%;
   transition: all 0.3s ease;
   color: white;
-}
-
-.navlinks:hover {
-  background-color: rgb(255, 255, 255);
 }
 
 .nav-icon {
@@ -133,44 +142,41 @@ const handleLogout = async () => {
   fill: black;
   stroke: black;
 }
-@media only screen and (max-width: 349px)
-{
+@media only screen and (max-width: 349px) {
   .navlinks {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  color: white;
-}
-.nav-icon {
-  width: 100%;
-  height: 60%;
-}
-}
-@media only screen and (min-width: 350px)
-{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    color: white;
+  }
   .nav-icon {
-  width: 100%;
-  height:60%;
+    width: 100%;
+    height: 60%;
+  }
 }
-}
-@media only screen and (min-width: 580px)
-{
+@media only screen and (min-width: 350px) {
   .nav-icon {
-  width: 100%;
-  height:60%;
+    width: 100%;
+    height: 60%;
+  }
 }
-.navcontainer {
-  width: 97%;
-  height: 75%;
-  border-radius: 30px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: #1b1b1d;
-}
+@media only screen and (min-width: 580px) {
+  .nav-icon {
+    width: 100%;
+    height: 60%;
+  }
+  .navcontainer {
+    width: 97%;
+    height: 75%;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #1b1b1d;
+  }
 }
 </style>

@@ -27,7 +27,6 @@ const installapp = async () => {
     </nav>
 
     <section class="contentsections">
-    
       <div class="writtencontent">
         <div class="slogan">
           <h1>
@@ -37,9 +36,9 @@ const installapp = async () => {
         </div>
         <div class="buttons">
           <button @click="installapp" class="homebuttons">Download</button>
-          <button class="homebuttons">
-            <a style="  color: black; text-decoration: none;" href="https://timetable.pharmder.com/signin">Sign In</a>
-            </button>
+          
+            <a class="signinlink" href="https://timetable.pharmder.com/signin">Sign In</a>
+     
         </div>
       </div>
     </section>
@@ -47,11 +46,13 @@ const installapp = async () => {
 </template>
 
 <style scoped>
-main
-{
+main {
   overflow-y: none;
   position: fixed;
   width: 100%;
+}
+.mainhomesec + * {
+  visibility: hidden;
 }
 @media only screen and (max-width: 349px) {
   nav {
@@ -74,12 +75,11 @@ main
     background-position: 0%;
     background-size: cover;
     height: 100vh;
-    overflow:hidden;
+    overflow: hidden;
     padding: 10px 10px;
     /* background-color: var(--peach_color); */
   }
-  .speeddailcon[data-v-7a7a37b1]
-  {
+  .speeddailcon[data-v-7a7a37b1] {
     display: none;
   }
   .contentsections {
@@ -103,9 +103,9 @@ main
   .writtencontent {
     /* border: 2px solid orange; */
     height: 100%;
- display: flex;
- flex-direction: column;
- justify-content: end;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
   }
 
   .slogan {
@@ -119,7 +119,7 @@ main
   .slogan h1 {
     font-family: var(--majorfont);
     font-size: 1.5rem;
-    color:whitesmoke ;
+    color: whitesmoke;
   }
 
   .buttons {
@@ -136,21 +136,33 @@ main
     color: white;
     background-color: black;
     font-size: 1.2rem;
-    font-family: var(--minorfont);
+    font-family: var(--majorfont);
     border: none;
     border: 2px solid whitesmoke;
     border-radius: 5px;
   }
-  .homebuttons:last-child {
+
+  .signinlink {
+    width: 46%;
+    height: 49%;
+    /* background-color: #A020F0; */
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     background-color: white;
-    /* border: 2px solid black; */
-    color: rgba(0, 0, 0, 0.651);
+    font-size: 1.2rem;
     font-weight: 600;
+    text-decoration: none;
+    font-family: var(--majorfont);
+    border: none;
+    border: 2px solid whitesmoke;
+    border-radius: 5px;
   }
 }
 
 @media only screen and (min-width: 350px) {
-  
   nav {
     /* border: 2px solid red; */
     max-height: 11%;
@@ -183,9 +195,9 @@ main
   .writtencontent {
     /* border: 2px solid orange; */
     height: 100%;
- display: flex;
- flex-direction: column;
- justify-content: end;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
   }
 
   .slogan {
@@ -194,15 +206,15 @@ main
     display: flex;
     /* align-items: center; */
     text-align: center;
-padding: 2% 5px;
+    padding: 2% 5px;
     justify-content: center;
   }
   .slogan h1 {
     font-family: var(--majorfont);
     font-size: 2rem;
     text-align: center;
-  
-    color:whitesmoke ;
+
+    color: whitesmoke;
   }
 
   .buttons {
@@ -215,18 +227,30 @@ padding: 2% 5px;
   .homebuttons {
     width: 46%;
     height: 49%;
-    background-color: #A020F0;
+    background-color: #a020f0;
     color: var(--peach_color);
     font-size: 1.2rem;
     font-family: var(--minorfont);
     border: none;
     border-radius: 5px;
   }
-  .homebuttons:last-child {
+  .signinlink {
+    width: 46%;
+    height: 49%;
+    /* background-color: #A020F0; */
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     background-color: white;
-    /* border: 2px solid black; */
-    color: rgba(0, 0, 0, 0.651);
+    font-size: 1.2rem;
     font-weight: 600;
+    text-decoration: none;
+    font-family: var(--majorfont);
+    border: none;
+    border: 2px solid whitesmoke;
+    border-radius: 5px;
   }
 }
 
@@ -263,9 +287,9 @@ padding: 2% 5px;
   .writtencontent {
     /* border: 2px solid orange; */
     height: 100%;
- display: flex;
- flex-direction: column;
- justify-content: end;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
   }
 
   .slogan {
@@ -274,15 +298,15 @@ padding: 2% 5px;
     display: flex;
     align-items: center;
     /* text-align: center; */
-padding: 2% 5px;
+    padding: 2% 5px;
     justify-content: start;
   }
   .slogan h1 {
     font-family: var(--majorfont);
     font-size: 2.5rem;
     text-align: center;
-  
-    color:whitesmoke ;
+
+    color: whitesmoke;
   }
 
   .buttons {
@@ -295,19 +319,30 @@ padding: 2% 5px;
   .homebuttons {
     width: 30%;
     height: 55%;
-    background-color: #287AB8;
+    background-color: #287ab8;
     color: var(--peach_color);
     font-size: 1.2rem;
     font-family: var(--minorfont);
     border: none;
     border-radius: 5px;
   }
-  .homebuttons:last-child {
+  .signinlink {
+    width: 30%;
+    height: 55%;
+    /* background-color: #A020F0; */
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     background-color: white;
-    /* border: 2px solid black; */
-    color: rgba(0, 0, 0, 0.651);
+    font-size: 1.2rem;
     font-weight: 600;
+    text-decoration: none;
+    font-family: var(--majorfont);
+    border: none;
+    border: 2px solid whitesmoke;
+    border-radius: 5px;
   }
 }
-
 </style>

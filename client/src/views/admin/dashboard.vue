@@ -29,6 +29,10 @@ if(thelog.data.success)
 </template>
 
 <style>
+.adminmain +*
+{
+  visibility: hidden;
+}
 .adminmain {
   /* border: 2px solid red; */
   height: 100vh;

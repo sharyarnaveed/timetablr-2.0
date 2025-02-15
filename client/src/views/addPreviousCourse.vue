@@ -182,7 +182,7 @@ const handleSubmit = async () => {
     
     <section class="signupsec">
       <form @submit.prevent="handleSubmit" class="signupform">
-        <h2>Add Course</h2>
+        <h2>Add Repeat Course</h2>
         <div class="signupinputs">
           <p v-if="error" class="error" role="alert">{{ errorResponse }}</p>
           
