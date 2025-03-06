@@ -47,7 +47,7 @@ onMounted(async () => {
 </script>
 
 <template>
-   <main class="homepanelmain">
+  <main class="homepanelmain">
     <table>
       <thead>
         <tr>
@@ -74,7 +74,6 @@ onMounted(async () => {
   height: 90%;
 }
 
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -85,12 +84,11 @@ td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: center;
-  font-size: .7rem;
-
+  font-size: 0.7rem;
 }
 
 th {
   background-color: #f4f4f4;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 </style>

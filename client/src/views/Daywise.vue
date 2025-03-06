@@ -2,64 +2,78 @@
   <main class="homepanelmain">
     <div class="theviews">
       <button
-        v-for="(_, tab) in tabs"
-        :key="tab"
-        :class="['tab-button', { active: currentTab === tab }]"
-        @click="currentTab = tab"
+        v-for="(tab, key) in tabs"
+        :key="key"
+        :class="['tab-button', { active: currentTab === key }]"
+        @click="currentTab = key"
       >
-        {{ tab }}
+        <img :src="tab.img" :alt="key" class="tab-icon" />
       </button>
     </div>
-    <component :is="tabs[currentTab]" class="tab"></component>
+    <component :is="tabs[currentTab].comp" class="tab"></component>
   </main>
 </template>
 
 <script setup>
-import listview from "@/components/listview.vue";
-import tabularview from "@/components/tabularview.vue";
+import ListView from "@/components/listview.vue";
+import TabularView from "@/components/tabularview.vue";
 import { ref } from "vue";
-
-const currentTab = ref("tabularview");
+import list from "@/assets/list.png"
+import grid from "@/assets/menu.png"
+const currentTab = ref("Tabular View");
 
 const tabs = {
-  listview,
-  tabularview,
+  "List View": {
+    comp: ListView,
+    img: list, // Replace with the correct image path
+  },
+  "Tabular View": {
+    comp: TabularView,
+    img: grid, // Replace with the correct image path
+  },
 };
 </script>
 
 <style scoped>
 .theviews {
   margin-top: 10px;
+  margin-bottom: 10px;
+
+gap: 1.2rem;
   height: 50px;
   align-items: center;
   display: flex;
-  justify-content: space-around;
+  justify-content: end;
 }
-button {
-  height: 40px;
-  font-size: 1rem;
-  width: 100px;
-}
-
 
 .tab-button {
-  padding: 10px 10px;
+  padding: 10px;
   border-radius: 10px;
-font-family: var(--majorfont);
-font-size: .9rem;
-border: 2px solid #1B1B1D;
+  border: 2px solid #1B1B1D;
   cursor: pointer;
   background: #fff;
-
   margin-bottom: -1px;
   margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
 }
-.tab-button:hover {
-  background: #1B1B1D;
-  color: whitesmoke;
-}
+
+.tab-button:hover,
 .tab-button.active {
   background: #1B1B1D;
-  color: whitesmoke;
+}
+
+.tab-button:hover img,
+.tab-button.active img {
+  filter: invert(1); /* Changes the image color for better visibility */
+}
+
+.tab-icon {
+  width: 20px; /* Adjust size */
+  height: 20px;
+  object-fit: contain;
 }
 </style>
