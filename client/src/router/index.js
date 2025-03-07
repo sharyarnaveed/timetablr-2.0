@@ -18,6 +18,7 @@ import AddPreviousCourse from '@/views/addPreviousCourse.vue'
 import Viewcourses from '@/views/viewcourses.vue'
 import Viewuserrepeatcourses from '@/views/admin/viewuserrepeatcourses.vue'
 import Combinehomepanel from '@/views/combinehomepanel.vue'
+import OtherTime from '@/views/OtherTime.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,11 @@ const router = createRouter({
     path:"/home",
     name:"panelhome",
     component:Combinehomepanel
+  },
+  {
+path:"/other/:programid",
+props:true,
+component:OtherTime
   },
   {
     path:"/adminthesignin",

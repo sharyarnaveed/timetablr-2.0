@@ -5,7 +5,7 @@ import Timetable from "@/views/Daywise.vue"
 import { useUserStore } from "@/stores/userinfo";
 import profilecard from '@/components/profilecard.vue';
 import { onMounted, ref } from 'vue'
- 
+import Other from './otherTimetables.vue';
 const userStore = useUserStore();
 const username = ref("");
 const currentTab = ref('Today')
@@ -20,7 +20,8 @@ onMounted(async()=>
 const tabs = {
     Today,
   SeeMore,
-Timetable
+Timetable,
+Other
 }
 
 
@@ -57,7 +58,8 @@ function handleCustomevent(data)
       
     </div>
   <div class="demo">
-    <button
+    <div class="tabbuttonsdiv">
+      <button
        v-for="(_, tab) in tabs"
        :key="tab"
        :class="['tab-button', { active: currentTab === tab }]"
@@ -65,6 +67,8 @@ function handleCustomevent(data)
      >
       {{ tab }}
     </button>
+    </div>
+  
     <keep-alive>
     
       <div v-if="showprofile" @click="" class="profilecard">
@@ -78,34 +82,42 @@ function handleCustomevent(data)
 <style scoped>
 .demo {
   font-family: sans-serif;
-  /* border: 2px solid blue; */
   border-radius: 2px;
   padding: 10px 10px;
-  user-select: none;
-  overflow-x: auto;
+
+}
+.tabbuttonsdiv {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto; 
+  height: 50px;
+  width: 100%;
+  gap: 10px;
+  justify-content: center; 
+  align-items: center;
 }
 
 .tab-button {
-  padding: 10px 10px;
+flex: 1;
+  min-width: 80px;
+  padding: 10px;
   border-radius: 30px;
-font-family: var(--majorfont);
-font-size: .9rem;
-border: 2px solid #1B1B1D;
+  font-family: var(--majorfont);
+  font-size: 0.9rem;
+  border: 2px solid #1B1B1D;
   cursor: pointer;
   background: #fff;
   width: 25%;
-  height: 30%;
-  margin-bottom: -1px;
-  margin-right: 10px;
+  height: 90%;
+
 }
-.tab-button:hover {
-  background: #1B1B1D;
-  color: whitesmoke;
-}
+
+.tab-button:hover, 
 .tab-button.active {
   background: #1B1B1D;
   color: whitesmoke;
 }
+
 @media only screen and (max-width: 349px){
     .settings {
     /* border: 2px solid red; */
