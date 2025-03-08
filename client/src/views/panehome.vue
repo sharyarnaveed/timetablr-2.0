@@ -88,7 +88,7 @@ const fetchData = async (day) => {
     username.value = fetchedUsername;
     const truncatedUsername = truncateName(fetchedUsername, 9);
     await userStore.storeusername(truncatedUsername);
-await userStore.storeuserprogram(response.data.UserProgram)
+    await userStore.storeuserprogram(response.data.UserProgram);
     return response.data.timetable;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -131,7 +131,6 @@ onMounted(async () => {
   if (statusFlags.value.clash) {
     storeClassData.value = clashes[1];
     console.log(storeClassData.value);
-    
   }
 
   const notCurrentClasses = await timetableStore.getnotclocal();
@@ -174,64 +173,58 @@ onMounted(async () => {
 
 <template>
   <keep-alive>
-  
-
-  <main class="homepanelmain">
-    <div class="headingandcurrent">
-      
-      
-      <Suspense>
-        <div v-if="statusFlags.clash" class="currentconoutisde">
-          <Morecurrent :clashdata="storeClassData" />
-        </div>
-
-        <div v-else class="statschart">
-       <span class="chartheading"> Daily Stats -></span>
-
-        <div class="belowstats">
-          <Suspense>
-          <circularprogressbar
-            class="loadherstats"
-            :value="progress"
-            :size="sizeOfbar"
-            :strokeWidth="barStroke"
-            progressColor="#1B1B1D"
-            backgroundColor="#E0E0E0"
-            :showLabel="true"
-            :animationDuration="1500"
-          />
-        </Suspense>
-        <div class="dayteller">
-          <span class="spandate">{{ TodayDate }}</span>
-
-          <span class="spanmonth">{{ TodayMonth }}</span>
-        </div>
-        </div>
-      
-      </div>
-      </Suspense>
-
-    </div>
-
-    <div class="bottomtable">
-      <div class="currentconoutisde">
-        <h4>Current Class -></h4>
-
+    <main class="homepanelmain">
+      <div class="headingandcurrent">
         <Suspense>
-          <InfoCard v-if="timetableStore.currentClass" />
-          <h2 v-else class="noclasstext">
-            <span v-if="statusFlags.remainingCheck">
-              Next Class In {{ timeInfo.remainingHours }}hr:{{
-                timeInfo.remainingMinutes
-              }}min
-            </span>
-            <span v-else>{{ themsg }}</span>
-          </h2>
+          <div v-if="statusFlags.clash" class="currentconoutisde">
+            <Morecurrent :clashdata="storeClassData" />
+          </div>
+
+          <div v-else class="statschart">
+            <span class="chartheading"> Daily Stats -></span>
+
+            <div class="belowstats">
+              <Suspense>
+                <circularprogressbar
+                  class="loadherstats"
+                  :value="progress"
+                  :size="sizeOfbar"
+                  :strokeWidth="barStroke"
+                  progressColor="#1B1B1D"
+                  backgroundColor="#E0E0E0"
+                  :showLabel="true"
+                  :animationDuration="1500"
+                />
+              </Suspense>
+              <div class="dayteller">
+                <span class="spandate">{{ TodayDate }}</span>
+
+                <span class="spanmonth">{{ TodayMonth }}</span>
+              </div>
+            </div>
+          </div>
         </Suspense>
       </div>
-    </div>
-  </main>
-</keep-alive>
+
+      <div class="bottomtable">
+        <div class="currentconoutisde">
+          <h4>Current Class -></h4>
+
+          <Suspense>
+            <InfoCard v-if="timetableStore.currentClass" />
+            <h2 v-else class="noclasstext">
+              <span v-if="statusFlags.remainingCheck">
+                Next Class In {{ timeInfo.remainingHours }}hr:{{
+                  timeInfo.remainingMinutes
+                }}min
+              </span>
+              <span v-else>{{ themsg }}</span>
+            </h2>
+          </Suspense>
+        </div>
+      </div>
+    </main>
+  </keep-alive>
 </template>
 <style scoped>
 @media only screen and (max-width: 349px) {
@@ -268,6 +261,7 @@ onMounted(async () => {
     height: 90%;
     width: 100%;
   }
+
   /* graph and day */
   .headingandcurrent {
     /* border: 2px solid blue; */
@@ -287,21 +281,23 @@ onMounted(async () => {
 
     display: flex;
     flex-direction: column;
-   
+
     padding: 10px 5px;
   }
-  .chartheading{
+
+  .chartheading {
     font-family: var(--majorfont);
     font-size: 1rem;
     font-weight: 500;
-
   }
-.belowstats{
-  /* border: 2px solid brown; */
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
+
+  .belowstats {
+    /* border: 2px solid brown; */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
   .dayteller {
     /* border: 2px solid red; */
     height: 90px;
@@ -316,14 +312,17 @@ onMounted(async () => {
     padding: 10px 10px;
     font-family: var(--majorfont);
   }
+
   .spandate {
     font-size: 2.2rem;
     font-weight: 500;
   }
+
   .spanmonth {
     font-size: 1.2rem;
     font-weight: 300;
   }
+
   .loadherstats {
     /* border: 2px solid green; */
     height: 100%;
@@ -334,9 +333,6 @@ onMounted(async () => {
     align-items: center;
   }
 
-
-
-  
   .homepanelmain {
     /* border: 2px solid red; */
     display: flex;
@@ -354,8 +350,6 @@ onMounted(async () => {
     padding: 2px 5px;
     align-items: center;
   }
-
-
 
   .currentconoutisde {
     /* border: 2px solid brown; */
@@ -435,7 +429,6 @@ onMounted(async () => {
     height: 65vh;
   }
 
-
   /* graph and day */
   .headingandcurrent {
     /* border: 2px solid blue; */
@@ -455,21 +448,23 @@ onMounted(async () => {
 
     display: flex;
     flex-direction: column;
-   
+
     padding: 10px 10px;
   }
-  .chartheading{
+
+  .chartheading {
     font-family: var(--majorfont);
     font-size: 1rem;
     font-weight: 500;
-
   }
-.belowstats{
-  /* border: 2px solid brown; */
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
+
+  .belowstats {
+    /* border: 2px solid brown; */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
   .dayteller {
     /* border: 2px solid red; */
     height: 100px;
@@ -484,14 +479,17 @@ onMounted(async () => {
     font-family: var(--majorfont);
     padding: 10px 10px;
   }
+
   .spandate {
     font-size: 2.5rem;
     font-weight: 500;
   }
+
   .spanmonth {
     font-size: 1.5rem;
     font-weight: 300;
   }
+
   .loadherstats {
     /* border: 2px solid green; */
     height: 90%;
@@ -501,9 +499,6 @@ onMounted(async () => {
     justify-content: center;
     align-items: center;
   }
-
-
-
 
   .currentconoutisde {
     /* border: 2px solid brown; */
@@ -567,7 +562,6 @@ onMounted(async () => {
     width: 100%;
   }
 
-
   /* graph and day */
   .headingandcurrent {
     /* border: 2px solid blue; */
@@ -589,21 +583,23 @@ onMounted(async () => {
     gap: 5px;
     display: flex;
     flex-direction: column;
-   
+
     padding: 10px 15px;
   }
-  .chartheading{
+
+  .chartheading {
     font-family: var(--majorfont);
     font-size: 1rem;
     font-weight: 500;
-
   }
-.belowstats{
-  /* border: 2px solid brown; */
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
+
+  .belowstats {
+    /* border: 2px solid brown; */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
   .dayteller {
     /* border: 2px solid red; */
     height: 115px;
@@ -618,14 +614,17 @@ onMounted(async () => {
     font-family: var(--majorfont);
     padding: 10px 10px;
   }
+
   .spandate {
     font-size: 2.7rem;
     font-weight: 500;
   }
+
   .spanmonth {
     font-size: 1.7rem;
     font-weight: 300;
   }
+
   .loadherstats {
     /* border: 2px solid green; */
     height: 100%;
@@ -635,8 +634,6 @@ onMounted(async () => {
     justify-content: center;
     align-items: center;
   }
-
-
 
   .homepanelmain {
     /* border: 2px solid red; */
@@ -655,8 +652,6 @@ onMounted(async () => {
 
     align-items: center;
   }
-
-
 
   .currentconoutisde {
     /* border: 2px solid brown; */

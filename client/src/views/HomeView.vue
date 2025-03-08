@@ -46,11 +46,7 @@ const installapp = async () => {
 </template>
 
 <style scoped>
-main {
-  overflow-y: none;
-  position: fixed;
-  width: 100%;
-}
+
 .mainhomesec + * {
   visibility: hidden;
 }
@@ -72,7 +68,7 @@ main {
   .mainhomesec {
     /* border: 2px solid yellow; */
     background-image: url("https://images.unsplash.com/photo-1701690774955-7d06cfd3f857?q=80&w=1563&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-    background-position: 0%;
+
     background-size: cover;
     height: 100vh;
     overflow: hidden;
