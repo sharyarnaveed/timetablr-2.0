@@ -6,7 +6,7 @@ const { homedata, getalltimetable, blank, getcoursesfromdb, addCourse } = requir
 const { verifyjwt } = require("../middleware/auth.middleware.js");
 const { changepassword, changeusername } = require("../controllers/settings.controller.js");
 const { viewcourse, deletecourse } = require("../controllers/courses.controller.js");
-
+const { getidTimetable } = require("../controllers/getidtimetablr.controller.js");
 
 
 const router=Router();
@@ -24,7 +24,7 @@ router.route('/getcoursesfromdb').post(verifyjwt,getcoursesfromdb)
 router.route('/addcourse').post(verifyjwt,addCourse)
 router.route('/viewcourses').post(verifyjwt,viewcourse)
 router.route('/deletecourse').post(verifyjwt,deletecourse)
-
+router.route('/gettimetable').post(verifyjwt,getidTimetable)
 
 module.exports = router;
 
