@@ -1,163 +1,232 @@
 <template>
- <main class="adminhome">
-    <section class="upperadminhome">
+  <main class="dashboard">
+    <div class="dashboard-grid">
+      <!-- Statistics Cards -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <i class="fas fa-users"></i>
+          <div class="stat-info">
+            <h3>Total Users</h3>
+            <p>{{ totalUsers }}</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-graduation-cap"></i>
+          <div class="stat-info">
+            <h3>Programs</h3>
+            <p>{{ gottenprogram.length }}</p>
+          </div>
+        </div>
+      </div>
 
-        <section class="userscharts">
-    
-            <linechart/>
-        </section>
+      <!-- Chart Section -->
+      <section class="chart-section">
+        <div class="chart-container">
+          <h2>User Growth</h2>
+          <linechart/>
+        </div>
+      </section>
 
-
-    <router-link to="/totheadmindashboard/addcategory"  class="courseslist">
-        <table>
-        <tr>
-          <th>Program Id</th>
-          <th>Program Name</th>
-        </tr>
-        <tr v-for="(program, index) in gottenprogram" :key="program.program_id">
-          <td>{{ program.program_id }}</td>
-          <td>{{ program.program_name }}</td>
-        </tr>
-      </table>
-    </router-link>
-
-    </section>
-
-    <section class="lowerhome">
-
-
-
-        <!-- <section class="teacherslist">
-          <router-link class="courseslist" to="/totheadmindashboard/teacher">
+      <!-- Programs Table -->
+      <section class="table-section">
+        <div class="table-container">
+          <div class="table-header">
+            <h2>Programs List</h2>
+            <router-link to="/totheadmindashboard/addcategory" class="add-btn">
+              <i class="fas fa-plus"></i> Add Program
+            </router-link>
+          </div>
+          <div class="table-wrapper">
             <table>
-        <tr>
-         
-          <th>Teacher Name</th>
-          <th>Course Name</th>
-          <th>Program Name</th>
-      
-        </tr>
-        <tr v-for="teacher in teacherlist" :key="teacher.teacher_id" >
-
-        
-          <td> {{ teacher.teacher_name  }} </td>
-          <td> {{ teacher.course_name  }} </td>
-          <td> {{ teacher.program_name  }} </td>
-          
-        </tr>
-      </table>
-          </router-link>
-        
-        </section> -->
-    </section>
-
- </main>
+              <thead>
+                <tr>
+                  <th>Program ID</th>
+                  <th>Program Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="program in gottenprogram" :key="program.program_id">
+                  <td>{{ program.program_id }}</td>
+                  <td>{{ program.program_name }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
 </template>
 
 <script setup>
 import linechart from "@/components/linechart.vue"
 import axios from "axios";
-import { onMounted,ref } from "vue";
-const gottenprogram=ref([]);
-const teacherlist=ref([]);
+import { onMounted, ref } from "vue";
 
+const gottenprogram = ref([]);
+const totalUsers = ref(0);
 
-const getcategory=async()=>
-{
+const getcategory = async () => {
   try {
-    const getcateg=await axios.post("/api/user/getprogramfromdb");
-    gottenprogram.value=getcateg.data;
+    const [programsResponse, usersResponse] = await Promise.all([
+      axios.post("/api/user/getprogramfromdb"),
+      axios.post("/api/admin/getTotalUsers")
+    ]);
+    
+    gottenprogram.value = programsResponse.data;
+    totalUsers.value = usersResponse.data.count;
   } catch (error) {
-    console.log("error getting program from db",error);
+    console.error("Error fetching dashboard data:", error);
   }
-  
-  // console.log(gottenprogram.value);
-}
+};
 
-
-
-
-
-onMounted(()=>
-{
+onMounted(() => {
   getcategory();
-
-})
-
+});
 </script>
 
-<style  scoped>
-.adminhome
-{
-    background-color: #F2F8FD;
-    height: 90%;
-    /* border: 2px solid red; */
-    
-    
-}
-.upperadminhome{
-    /* border: 2px solid orange; */
-    height: 60%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 15px 15px;
-}
-.userscharts {
-    border: 2px solid rgba(0, 0, 0, 0.226);
-    width: 45%;
-    height: 95%;
-    background-color: white;
-    border-radius: 14px;
+<style scoped>
+.dashboard {
+  padding: 1.5rem;
+  background: #f5f7fa;
+  min-height: 100vh;
 }
 
-.courseslist
-{
-    border: 2px solid rgba(0, 0, 0, 0.226);
-    width: 45%;
-    height: 95%;
-    background-color: white;
-    border-radius: 14px;
-    overflow-y: auto;
-    color: black;
-    
-    text-decoration: none;
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-card i {
+  font-size: 2rem;
+  color: #4CAF50;
+}
+
+.stat-info h3 {
+  color: #666;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.stat-info p {
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.chart-section, .table-section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.add-btn {
+  background: #4CAF50;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.3s;
+}
+
+.add-btn:hover {
+  background: #45a049;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
 
 table {
-    font-family: var(--majorfont);
-  border-collapse: collapse;
   width: 100%;
-  overflow-y: auto;
+  border-collapse: collapse;
+  font-size: 0.9rem;
 }
 
-td,
-th {
-  border: 1px solid #dddddd;
+th, td {
+  padding: 1rem;
   text-align: left;
-  padding: 8px;
+  border-bottom: 1px solid #eee;
 }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
+th {
+  background: #f5f5f5;
+  font-weight: 600;
+  color: #333;
 }
-.lowerhome{
-    /* border: 2px solid red; */
-    height: 40%;
+
+tr:hover {
+  background: #f8f8f8;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+
+  .chart-section, .table-section {
+    padding: 1rem;
+  }
+
+  th, td {
+    padding: 0.75rem;
+  }
+
+  .table-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .add-btn {
     width: 100%;
-    display: flex;
     justify-content: center;
-    align-items: center;
+  }
 }
 
-.teacherslist
-{
-    border: 2px solid rgba(0, 0, 0, 0.226);
-    width: 93%;
-    height: 90%;
-    background-color: white;
-    border-radius: 14px;
-    overflow-y: auto;
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 0.5rem;
+  }
+
+  .stat-info h3 {
+    font-size: 0.75rem;
+  }
+
+  .stat-info p {
+    font-size: 1.25rem;
+  }
 }
 </style>

@@ -1,86 +1,32 @@
 <template>
-  <div class="navcontainer">
-    <router-link class="navlinks" to="/home">
-      <svg
-        width="16"
-        height="16"
-        class="nav-icon"
-        fill="none"
-        viewBox="0 0 16 16"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M14.6667 13.8334V6.75002C14.6667 6.62065 14.6365 6.49306 14.5787 6.37734C14.5208 6.26163 14.4368 6.16098 14.3333 6.08335L8.5 1.70835C8.35575 1.60017 8.18031 1.54169 8 1.54169C7.81969 1.54169 7.64424 1.60017 7.5 1.70835L1.66667 6.08335C1.56317 6.16098 1.47917 6.26163 1.42131 6.37734C1.36345 6.49306 1.33333 6.62065 1.33333 6.75002V13.8334C1.33333 14.0544 1.42113 14.2663 1.57741 14.4226C1.73369 14.5789 1.94565 14.6667 2.16667 14.6667H5.5C5.72101 14.6667 5.93297 14.5789 6.08925 14.4226C6.24553 14.2663 6.33333 14.0544 6.33333 13.8334V11.3334C6.33333 11.1123 6.42113 10.9004 6.57741 10.7441C6.73369 10.5878 6.94565 10.5 7.16666 10.5H8.83333C9.05435 10.5 9.26631 10.5878 9.42259 10.7441C9.57887 10.9004 9.66666 11.1123 9.66666 11.3334V13.8334C9.66666 14.0544 9.75446 14.2663 9.91074 14.4226C10.067 14.5789 10.279 14.6667 10.5 14.6667H13.8333C14.0543 14.6667 14.2663 14.5789 14.4226 14.4226C14.5789 14.2663 14.6667 14.0544 14.6667 13.8334Z"
-          class="nav-icon-path"
-        />
-      </svg>
+  <nav class="navcontainer">
+    <router-link class="navlinks" to="/home" title="Home">
+      <i class="fas fa-home nav-icon"></i>
     </router-link>
 
-    <router-link class="navlinks" to="/courses">
-      <svg
-        width="12"
-        height="12"
-        viewBox="0 0 12 12"
-        class="nav-icon"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M5 6.66667H0.833336C0.597225 6.66667 0.399447 6.58667 0.240003 6.42667C0.0805585 6.26667 0.000558429 6.06889 2.87356e-06 5.83334C-0.000552682 5.59778 0.0794474 5.4 0.240003 5.24C0.400558 5.08 0.598336 5 0.833336 5H5V0.833336C5 0.597225 5.08 0.399447 5.24 0.240003C5.4 0.0805585 5.59778 0.000558429 5.83334 2.87356e-06C6.06889 -0.000552682 6.26695 0.0794474 6.4275 0.240003C6.58806 0.400558 6.66778 0.598336 6.66667 0.833336V5H10.8333C11.0694 5 11.2675 5.08 11.4275 5.24C11.5875 5.4 11.6672 5.59778 11.6667 5.83334C11.6661 6.06889 11.5861 6.26695 11.4267 6.4275C11.2672 6.58806 11.0694 6.66778 10.8333 6.66667H6.66667V10.8333C6.66667 11.0694 6.58667 11.2675 6.42667 11.4275C6.26667 11.5875 6.06889 11.6672 5.83334 11.6667C5.59778 11.6661 5.4 11.5861 5.24 11.4267C5.08 11.2672 5 11.0694 5 10.8333V6.66667Z"
-          class="nav-icon-path"
-        />
-      </svg>
+    <router-link class="navlinks" to="/courses" title="Add Course">
+      <i class="fas fa-plus nav-icon"></i>
     </router-link>
 
-    <router-link class="navlinks" to="/settings">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        class="nav-icon"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M7.70833 18.3334L7.375 15.6667C7.19445 15.5972 7.02444 15.5139 6.865 15.4167C6.70556 15.3195 6.54917 15.2153 6.39583 15.1042L3.91667 16.1459L1.625 12.1875L3.77083 10.5625C3.75694 10.4653 3.75 10.3717 3.75 10.2817V9.71919C3.75 9.62863 3.75694 9.53474 3.77083 9.43752L1.625 7.81252L3.91667 3.85419L6.39583 4.89585C6.54861 4.78474 6.70833 4.68058 6.875 4.58335C7.04167 4.48613 7.20833 4.4028 7.375 4.33335L7.70833 1.66669H12.2917L12.625 4.33335C12.8056 4.4028 12.9758 4.48613 13.1358 4.58335C13.2958 4.68058 13.4519 4.78474 13.6042 4.89585L16.0833 3.85419L18.375 7.81252L16.2292 9.43752C16.2431 9.53474 16.25 9.62863 16.25 9.71919V10.2809C16.25 10.3714 16.2361 10.4653 16.2083 10.5625L18.3542 12.1875L16.0625 16.1459L13.6042 15.1042C13.4514 15.2153 13.2917 15.3195 13.125 15.4167C12.9583 15.5139 12.7917 15.5972 12.625 15.6667L12.2917 18.3334H7.70833ZM9.16667 16.6667H10.8125L11.1042 14.4584C11.5347 14.3472 11.9342 14.1842 12.3025 13.9692C12.6708 13.7542 13.0075 13.4936 13.3125 13.1875L15.375 14.0417L16.1875 12.625L14.3958 11.2709C14.4653 11.0764 14.5139 10.8717 14.5417 10.6567C14.5694 10.4417 14.5833 10.2228 14.5833 10C14.5833 9.77724 14.5694 9.55863 14.5417 9.34419C14.5139 9.12974 14.4653 8.92474 14.3958 8.72919L16.1875 7.37502L15.375 5.95835L13.3125 6.83335C13.0069 6.51391 12.6703 6.24669 12.3025 6.03169C11.9347 5.81669 11.5353 5.65335 11.1042 5.54169L10.8333 3.33335H9.1875L8.89583 5.54169C8.46528 5.6528 8.06611 5.81613 7.69833 6.03169C7.33056 6.24724 6.99361 6.50752 6.6875 6.81252L4.625 5.95835L3.8125 7.37502L5.60417 8.70835C5.53472 8.91669 5.48611 9.12502 5.45833 9.33335C5.43056 9.54169 5.41667 9.76391 5.41667 10C5.41667 10.2222 5.43056 10.4375 5.45833 10.6459C5.48611 10.8542 5.53472 11.0625 5.60417 11.2709L3.8125 12.625L4.625 14.0417L6.6875 13.1667C6.99306 13.4861 7.33 13.7536 7.69833 13.9692C8.06667 14.1847 8.46583 14.3478 8.89583 14.4584L9.16667 16.6667ZM10.0417 12.9167C10.8472 12.9167 11.5347 12.632 12.1042 12.0625C12.6736 11.4931 12.9583 10.8056 12.9583 10C12.9583 9.19446 12.6736 8.50696 12.1042 7.93752C11.5347 7.36807 10.8472 7.08335 10.0417 7.08335C9.22222 7.08335 8.53111 7.36807 7.96833 7.93752C7.40556 8.50696 7.12444 9.19446 7.125 10C7.12556 10.8056 7.40694 11.4931 7.96917 12.0625C8.53139 12.632 9.22222 12.9167 10.0417 12.9167Z"
-          class="nav-icon-path"
-        />
-      </svg>
+    <router-link class="navlinks" to="/settings" title="Settings">
+      <i class="fas fa-cog nav-icon"></i>
     </router-link>
 
-    <a class="navlinks" href="https://forms.gle/bEmLBoy6xxHy2iq6A">
-      <svg
-        width="20"
-        height="19"
-        viewBox="0 0 20 19"
-        class="nav-icon"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M4 16L1.7 18.3C1.38334 18.6167 1.02067 18.6877 0.612002 18.513C0.203335 18.3383 -0.000665038 18.0257 1.62866e-06 17.575V2C1.62866e-06 1.45 0.196002 0.979333 0.588002 0.588C0.980002 0.196667 1.45067 0.000666667 2 0H18C18.55 0 19.021 0.196 19.413 0.588C19.805 0.98 20.0007 1.45067 20 2V14C20 14.55 19.8043 15.021 19.413 15.413C19.0217 15.805 18.5507 16.0007 18 16H4ZM10 13C10.2833 13 10.521 12.904 10.713 12.712C10.905 12.52 11.0007 12.2827 11 12C10.9993 11.7173 10.9033 11.48 10.712 11.288C10.5207 11.096 10.2833 11 10 11C9.71667 11 9.47934 11.096 9.288 11.288C9.09667 11.48 9.00067 11.7173 9 12C8.99934 12.2827 9.09534 12.5203 9.288 12.713C9.48067 12.9057 9.718 13.0013 10 13ZM10 9C10.2833 9 10.521 8.904 10.713 8.712C10.905 8.52 11.0007 8.28267 11 8V4C11 3.71667 10.904 3.47933 10.712 3.288C10.52 3.09667 10.2827 3.00067 10 3C9.71734 2.99933 9.48 3.09533 9.288 3.288C9.096 3.48067 9 3.718 9 4V8C9 8.28333 9.096 8.521 9.288 8.713C9.48 8.905 9.71734 9.00067 10 9Z"
-          fill="white"
-           class="nav-icon-path"
-        />
-      </svg>
+    <a class="navlinks" 
+       href="https://forms.gle/bEmLBoy6xxHy2iq6A" 
+       target="_blank"
+       title="Feedback">
+      <i class="fas fa-comment nav-icon"></i>
     </a>
 
-    <div @click="handleLogout" class="navlinks">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="white"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M14.1667 5.83333L12.9917 7.00833L15.1417 9.16667H6.66667V10.8333H15.1417L12.9917 12.9833L14.1667 14.1667L18.3333 10M3.33334 4.16667H10V2.5H3.33334C2.41667 2.5 1.66667 3.25 1.66667 4.16667V15.8333C1.66667 16.75 2.41667 17.5 3.33334 17.5H10V15.8333H3.33334V4.16667Z"
-        />
-      </svg>
-    </div>
-  </div>
+    <button @click="handleLogout" class="navlinks logout-btn" title="Logout">
+      <i class="fas fa-sign-out-alt nav-icon"></i>
+    </button>
+  </nav>
 </template>
 
 <script setup>
-import axios from "axios";
+import { ref } from "vue";
 import api from "@/api";
 import router from "@/router";
 
@@ -100,83 +46,121 @@ const handleLogout = async () => {
 
 <style scoped>
 .navcontainer {
-  width: 97%;
-  height: 65%;
+  width: min(97%, 500px);
+  height: 65px;
   border-radius: 30px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   background-color: #1b1b1d;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  padding: 0 1rem;
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 
 .navlinks {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  transition: all 0.3s ease;
   color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  text-decoration: none;
+}
+
+.navlinks:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
 .nav-icon {
-  width: 20px;
-  height: 20px;
-}
-
-.nav-icon-path {
-  fill: currentColor;
-  stroke: currentColor;
-  stroke-width: 0.2;
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
 }
 
 .router-link-active,
 .router-link-exact-active {
   background-color: white;
-  color: black;
+  color: #1b1b1d;
+  transform: translateY(-2px);
 }
 
-.router-link-active .nav-icon-path,
-.router-link-exact-active .nav-icon-path {
-  fill: black;
-  stroke: black;
+.router-link-active .nav-icon,
+.router-link-exact-active .nav-icon {
+  transform: scale(1.1);
 }
-@media only screen and (max-width: 349px) {
-  .navlinks {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    color: white;
-  }
-  .nav-icon {
-    width: 100%;
-    height: 60%;
-  }
+
+.logout-btn {
+  color: #ff4757;
 }
-@media only screen and (min-width: 350px) {
-  .nav-icon {
-    width: 100%;
-    height: 60%;
-  }
+
+.logout-btn:hover {
+  background-color: rgba(255, 71, 87, 0.1);
 }
-@media only screen and (min-width: 580px) {
-  .nav-icon {
-    width: 100%;
-    height: 60%;
-  }
+
+/* Tablet and larger screens */
+@media (min-width: 768px) {
   .navcontainer {
-    width: 97%;
-    height: 75%;
-    border-radius: 30px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #1b1b1d;
+    width: 70px;
+    height: calc(100vh - 2rem);
+    flex-direction: column;
+    left: 1rem;
+    bottom: 50%;
+    transform: translateY(50%);
+    border-radius: 35px;
+  }
+
+  .navlinks {
+    width: 45px;
+    height: 45px;
+  }
+
+  .nav-icon {
+    font-size: 1.4rem;
+  }
+}
+
+/* Large desktop screens */
+@media (min-width: 1200px) {
+  .navcontainer {
+    width: 80px;
+  }
+
+  .navlinks {
+    width: 50px;
+    height: 50px;
+  }
+
+  .nav-icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 350px) {
+  .navcontainer {
+    height: 55px;
+    padding: 0 0.5rem;
+  }
+
+  .navlinks {
+    width: 35px;
+    height: 35px;
+  }
+
+  .nav-icon {
+    font-size: 1.1rem;
   }
 }
 </style>

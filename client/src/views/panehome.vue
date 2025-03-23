@@ -726,4 +726,161 @@ onMounted(async () => {
     margin: 0 auto;
   }
 }
+
+@media only screen and (min-width: 768px) {
+  .homepanelmain {
+    height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .headingandcurrent {
+    height: 45%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 0;
+  }
+
+  .statschart {
+    border: 2px solid #1b1b1d;
+    height: 100%;
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .chartheading {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  .belowstats {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .dayteller {
+    height: 140px;
+    width: 140px;
+    background-color: #1b1b1d;
+    border-radius: 20px;
+    padding: 1.5rem;
+  }
+
+  .spandate {
+    font-size: 3rem;
+  }
+
+  .spanmonth {
+    font-size: 1.8rem;
+  }
+
+  .loadherstats {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bottomtable {
+    height: 45%;
+    width: 100%;
+  }
+
+  .currentconoutisde {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 1rem;
+  }
+
+  .currentconoutisde h4 {
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .noclasstext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 1.2rem;
+    background: rgba(27, 27, 29, 0.05);
+    border-radius: 20px;
+    padding: 2rem;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .homepanelmain {
+    padding: 3rem;
+  }
+
+  .chartheading {
+    font-size: 1.4rem;
+  }
+
+  .dayteller {
+    height: 160px;
+    width: 160px;
+  }
+
+  .spandate {
+    font-size: 3.5rem;
+  }
+
+  .spanmonth {
+    font-size: 2rem;
+  }
+
+  .currentconoutisde h4 {
+    font-size: 1.4rem;
+  }
+
+  .noclasstext {
+    font-size: 1.4rem;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .homepanelmain {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    height: 100vh;
+    padding: 3rem;
+  }
+
+  .headingandcurrent {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bottomtable {
+    height: 100%;
+  }
+
+  .statschart {
+    height: 50%;
+  }
+
+  .currentconoutisde {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+}
 </style>
