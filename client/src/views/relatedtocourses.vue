@@ -1,85 +1,85 @@
 <script setup>
-import AddCourse from '@/views/addPreviousCourse.vue';
+import AddCourse from "@/views/addPreviousCourse.vue";
 import ViewCourses from "@/views/viewcourses.vue";
-import { onMounted, ref } from 'vue';
+import { onMounted, ref } from "vue";
+import ViewMakeupClass from "@/views/viewMakeup.vue";
+import api from "@/api";
+import AddMakeupClass from "./addMakeupClass.vue";
+const currentTab = ref("Add Course");
 
-import api from '@/api';
-const currentTab=ref('AddCourse');
+const tabs = {
+  "Add Course": AddCourse,
+  "View Courses": ViewCourses,
+  "Add Makeup": AddMakeupClass,
+"View Makeup": ViewMakeupClass
+};
 
-const tabs={
-    AddCourse,
-    ViewCourses
-}
-
-onMounted(async()=>
-{
+onMounted(async () => {
   try {
-    const responce=await api.post("/api/user/loadall");
-  
+    const responce = await api.post("/api/user/loadall");
   } catch (error) {
     console.log(error);
   }
-})
-
+});
 </script>
 <template>
   <main class="loadmoremain">
+    <div class="wrapper">
+      <div class="grid-container">
+        <div
+          v-for="(component, tab) in tabs"
+          :key="tab"
+          class="option"
+          @click="currentTab = tab"
+        >
+          <input
+            :value="tab"
+            name="btn"
+            type="radio"
+            class="input"
+            :checked="currentTab === tab"
+          />
+          <div class="btn">
+            <span class="span">{{ tab }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-     <div class="wrapper">
-       <div 
-         v-for="(component, tab) in tabs" 
-         :key="tab"
-         class="option"
-         @click="currentTab = tab"
-       >
-         <input 
-           :value="tab" 
-           name="btn" 
-           type="radio" 
-           class="input"
-           :checked="currentTab === tab"
-         />
-         <div class="btn">
-           <span class="span">{{ tab }}</span>
-         </div>
-       </div>
-     </div>
- 
-     <component :is="tabs[currentTab]"></component>
-   </main>
+    <component :is="tabs[currentTab]"></component>
+  </main>
 </template>
 
 <style scoped>
-
 .wrapper {
-  --font-color-dark: #1B1B1D;
+  --font-color-dark: #1b1b1d;
   --font-color-light: #fff;
   --bg-color: #fff;
-  --main-color: #1B1B1D;
+  --main-color: #1b1b1d;
   --secondary-color: #505050;
   position: relative;
   width: 100%;
-  height: 54px;
   background-color: var(--bg-color);
   border: 2px solid var(--main-color);
-  border-radius: 34px;
-  display: flex;
-
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
+  border-radius: 15px;
+  padding: 10px;
   box-shadow: 4px 4px var(--main-color);
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 10px;
+}
+
 .option {
-  margin-right: 5px;
-  width: 30%;
   height: 39px;
   position: relative;
-  top: 2px;
-  left: 2px;
   border-radius: 34px;
   transition: 0.25s cubic-bezier(0, 0, 0, 1);
+  margin: 0;
+  width: 100%;
 }
 
 .option:last-child {
@@ -165,7 +165,7 @@ onMounted(async()=>
   .backrouter {
     font-size: 1.1rem;
     font-family: var(--majorfont);
-    color: #1B1B1D;
+    color: #1b1b1d;
     /* border: 2px solid blue; */
   }
 }
@@ -173,11 +173,11 @@ onMounted(async()=>
 @media only screen and (min-width: 350px) {
   .notclasscon {
     /* border: 2px solid red; */
-    height:82%;
+    height: 82%;
     overflow-y: auto;
     width: 100%;
     padding: 10px 15px;
-    margin-top: 10px ;
+    margin-top: 10px;
   }
   .loadmoremain {
     /* border: 2px solid red; */
@@ -200,7 +200,7 @@ onMounted(async()=>
   .backrouter {
     font-size: 1.1rem;
     font-family: var(--majorfont);
-    color: #1B1B1D;
+    color: #1b1b1d;
   }
   .router {
     /* border: 2px solid green; */
@@ -213,7 +213,7 @@ onMounted(async()=>
   .backrouter {
     font-size: 1.1rem;
     font-family: var(--majorfont);
-    color: #1B1B1D;
+    color: #1b1b1d;
     /* border: 2px solid blue; */
   }
 }

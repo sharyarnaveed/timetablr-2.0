@@ -74,8 +74,8 @@ onMounted(async () => {
 .thecontainercheck {
   height: 65vh;
   overflow-y: auto;
-  width: 95%;
-  border: 2px solid #1b1b1d;
+  width: 100%;
+  /* border: 2px solid #1b1b1d; */
   padding: 20px;
   background: whitesmoke;
   border-radius: 12px;

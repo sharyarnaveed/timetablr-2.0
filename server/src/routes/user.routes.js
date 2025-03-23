@@ -7,6 +7,7 @@ const { verifyjwt } = require("../middleware/auth.middleware.js");
 const { changepassword, changeusername } = require("../controllers/settings.controller.js");
 const { viewcourse, deletecourse } = require("../controllers/courses.controller.js");
 const { getidTimetable } = require("../controllers/getidtimetablr.controller.js");
+const { getCoursesformake, addMakeupClass, viewMakeupclasses, deletemakeclass } = require("../controllers/makeclass.controller.js");
 
 
 const router=Router();
@@ -25,6 +26,13 @@ router.route('/addcourse').post(verifyjwt,addCourse)
 router.route('/viewcourses').post(verifyjwt,viewcourse)
 router.route('/deletecourse').post(verifyjwt,deletecourse)
 router.route('/gettimetable').post(verifyjwt,getidTimetable)
+router.route('/getmakeupcourses').get(verifyjwt,getCoursesformake)
+router.route('/addmakeupclass').post(verifyjwt,addMakeupClass)
+router.route('/viewmakeupclass').get(verifyjwt,viewMakeupclasses)
+router.route('/deletemakeclass').post(verifyjwt,deletemakeclass)
+
+
+
 
 module.exports = router;
 

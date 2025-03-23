@@ -14,8 +14,8 @@ defineProps({
 /* From Uiverse.io by vaibhavchandranv */
 .card {
   font-family: var(--majorfont);
-  width: 90%;
-  height: 100%;
+  width: 150px;
+  height: 100px;
 
   display: flex;
   justify-content: center;
@@ -31,7 +31,7 @@ defineProps({
 .card h1 {
   display: flex;
   flex-wrap: wrap;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #000000;
 }
 
