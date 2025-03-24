@@ -6,6 +6,7 @@ import { useUserStore } from "@/stores/userinfo";
 import profilecard from '@/components/profilecard.vue';
 import { onMounted, ref } from 'vue'
 import Other from './otherTimetables.vue';
+import speeddail from '@/components/navbar.vue';
 const userStore = useUserStore();
 const username = ref("");
 const currentTab = ref('Today')
@@ -77,6 +78,10 @@ function handleCustomevent(data)
     </keep-alive>
 	  <component :is="tabs[currentTab]" class="tab"></component>
   </div>
+
+  <div class="speeddailcon">
+        <speeddail />
+      </div>
 </template>
 
 <style scoped>

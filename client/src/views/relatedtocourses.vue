@@ -2,6 +2,8 @@
 import AddCourse from "@/views/addPreviousCourse.vue";
 import ViewCourses from "@/views/viewcourses.vue";
 import { onMounted, ref } from "vue";
+import speeddail from '@/components/navbar.vue';
+
 import ViewMakeupClass from "@/views/viewMakeup.vue";
 import api from "@/api";
 import AddMakeupClass from "./addMakeupClass.vue";
@@ -48,6 +50,9 @@ onMounted(async () => {
 
     <component :is="tabs[currentTab]"></component>
   </main>
+  <div class="speeddailcon">
+        <speeddail />
+      </div>
 </template>
 
 <style scoped>

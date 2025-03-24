@@ -2,6 +2,7 @@
 import UserName from '@/components/changeusername.vue';
 import Password from "@/components/changepassword.vue";
 import { onMounted, ref } from 'vue';
+import speeddail from '@/components/navbar.vue';
 
 import api from '@/api';
 const currentTab=ref('Password');
@@ -47,6 +48,9 @@ onMounted(async()=>
  
      <component :is="tabs[currentTab]"></component>
    </main>
+   <div class="speeddailcon">
+        <speeddail />
+      </div>
 </template>
 
 <style scoped>

@@ -1,18 +1,16 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import speeddail from './components/navbar.vue';
+
 </script>
 
 <template>
   
 
   <RouterView />
-  <div class="speeddailcon">
-        <speeddail />
-      </div>
+  
 </template>
 
-<style scoped>
+<style>
 
 @media only screen and (max-width: 349px)
 {
