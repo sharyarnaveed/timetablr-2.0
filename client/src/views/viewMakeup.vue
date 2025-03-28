@@ -13,7 +13,7 @@
           <td colspan="2">
             <details class="course-details">
               <summary class="course-summary">
-                <span class="course-name">{{ course.coursename }}</span>
+                <span class="course-name">{{ course.course_name }}</span>
                 <span class="summary-icon"></span>
               </summary>
               <div class="details-content">
@@ -22,13 +22,13 @@
                     <span class="info-label"
                       ><i class="fas fa-clock"></i> Start Time</span
                     >
-                    <span class="info-value">{{ course.starttime }}</span>
+                    <span class="info-value">{{ course.start_time }}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label"
                       ><i class="fas fa-hourglass-end"></i> End Time</span
                     >
-                    <span class="info-value">{{ course.endtime }}</span>
+                    <span class="info-value">{{ course.end_time }}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label"

@@ -78,10 +78,10 @@ const calculateRemainingTime = (startTime) => {
   };
 };
 
-const fetchData = async (day) => {
+const fetchData = async (day, MakeupDate) => {
   try {
     theday.value.day = day;
-    const response = await api.post("/api/user/home", theday.value);
+    const response = await api.post("/api/user/home", { day, MakeupDate });
 
     const fetchedUsername =
       response.data.username[0]?.username || "Unknown User";
@@ -105,6 +105,10 @@ onMounted(async () => {
   const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
   TodayMonth.value = today.toLocaleDateString("en-US", { month: "short" });
   TodayDate.value = today.getDate();
+  const Makeday = `${today.getFullYear()}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  console.log(Makeday);
 
   const localClasses = await timetableStore.getlocal();
 
@@ -113,7 +117,7 @@ onMounted(async () => {
     localClasses.length === 0 ||
     localClasses[0]?.day !== dayName
   ) {
-    const fetchedData = await fetchData(dayName);
+    const fetchedData = await fetchData(dayName, Makeday);
     await timetableStore.storelocal(fetchedData);
     await timetableStore.setClasses(fetchedData);
   } else {
@@ -225,7 +229,6 @@ onMounted(async () => {
       </div>
     </main>
   </keep-alive>
- 
 </template>
 <style scoped>
 @media only screen and (max-width: 349px) {

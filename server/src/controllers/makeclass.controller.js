@@ -24,9 +24,9 @@ const addMakeupClass = async (req, res) => {
 
     const userid = req.user.id;
     const program = req.user.program;
-
+const venue="MakeUp Class"
     const query =
-      "INSERT INTO makeupclass (coursename,programname,userid,starttime,endtime,date) VALUES (?,?,?,?,?,?)";
+      "INSERT INTO makeupclass (course_name,program_name,userid,start_time,end_time,date,venue) VALUES (?,?,?,?,?,?,?)";
     const [rows] = await pool.query(query, [
       course,
       program,
@@ -34,6 +34,7 @@ const addMakeupClass = async (req, res) => {
       Starttime,
       Endtime,
       date,
+      venue
     ]);
 
     return res.json({
@@ -50,7 +51,7 @@ const viewMakeupclasses = async (req, res) => {
     const program = req.user.program;
     const userid = req.user.id;
 
-    const query = "select * from makeupclass where programname=? and userid=?";
+    const query = "select * from makeupclass where program_name=? and userid=?";
 
     const [result] = await pool.query(query, [program, userid]);
     res.json(result);
