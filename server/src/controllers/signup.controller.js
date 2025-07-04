@@ -15,7 +15,7 @@ const signup = async (req, res) => {
       department,
       program,
       password,
-      repeatpassword,
+      repassword,
     } = req.body;
    
     console.log(   fullname,
@@ -23,15 +23,15 @@ const signup = async (req, res) => {
       department,
       program,
       password,
-      repeatpassword,);
+      repassword,);
 // check all fields are entered
     if (!username || !department || !program || !password) {
-      res.json({
+     return res.json({
         message: "All fields Required",
         success: false,
       });
     } else {
-const responce=validation(fullname,username,department,program,password,repeatpassword)
+const responce=validation(fullname,username,department,program,password,repassword)
         if(responce===false)
 {
   console.log(responce);
@@ -43,7 +43,7 @@ res.json({
 else{
 
 // cehck if passwords match or not
-      if (password !== repeatpassword) {
+      if (password !== repassword) {
         res.json({
           message: "Passwords DoesNot Match",
           success: false,
@@ -71,6 +71,7 @@ else{
             hashedPassword,
           ]);
 console.log(user);
+
           res.json({
             message: "User Created Successfully",
             success: true,
@@ -96,7 +97,6 @@ const getprogram = async (req, res) => {
     const [result] = await pool.query(`SELECT * FROM programs`);
     
     res.json(result);
-    console.log(result);
   } catch (error) {
     console.log("error in getting programs", error);
   }

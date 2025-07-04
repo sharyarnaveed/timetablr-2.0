@@ -19,6 +19,7 @@ import Viewcourses from '@/views/viewcourses.vue'
 import Viewuserrepeatcourses from '@/views/admin/viewuserrepeatcourses.vue'
 import Combinehomepanel from '@/views/combinehomepanel.vue'
 import OtherTime from '@/views/OtherTime.vue'
+import ABoutus from '@/views/ABoutus.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,10 @@ const router = createRouter({
     path:"/home",
     name:"panelhome",
     component:Combinehomepanel
+  },
+  {
+    path:"/about",
+    component:ABoutus
   },
   {
 path:"/other/:programid",

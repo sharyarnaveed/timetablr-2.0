@@ -26,27 +26,19 @@ const signin = async (req, res) => {
             })
         }
 
-        // console.log(username);
-        const checkusernamequery = 'SELECT * FROM user WHERE username= ?';
+    const checkusernamequery = 'SELECT * FROM user WHERE username= ?';
         const [responce] = await pool.query(checkusernamequery, [username]);
-          console.log(responce);
         if (responce.length > 0) {
             const hashedpassword = responce[0].password;
-            // console.log(hashedpassword);
-            // console.log(responce.rows);
             const comparepassword = await bcrypt.compare(password, hashedpassword);
             if (comparepassword) {
                 const user_id = responce[0].user_id;
                 const userprogram = responce[0].program;
-                console.log(user_id,userprogram);
-                // generate access token
                 const accesstoken = await jwt.sign(
                     { id: user_id, program: userprogram },
                     process.env.ACCESS_TOKEN_KEY,
                     { expiresIn: process.env.ACCESS_TIME }
                 );
-                // console.log(process.env.ACCESS_TOKEN_KEY);
-
                 // generatae refresh token
                 const refreshtoken = await jwt.sign(
                     { id: user_id, program: userprogram },
@@ -65,14 +57,13 @@ await pool.query(
                     sameSite:'strict',
                     maxAge:7*24*60*60*1000
                 };
-                res
 
-                    .cookie("accessToken", accesstoken, options)
-                    .cookie("refreshToken", refreshtoken, options)
 
-                    .json({
+                 return res.json({
                         message: "Login Successfull",
                         success: true,
+                        accesstoken:accesstoken,
+
                     });
             }
             else {

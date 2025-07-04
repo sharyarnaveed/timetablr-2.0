@@ -863,7 +863,7 @@ onMounted(async () => {
     grid-template-columns: 2fr 1fr;
     gap: 3rem;
     height: 100vh;
-    padding: 3rem;
+    padding: 3rem 4rem;
   }
 
   .headingandcurrent {

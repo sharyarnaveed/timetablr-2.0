@@ -1,22 +1,49 @@
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from 'vue';
 
-let theprompt;
-onMounted(() => {
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    theprompt = e;
-  });
+const theprompt = ref(null);
+const isInstallable = ref(false);
+
+// Check if the app is already installed
+const checkInstalled = async () => {
+  if ('getInstalledRelatedApps' in navigator) {
+    const installations = await navigator.getInstalledRelatedApps();
+    return installations.length > 0;
+  }
+  return false;
+};
+
+onMounted(async () => {
+  // Only show install button if app is not installed
+  if (!await checkInstalled()) {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      theprompt.value = e;
+      isInstallable.value = true;
+    });
+  }
 });
 
 const installapp = async () => {
-  if (theprompt) {
-    theprompt.prompt();
-    const { outcome } = await theprompt.userChoice;
-    // Optionally, log the outcome
+  if (!theprompt.value) {
+    // If PWA install prompt is not available, redirect to web version
+    window.location.href = 'https://timetable.pharmder.com/';
+    return;
+  }
+
+  try {
+    await theprompt.value.prompt();
+    const { outcome } = await theprompt.value.userChoice;
     console.log(`User response to the install prompt: ${outcome}`);
-    // Clear the saved prompt
-    theprompt = null;
+    
+    if (outcome === 'accepted') {
+      isInstallable.value = false;
+    }
+    theprompt.value = null;
+  } catch (error) {
+    console.error('Error during installation:', error);
+    // Fallback to web version
+    window.location.href = 'https://timetable.pharmder.com/';
   }
 };
 </script>
@@ -35,12 +62,19 @@ const installapp = async () => {
           </h1>
         </div>
         <div class="buttons">
-          <button @click="installapp" class="homebuttons">Download</button>
+          <button 
+            @click="installapp" 
+            class="homebuttons"
+            :disabled="!isInstallable"
+          >
+            {{ isInstallable ? 'Install App' : 'Open App' }}
+          </button>
           
             <a class="signinlink" href="https://timetable.pharmder.com/signin">Sign In</a>
      
         </div>
       </div>
+      <router-link to="/about">ABout us</router-link>
     </section>
   </main>
 </template>

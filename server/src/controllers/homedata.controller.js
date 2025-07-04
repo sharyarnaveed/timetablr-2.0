@@ -13,6 +13,8 @@ const homedata = async (req, res) => {
   try {
     const user = req.user;
     const user_id = req.user.id;
+    console.log(user.program);
+    
     const { day, MakeupDate } = req.body;
 
     const TimetableQuery = `
@@ -25,6 +27,7 @@ const homedata = async (req, res) => {
       day,
       user.program,
     ]);
+console.log(TimetableResult);
 
     const username = await getusername(req.user);
 

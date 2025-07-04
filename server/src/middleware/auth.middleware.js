@@ -1,61 +1,55 @@
-// import jwt, { decode } from 'jsonwebtoken';\
 const jwt = require("jsonwebtoken");
-const { decode } = jwt;
 
 const verifyjwt = async (req, res, next) => {
   try {
-    // Get tokens from cookies or Authorization header
+    // Get access token from Authorization header or cookie
     const accessToken =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
+
     const refreshToken = req.cookies?.refreshToken;
 
-    // Helper function to generate new access token
-    const generateNewAccessToken = async (userData) => {
-      console.log("auth user data", userData);
+    // Function to generate new access token and store in res.locals
+    const generateNewAccessToken = (userData) => {
       const newAccessToken = jwt.sign(
         { id: userData.id, program: userData.program },
         process.env.ACCESS_TOKEN_KEY,
         { expiresIn: process.env.ACCESS_TIME }
       );
 
-      // Set cookie options
+      // Set it as cookie (for web clients)
       const cookieOptions = {
-          httpOnly: true,
-          secure: true,
-          sameSite:'strict',
-          maxAge:7*24*60*60*1000
-          // Only true in production
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       };
 
       res.cookie("accessToken", newAccessToken, cookieOptions);
+
+      // ✅ Pass token to controller via res.locals
+      res.locals.newAccessToken = newAccessToken;
+
       return newAccessToken;
     };
 
-    // Case 1: No access token present
+    // ✅ CASE 1: No access token
     if (!accessToken) {
       if (!refreshToken) {
         return res.status(401).json({
-          message: "Unauthorized, no tokens provided",
+          message: "Unauthorized: No tokens provided",
           success: false,
         });
       }
 
-      // // Try to verify refresh token and generate new access token
+      // Try to generate access token from refresh
       try {
-        const refreshData = jwt.verify(
-          refreshToken,
-          process.env.REFRESH_TOKEN_KEY
-        );
-        console.log("refresh data", refreshData);
-        await generateNewAccessToken(refreshData);
+        const refreshData = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
+        const newToken = generateNewAccessToken(refreshData);
 
-        // res.json({
-        //     message:"access token generated succesfully"
-        // })
         req.user = refreshData;
         return next();
-      } catch (refreshError) {
+      } catch (err) {
         return res.status(401).json({
           message: "Invalid or expired refresh token",
           success: false,
@@ -63,43 +57,37 @@ const verifyjwt = async (req, res, next) => {
       }
     }
 
-    if (accessToken) {
-      // Case 2: Access token present
-      try {
-        const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY);
-        console.log("auth", decoded);
-        req.user = decoded;
-        return next();
-      } catch (accessError) {
-        //     // If access token is expired and refresh token exists
-        if (accessError.name === "TokenExpiredError" && refreshToken) {
-          try {
-            const refreshData = jwt.verify(
-              refreshToken,
-              process.env.REFRESH_TOKEN_KEY
-            );
-            await generateNewAccessToken(refreshData);
+    // ✅ CASE 2: Access token is present
+    try {
+      const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY);
+      req.user = decoded;
+      return next();
+    } catch (accessError) {
+      // Access token expired — try refreshing
+      if (accessError.name === "TokenExpiredError" && refreshToken) {
+        try {
+          const refreshData = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
+          const newToken = generateNewAccessToken(refreshData);
 
-            req.user = refreshData;
-            return next();
-          } catch (refreshError) {
-            return res.status(401).json({
-              message: "Invalid or expired refresh token",
-              success: false,
-            });
-          }
+          req.user = refreshData;
+          return next();
+        } catch (refreshError) {
+          return res.status(401).json({
+            message: "Invalid or expired refresh token",
+            success: false,
+          });
         }
-
-        return res.status(401).json({
-          message: "Unauthorized, invalid access token",
-          success: false,
-        });
       }
+
+      return res.status(401).json({
+        message: "Unauthorized: Invalid access token",
+        success: false,
+      });
     }
   } catch (error) {
-    console.error("Error in authentication middleware:", error);
+    console.error("Error in JWT middleware:", error);
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: "Internal server error",
       success: false,
     });
   }
