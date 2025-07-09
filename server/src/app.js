@@ -1,19 +1,19 @@
-// import express from "express";
-// import cors from "cors";
-// import cookieParser from "cookie-parser";
+
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const dotenv=require("dotenv")
+const compression = require('compression');
 
-// import dotenv from 'dotenv'
-
-// dotenv.config({
-//     path: './.env'
-// })
+dotenv.config({
+    path: './.env'
+})
 
 
 const app = express();
 
+
+app.use(compression());
 app.use(
     cors({
         origin: true,

@@ -1,6 +1,4 @@
-// import pkg from 'pg';
-// import { DATABASE_NAME } from '../constants.js';
-// const { Pool } = pkg;
+
 const mysql = require('mysql2/promise');
 
 
@@ -12,7 +10,7 @@ const pool = mysql.createPool({
    
   });
 
-// console.log(`${process.env.HOST_NAME}`);
+
 
 
 // export {pool}

@@ -25,10 +25,17 @@ const deletecourse=async(req,res)=>
     try {
         
 const user_id=req.user.id;
-const {repeatId}=req.body;
+const {id}=req.params
+const repeatId=id;
 
 console.log(repeatId);
-
+if(!id)
+{
+    return res.json({
+        message:"Course Not Deleted",
+        success:false
+    })
+}
 const sql="DELETE FROM `repeatcourses` WHERE user_id=? and repeat_id=?"
 const [responce]=await pool.query(sql,[user_id,repeatId]);
 

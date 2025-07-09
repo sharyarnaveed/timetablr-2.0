@@ -115,9 +115,9 @@ const getcoursesfromdb = async (req, res) => {
   // console.log("from getcoursesfromdb",req.body);
 
   try {
-    const { program } = req.body;
-    console.log(program);
-
+    const { id } = req.params;
+    console.log(id);
+const program=id
     const sql =
       "SELECT course_name FROM timetable WHERE program_name=? GROUP BY course_name";
     const [courses] = await pool.query(sql, [program]);

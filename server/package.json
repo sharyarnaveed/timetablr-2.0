@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "compression": "^1.8.0",
     "cookie-parse": "^0.4.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -19,8 +20,8 @@
     "env": "^0.0.2",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.13.1",
     "mysql2": "^3.11.0",
+    "pg": "^8.13.1",
     "prettier": "^3.3.3"
   }
 }
