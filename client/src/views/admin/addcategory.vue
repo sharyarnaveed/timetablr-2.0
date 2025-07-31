@@ -18,9 +18,12 @@ const submitcategory = async () => {
       return;
     }
     showError.value = false;
-    
-    const response = await axios.post("/api/admin/addprogram", addprogram.value);
-    
+
+    const response = await axios.post(
+      "/api/admin/addprogram",
+      addprogram.value
+    );
+
     if (response.data.success) {
       TheSuccess.value = true;
       successmessage.value = response.data.message;
@@ -37,7 +40,7 @@ const submitcategory = async () => {
 };
 
 const getcategory = async () => {
-  const getcateg = await axios.post("/api/user/getprogramfromdb");
+  const getcateg = await axios.get("/api/user/getprogramfromdb");
   gottenprogram.value = getcateg.data;
 
   console.log(gottenprogram.value);
@@ -58,7 +61,7 @@ const deletprogram = async (id) => {
 };
 
 const confirmDelete = (id) => {
-  if (confirm('Are you sure you want to delete this program?')) {
+  if (confirm("Are you sure you want to delete this program?")) {
     deletprogram(id);
   }
 };
@@ -77,13 +80,15 @@ onMounted(async () => {
         <h2>Add New Program</h2>
         <form @submit.prevent="submitcategory" class="add-program-form">
           <div class="input-group">
-            <input 
-              v-model="addprogram.programname" 
-              type="text" 
+            <input
+              v-model="addprogram.programname"
+              type="text"
               placeholder="Enter program name"
-              :class="{ 'error': showError }"
+              :class="{ error: showError }"
             />
-            <p v-if="showError" class="error-message">Program name is required</p>
+            <p v-if="showError" class="error-message">
+              Program name is required
+            </p>
           </div>
           <button type="submit" class="submit-btn">
             <i class="fas fa-plus"></i> Add Program
@@ -107,7 +112,10 @@ onMounted(async () => {
                 <td>{{ program.program_id }}</td>
                 <td>{{ program.program_name }}</td>
                 <td>
-                  <button @click="confirmDelete(program.program_id)" class="delete-btn">
+                  <button
+                    @click="confirmDelete(program.program_id)"
+                    class="delete-btn"
+                  >
                     <i class="fas fa-trash"></i> Delete
                   </button>
                 </td>
@@ -136,14 +144,14 @@ onMounted(async () => {
   background: white;
   border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .programs-list-card {
   background: white;
   border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -173,7 +181,7 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #4CAF50;
+  border-color: #4caf50;
 }
 
 input.error {
@@ -188,7 +196,7 @@ input.error {
 
 .submit-btn {
   padding: 0.75rem 1.5rem;
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;
@@ -214,7 +222,8 @@ table {
   margin-top: 1rem;
 }
 
-th, td {
+th,
+td {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid #eee;
@@ -251,7 +260,7 @@ tr:hover {
   .add-program-form {
     flex-direction: column;
   }
-  
+
   .submit-btn {
     width: 100%;
   }

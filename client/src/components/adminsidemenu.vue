@@ -48,6 +48,10 @@
                 <i class="fas fa-redo"></i>
                 <span>Repeat Courses</span>
               </router-link>
+              <router-link to="/totheadmindashboard/notification" class="submenu-item" @click="closeMobileMenu">
+                <i class="fas fa-bell"></i>
+                <span>Notification</span>
+              </router-link>
             </div>
           </transition>
         </div>

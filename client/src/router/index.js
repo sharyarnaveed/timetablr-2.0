@@ -20,6 +20,7 @@ import Viewuserrepeatcourses from '@/views/admin/viewuserrepeatcourses.vue'
 import Combinehomepanel from '@/views/combinehomepanel.vue'
 import OtherTime from '@/views/OtherTime.vue'
 import ABoutus from '@/views/ABoutus.vue'
+import Notification from '@/views/admin/notification.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -108,6 +109,10 @@ component:adminhome
     {
       path:"viewtimetable",
       component:Viewtimetable
+    },
+      {
+      path:"notification",
+      component:Notification
     },
 {
   path:"seeusers",

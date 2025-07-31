@@ -89,7 +89,7 @@
 
   const getprogramoptions = async () => {
     try {
-      const response = await axios.post("/api/user/getprogramfromdb");
+      const response = await axios.get("/api/user/getprogramfromdb");
       options.value = response.data;
     } catch (err) {
       console.error("Error fetching programs:", err);
