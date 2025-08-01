@@ -79,39 +79,38 @@ ORDER BY month ASC;
 
 const uploadtimetable = async (req, res) => {
   try {
-    const data = req.body;
+    const data = req.body; // array of { program_id, rows }
+
     const sql =
-      "INSERT INTO timetable (day,start_time,end_time,program_name,course_name,teacher_name,venue) VALUES (?,?,?,?,?,?,?) ";
+      "INSERT INTO timetable (day, start_time, end_time, program_name, course_name, teacher_name, venue) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    await data.forEach(async (element) => {
-      const days = element[0];
-      const start_time = element[1];
-      const Cstarttime = await timeformate(start_time);
-      const end_time = element[2];
-      const Cendtime = await timeformate(end_time);
-      const course_name = element[3];
-      const teacher_name = element[4];
-      const venue = element[5];
-      const program_name = element[6];
-      const [submition] = await pool.query(sql, [
-        days,
-        Cstarttime,
-        Cendtime,
-        program_name,
-        course_name,
-        teacher_name,
-        venue,
-      ]);
-    });
-    
-    res.json({
-      message: "Timetable Upload",
-      success: true,
-    });
+    for (const programBlock of data) {
+      const { program_id, rows } = programBlock;
 
-    // console.log(data);
+      for (const element of rows) {
+        const day = element[0];
+        const startTime = element[1];
+        const endTime = element[2];
+        const courseName = element[3];
+        const teacherName = element[4];
+        const venue = element[5];
+
+        await pool.query(sql, [
+          day,
+          startTime,
+          endTime,
+          program_id,
+          courseName,
+          teacherName,
+          venue,
+        ]);
+      }
+    }
+
+    res.json({ message: "Timetable uploaded successfully", success: true });
   } catch (error) {
-    console.log("error uploadin g excel", error);
+    console.error("Error uploading timetable:", error);
+    res.status(500).json({ message: "Upload failed", success: false });
   }
 };
 

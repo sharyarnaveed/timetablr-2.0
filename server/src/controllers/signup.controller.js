@@ -31,7 +31,7 @@ const signup = async (req, res) => {
         success: false,
       });
     } else {
-const responce=validation(fullname,username,department,program,password,repassword)
+const responce=validation(fullname,username,department,password,repassword)
         if(responce===false)
 {
   console.log(responce);
