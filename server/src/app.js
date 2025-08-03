@@ -4,15 +4,17 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const dotenv=require("dotenv")
 const compression = require('compression');
-
+const helmet = require("helmet");
+const xss = require('xss-clean');
+const rateLimit = require("express-rate-limit");
 dotenv.config({
     path: './.env'
 })
 
 
 const app = express();
-
-
+app.use(xss());   
+app.use(helmet());
 app.use(compression());
 app.use(
     cors({
@@ -20,9 +22,14 @@ app.use(
         credentials: true
     })
 );
-
-app.use(express.json({ limit: "100mb" }));
-app.use(express.urlencoded({ limit: "100mb", extended: true }));
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 70, 
+});
+app.use(limiter);
+app.disable("x-powered-by");
+app.use(express.json({ limit: "25mb" }));
+app.use(express.urlencoded({ limit: "25mb", extended: true }));
 app.use(cookieParser());
 
 
