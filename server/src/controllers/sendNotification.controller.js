@@ -150,6 +150,7 @@ const classNotification = async (req, res) => {
         timetable.start_time,
         timetable.day,
         timetable.course_name
+        timetable.venue
       FROM timetable
       INNER JOIN programs ON programs.program_id = timetable.program_name
       WHERE timetable.day = ?
@@ -188,7 +189,7 @@ const classNotification = async (req, res) => {
             {
               to: user.token,
               title: "Class Notification",
-              body: `Your ${row.course_name} class is about to start in 10 mins`,
+              body: `Your ${row.course_name} class is about to start in 10 mins in ${row.venue} `,
               sound: "default",
               priority: "high",
             },
@@ -248,7 +249,7 @@ const sendcustomMsg = async (req, res) => {
     if (!token || !msg) {
       return res.status(400).json({
         success: false,
-        message: "Token and message are required"
+        message: "Token and message are required",
       });
     }
 
@@ -273,13 +274,13 @@ const sendcustomMsg = async (req, res) => {
     if (response.status === 200) {
       return res.json({
         message: "Notification sent",
-        success: true
+        success: true,
       });
     } else {
       return res.status(500).json({
         success: false,
         message: "Failed to send notification",
-        response: response.data
+        response: response.data,
       });
     }
   } catch (error) {
@@ -287,7 +288,7 @@ const sendcustomMsg = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to send notification",
-      error: error.message || "Unknown error"
+      error: error.message || "Unknown error",
     });
   }
 };
@@ -296,5 +297,5 @@ module.exports = {
   sendnotification,
   displayNotification,
   classNotification,
-  sendcustomMsg
+  sendcustomMsg,
 };

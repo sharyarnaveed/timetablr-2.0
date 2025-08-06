@@ -16,16 +16,11 @@ const signup = async (req, res) => {
       program,
       password,
       repassword,
+      agree
     } = req.body;
    
-    console.log(   fullname,
-      username,
-      department,
-      program,
-      password,
-      repassword,);
 // check all fields are entered
-    if (!username || !department || !program || !password) {
+    if (!username || !department || !program || !password||!agree) {
      return res.json({
         message: "All fields Required",
         success: false,
@@ -62,15 +57,15 @@ else{
         } else {
           const hashedPassword = await bcrypt.hash(password, 10);
           const query =
-            'INSERT INTO user (full_name, username, department, program,password) VALUES (?, ?, ?, ?, ?)';
+            'INSERT INTO user (full_name, username, department, program,password,agree) VALUES (?, ?, ?, ?, ?,?)';
           const [user] = await pool.query(query, [
             fullname,
             username,
             department,
             program,
             hashedPassword,
+            agree
           ]);
-console.log(user);
 
           res.json({
             message: "User Created Successfully",
