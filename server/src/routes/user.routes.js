@@ -9,7 +9,7 @@ const { viewcourse, deletecourse } = require("../controllers/courses.controller.
 const { getidTimetable } = require("../controllers/getidtimetablr.controller.js");
 const { getCoursesformake, addMakeupClass, viewMakeupclasses, deletemakeclass } = require("../controllers/makeclass.controller.js");
 const { storetokens, sendnotification, classNotification } = require("../controllers/sendNotification.controller.js");
-const { checkToken } = require("../controllers/check.controller.js");
+const { checkToken, deleteaccont } = require("../controllers/check.controller.js");
 
 
 const router=Router();
@@ -45,7 +45,7 @@ router.route("/sendnotification").get(sendnotification)
 router.route("/classnotification").get(classNotification)
 
 router.route("/checkauth").get(checkToken)
-
+router.route("/deleteaccount").delete(verifyjwt,deleteaccont)
 
 module.exports = router;
 

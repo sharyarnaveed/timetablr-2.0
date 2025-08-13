@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const { pool } = require("../database/conn.database.js");
 const authCheck = async (req, res) => {
   try {
     // Get token from Authorization header
@@ -31,9 +31,24 @@ const authCheck = async (req, res) => {
   }
 };
 
+const deleteaccont=async(req,res)=>{
+       try {
+    const userId = req.user.id;
+ const result = await pool.query('DELETE FROM user WHERE user_id = ?', [userId]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+    res.json({ success: true, message: 'Account deleted successfully.' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error.' });
+  }
+}
+
+
 module.exports = {
   authCheck,
-  checkToken: authCheck // Keep both names for flexibility
+  deleteaccont,
+    checkToken: authCheck
 };
 
 
