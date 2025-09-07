@@ -27,38 +27,13 @@
         </div>
       </section>
 
-      <!-- Programs Table -->
-      <section class="table-section">
-        <div class="table-container">
-          <div class="table-header">
-            <h2>Programs List</h2>
-            <router-link to="/totheadmindashboard/addcategory" class="add-btn">
-              <i class="fas fa-plus"></i> Add Program
-            </router-link>
-          </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Program ID</th>
-                  <th>Program Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="program in gottenprogram" :key="program.program_id">
-                  <td>{{ program.program_id }}</td>
-                  <td>{{ program.program_name }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+<Adminbarchart/>
     </div>
   </main>
 </template>
 
 <script setup>
+import Adminbarchart from "@/components/adminbarchart.vue";
 import linechart from "@/components/linechart.vue"
 import axios from "axios";
 import { onMounted, ref } from "vue";

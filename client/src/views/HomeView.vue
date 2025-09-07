@@ -1,52 +1,3 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-
-const theprompt = ref(null);
-const isInstallable = ref(false);
-
-// Check if the app is already installed
-const checkInstalled = async () => {
-  if ('getInstalledRelatedApps' in navigator) {
-    const installations = await navigator.getInstalledRelatedApps();
-    return installations.length > 0;
-  }
-  return false;
-};
-
-onMounted(async () => {
-  // Only show install button if app is not installed
-  if (!await checkInstalled()) {
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      theprompt.value = e;
-      isInstallable.value = true;
-    });
-  }
-});
-
-const installapp = async () => {
-  if (!theprompt.value) {
-    // If PWA install prompt is not available, redirect to web version
-    window.location.href = 'https://timetable.pharmder.com/';
-    return;
-  }
-
-  try {
-    await theprompt.value.prompt();
-    const { outcome } = await theprompt.value.userChoice;
-    console.log(`User response to the install prompt: ${outcome}`);
-    
-    if (outcome === 'accepted') {
-      isInstallable.value = false;
-    }
-    theprompt.value = null;
-  } catch (error) {
-    console.error('Error during installation:', error);
-    // Fallback to web version
-    window.location.href = 'https://timetable.pharmder.com/';
-  }
-};
-</script>
 <template>
   <main class="mainhomesec">
     <nav>
@@ -62,31 +13,27 @@ const installapp = async () => {
           </h1>
         </div>
         <div class="buttons">
-          <button 
-            @click="installapp" 
-            class="homebuttons"
-            :disabled="!isInstallable"
+          <!-- ✅ Direct APK Download -->
+          <a 
+            class="signinlink" 
+            href="/timetablr.apk" 
+            download
           >
-            {{ isInstallable ? 'Install App' : 'Open App' }}
-          </button>
-          
-            <a class="signinlink" href="https://timetable.pharmder.com/signin">Sign In</a>
-     
+            Download APK
+          </a>
         </div>
       </div>
-      <router-link to="/about">ABout us</router-link>
     </section>
   </main>
 </template>
 
 <style scoped>
-
 .mainhomesec + * {
   visibility: hidden;
 }
+
 @media only screen and (max-width: 349px) {
   nav {
-    /* border: 2px solid red; */
     max-height: 11%;
     min-height: 10%;
     display: flex;
@@ -100,93 +47,50 @@ const installapp = async () => {
     font-weight: 300;
   }
   .mainhomesec {
-    /* border: 2px solid yellow; */
     background-image: url("https://images.unsplash.com/photo-1701690774955-7d06cfd3f857?q=80&w=1563&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-
     background-size: cover;
     height: 100vh;
     overflow: hidden;
     padding: 10px 10px;
-    /* background-color: var(--peach_color); */
-  }
-  .speeddailcon[data-v-7a7a37b1] {
-    display: none;
   }
   .contentsections {
-    /* border: 2px solid blue; */
     height: 90%;
-  }
-  .images {
-    /* border: 2px solid purple; */
-    height: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .images img {
-    width: 80%;
-    height: 90%;
-
-    padding: 10px 10px;
-    /* border: 2px solid purple; */
   }
   .writtencontent {
-    /* border: 2px solid orange; */
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: end;
   }
-
   .slogan {
-    /* border: 2px solid blue; */
     min-height: 20%;
     display: flex;
     align-items: center;
     text-align: center;
-    /* justify-content: center; */
   }
   .slogan h1 {
     font-family: var(--majorfont);
     font-size: 1.5rem;
     color: whitesmoke;
   }
-
   .buttons {
-    /* border: 2px solid green; */
     height: 22%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
   }
-  .homebuttons {
-    width: 46%;
-    height: 49%;
-    /* background-color: #A020F0; */
-    color: white;
-    background-color: black;
-    font-size: 1.2rem;
-    font-family: var(--majorfont);
-    border: none;
-    border: 2px solid whitesmoke;
-    border-radius: 5px;
-  }
-
   .signinlink {
-    width: 46%;
+    width: 80%;
     height: 49%;
-    /* background-color: #A020F0; */
     color: black;
     display: flex;
     justify-content: center;
     align-items: center;
-
     background-color: white;
     font-size: 1.2rem;
     font-weight: 600;
     text-decoration: none;
     font-family: var(--majorfont);
-    border: none;
     border: 2px solid whitesmoke;
     border-radius: 5px;
   }
@@ -194,7 +98,6 @@ const installapp = async () => {
 
 @media only screen and (min-width: 350px) {
   nav {
-    /* border: 2px solid red; */
     max-height: 11%;
     min-height: 10%;
     display: flex;
@@ -208,33 +111,25 @@ const installapp = async () => {
     font-weight: 300;
   }
   .mainhomesec {
-    /* border: 2px solid yellow; */
     background-image: url("https://images.unsplash.com/photo-1701690774955-7d06cfd3f857?q=80&w=1563&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-position: center;
     background-size: cover;
     height: 100vh;
     padding: 10px 10px;
-    /* background-color: var(--peach_color); */
   }
   .contentsections {
-    /* border: 2px solid blue; */
     height: 90%;
     padding: 10px 2px;
   }
-
   .writtencontent {
-    /* border: 2px solid orange; */
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: end;
   }
-
   .slogan {
-    /* border: 2px solid blue; */
     min-height: 80%;
     display: flex;
-    /* align-items: center; */
     text-align: center;
     padding: 2% 5px;
     justify-content: center;
@@ -243,42 +138,26 @@ const installapp = async () => {
     font-family: var(--majorfont);
     font-size: 2rem;
     text-align: center;
-
     color: whitesmoke;
   }
-
   .buttons {
-    /* border: 2px solid green; */
     height: 22%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
   }
-  .homebuttons {
-    width: 46%;
-    height: 49%;
-    background-color: #a020f0;
-    color: var(--peach_color);
-    font-size: 1.2rem;
-    font-family: var(--minorfont);
-    border: none;
-    border-radius: 5px;
-  }
   .signinlink {
-    width: 46%;
+    width: 60%;
     height: 49%;
-    /* background-color: #A020F0; */
     color: black;
     display: flex;
     justify-content: center;
     align-items: center;
-
     background-color: white;
     font-size: 1.2rem;
     font-weight: 600;
     text-decoration: none;
     font-family: var(--majorfont);
-    border: none;
     border: 2px solid whitesmoke;
     border-radius: 5px;
   }
@@ -286,7 +165,6 @@ const installapp = async () => {
 
 @media only screen and (min-width: 576px) {
   nav {
-    /* border: 2px solid red; */
     max-height: 11%;
     min-height: 10%;
     display: flex;
@@ -300,34 +178,26 @@ const installapp = async () => {
     font-weight: 300;
   }
   .mainhomesec {
-    /* border: 2px solid yellow; */
     background-image: url("https://images.unsplash.com/photo-1700173318258-3c0134576743?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-position: center;
     background-size: cover;
     height: 100vh;
     padding: 10px 10px;
-    /* background-color: var(--peach_color); */
   }
   .contentsections {
-    /* border: 2px solid blue; */
     height: 90%;
     padding: 10px 2px;
   }
-
   .writtencontent {
-    /* border: 2px solid orange; */
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: end;
   }
-
   .slogan {
-    /* border: 2px solid blue; */
     min-height: 80%;
     display: flex;
     align-items: center;
-    /* text-align: center; */
     padding: 2% 5px;
     justify-content: start;
   }
@@ -335,42 +205,26 @@ const installapp = async () => {
     font-family: var(--majorfont);
     font-size: 2.5rem;
     text-align: center;
-
     color: whitesmoke;
   }
-
   .buttons {
-    /* border: 2px solid green; */
     height: 22%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-  }
-  .homebuttons {
-    width: 30%;
-    height: 55%;
-    background-color: #287ab8;
-    color: var(--peach_color);
-    font-size: 1.2rem;
-    font-family: var(--minorfont);
-    border: none;
-    border-radius: 5px;
   }
   .signinlink {
     width: 30%;
     height: 55%;
-    /* background-color: #A020F0; */
     color: black;
     display: flex;
     justify-content: center;
     align-items: center;
-
     background-color: white;
     font-size: 1.2rem;
     font-weight: 600;
     text-decoration: none;
     font-family: var(--majorfont);
-    border: none;
     border: 2px solid whitesmoke;
     border-radius: 5px;
   }

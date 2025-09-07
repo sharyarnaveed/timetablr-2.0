@@ -1,6 +1,6 @@
 <template>
   <div class="upload-container">
-    <success v-if="successmessage" :messagevalue="successmessage"/>
+    <success v-if="successmessage" :messagevalue="successmessage" />
 
     <div class="upload-card">
       <h2>Upload Timetable</h2>
@@ -10,19 +10,9 @@
           <span class="step-number">1</span>
           <div class="file-upload">
             <label>Upload Excel File</label>
-            <div 
-              class="upload-box" 
-              @click="triggerFileInput"
-              @dragover.prevent="handleDragOver"
-              @dragleave.prevent="handleDragLeave"
-              @drop.prevent="handleDrop"
-              :class="{ 'dragging': isDragging }"
-            >
-              <input type="file" 
-                    ref="fileInput"
-                    @change="handleFileUpload" 
-                    accept=".xlsx, .xls"
-                    class="hidden-input" />
+            <div class="upload-box" @click="triggerFileInput" @dragover.prevent="handleDragOver"
+              @dragleave.prevent="handleDragLeave" @drop.prevent="handleDrop" :class="{ 'dragging': isDragging }">
+              <input type="file" ref="fileInput" @change="handleFileUpload" accept=".xlsx, .xls" class="hidden-input" />
               <i class="fas fa-cloud-upload-alt"></i>
               <p>{{ isDragging ? 'Drop file here' : 'Click to upload or drag and drop' }}</p>
               <p class="file-type">Excel files only (.xlsx, .xls)</p>
@@ -31,9 +21,7 @@
         </div>
       </div>
 
-      <button @click="sendDataToBackend" 
-              class="submit-btn"
-              :disabled="!tableData.length">
+      <button @click="sendDataToBackend" class="submit-btn" :disabled="!tableData.length">
         Upload Timetable
       </button>
     </div>
@@ -61,7 +49,7 @@
       <h4>Program Mappings:</h4>
       <ul>
         <li v-for="(mapping, index) in programMappings" :key="index">
-          Sheet: "{{ mapping.sheetName }}" → 
+          Sheet: "{{ mapping.sheetName }}" →
           <span v-if="mapping.programId">Program ID: {{ mapping.programId }}</span>
           <span v-else class="warning">⚠️ No matching program ID found</span>
         </li>
@@ -84,79 +72,159 @@ const isDragging = ref(false);
 
 // Program mapping data
 const programMap = {
-  "BSSE-F24 Green": 1,
-  "BSSE-F24 Blue": 2,
-  "BSCS-F24 Green": 3,
-  "BSCS-F24 Blue": 4,
-  "BSCS-F24 Red": 5,
-  "BSDS-F24": 6,
-  "BSAI-F24 Green": 7,
-  "BSAI-F24 Blue": 8,
-  "BSAI-F24 Red": 9,
-  "BSAI-F24 Yellow": 10,
-  "CYS-F24 Green": 11,
-  "CYS-F24 Blue": 12,
-  "BSCS-S24": 13,
-  "BSAI-S24 Green": 14,
-  "BSAI-S24 Blue": 15,
-  "BSSE-F23 Green": 16,
-  "BSSE-F23 Blue": 17,
-  "BSCS-F23 Green": 18,
-  "BSCS-F23 Blue": 19,
-  "BSCS-F23 Red": 20,
-  "BSDS-F23": 21,
-  "BSAI-F23 Green": 22,
-  "BSAI-F23 Blue": 23,
-  "BSAI-F23 Red": 24,
-  "BSAI-F23 Yellow": 25,
-  "CYS-F23 Green": 26,
-  "CYS-F23 Blue": 27,
-  "BSSE-S23": 28,
-  "BSCS-S23": 29,
-  "BSDS-S23": 30,
-  "BSAI-S23": 31,
-  "BSSE-F22 Green": 32,
-  "BSSE-F22 Blue": 33,
-  "BSSE-F22 Red": 34,
-  "BSCS-F22 Green": 35,
-  "BSCS-F22 Blue": 36,
-  "BSDS-F22": 37,
-  "BSAI-F22 Green": 38,
-  "BSAI-F22 Blue": 39,
-  "BSSE-F21": 40,
-  "BSCS-F21": 41,
-  "BSDS-F21": 42,
-  "BSAI-F21": 43,
-  "SDAAT-F24": 44,
-  "SDAAT-S24": 45,
-  "Game+Animation-III": 46,
-  "Game+Animation-IV": 47,
-  "Game+Animation-V": 48,
-  "Fashion-III": 49,
-  "Fashion-IV": 50,
-  "Fashion-V": 51,
-  "Textile-III": 52,
-  "Textile-IV": 53,
-  "Textile-V": 54,
-  "Architecture-III": 55,
-  "Architecture-V": 56,
-  "Interior-III": 57,
-  "Information-III": 58,
-  "Information-IV": 59,
-  "Information-V": 60,
-  "Information-VII": 61,
-  "BSSE-F24 Red": 62,
-  "SDAAT-S25": 63,
-  "Game+Animation-VI": 64,
-  "Information Design-VI": 65,
-  "Interior-IV": 66,
-  "Architecture-IV": 67,
-  "Architecture-VI": 68,
-  "BSCS-F24 Yellow": 69,
-  "BSAI-F24 Orange": 70,
-  "Fashion-VI": 71,
-  "Textile-VI": 72,
-  "Information-VIII": 73
+  "BSCYS-F25 Green": 1,
+  "BSCYS-F25 Blue": 2,
+  "BSAI-F25 Green": 3,
+  "BSAI-F25 Blue": 4,
+  "BSAI-F25 Red": 5,
+  "BSAI-F25 Yellow": 6,
+  "BSAI-F25 Orange": 7,
+  "BSDS-F25 Green": 8,
+  "BSDS-F25 Blue": 9,
+  "BSCS-F25 Green": 10,
+  "BSCS-F25 Blue": 11,
+  "BSCS-F25 Red": 12,
+  "BSCS-F25 Yellow": 13,
+  "BSSE-F25 Green": 14,
+  "BSSE-F25 Blue": 15,
+  "BSSE-F25 Red": 16,
+  "BSCYS-F24 Green": 17,
+  "BSCYS-F24 Blue": 18,
+  "BSAI-F24 Green": 19,
+  "BSAI-F24 Blue": 20,
+  "BSAI-F24 Red": 21,
+  "BSAI-F24 Yellow": 22,
+  "BSAI-F24 Orange": 23,
+  "BSDS-F24": 24,
+  "BSCS-F24 Green": 25,
+  "BSCS-F24 Blue": 26,
+  "BSCS-F24 Red": 27,
+  "BSCS-F24 Yellow": 28,
+  "BSSE-F24 Green": 29,
+  "BSSE-F24 Blue": 30,
+  "BSSE-F24 Red": 31,
+  "BSAI-S24 Green": 32,
+  "BSAI-S24 Blue": 33,
+  "BSCS-S24": 34,
+  "BSCYS-F23 Green": 35,
+  "BSCYS-F23 Blue": 36,
+  "BSAI-F23 Green": 37,
+  "BSAI-F23 Blue": 38,
+  "BSAI-F23 Red": 39,
+  "BSAI-F23 Yellow": 40,
+  "BSDS-F23": 41,
+  "BSCS-F23 Green": 42,
+  "BSCS-F23 Blue": 43,
+  "BSCS-F23 Red": 44,
+  "BSSE-F23 Green": 45,
+  "BSSE-F23 Blue": 46,
+  "BSAI-S23": 47,
+  "BSDS-S23": 48,
+  "BSCS-S23": 49,
+  "BSSE-S23": 50,
+  "BSAI-F22 Green": 51,
+  "BSAI-F22 Blue": 52,
+  "BSDS-F22": 53,
+  "BSCS-F22 Green": 54,
+  "BSCS-F22 Blue": 55,
+  "BSSE-F22 Green": 56,
+  "BSSE-F22 Blue": 57,
+  "BSSE-F22 Red": 58,
+  "BEE-F25": 59,
+  "BEE-F24": 60,
+  "BEE-F23": 61,
+  "BEE-F22": 62,
+  "Robotics-F25": 63,
+  "Robotics-F24": 64,
+  "Robotics-F23": 65,
+  "BCE-F24": 66,
+  "BCE-F25": 67,
+  "C&EE-F25": 68,
+  "C&EE-F24": 69,
+  "C&EE-F22": 70,
+  "C&EE-F23": 71,
+  "MTE-F25": 72,
+  "MTE-F24": 73,
+  "MTE-F23": 74,
+  "MTE-F22": 75,
+  "BMCET-F25&S25": 76,
+  "BBET-F25&S25": 77,
+  "BMCET-S24&F24": 78,
+  "BBET-S24&F24": 79,
+  "BMCET-F23": 80,
+  "BBET-F23": 81,
+  "BMS-F25": 82,
+  "BMS-F24": 83,
+  "BMS-F23": 84,
+  "BMS-S23": 85,
+  "BMS-F22": 86,
+  "BTY-F25": 87,
+  "BTY-S25": 88,
+  "BTY-F24": 89,
+  "BTY-F23": 90,
+  "BTY-S23": 91,
+  "BTY-F22": 92,
+  "MLT-F25": 93,
+  "MLT-S25": 94,
+  "PharmD-F25": 95,
+  "PharmD-F24": 96,
+  "PharmD-F23": 97,
+  "PharmD-S23": 98,
+  "DPT-F25": 99,
+  "DPT-F24": 100,
+  "DPT-F23": 101,
+  "Psychology-F25": 102,
+  "Psychology-S25": 103,
+  "Psychology-F24": 104,
+  "Psychology-F23": 105,
+  "Psychology-F22": 106,
+  "English-F25": 107,
+  "English-F24": 108,
+  "English-F23": 109,
+  "English-S23": 110,
+  "English-F22": 111,
+  "BBA-F25": 112,
+  "BBA-S25": 113,
+  "BBA-F24": 114,
+  "BBA-F23": 115,
+  "BBA-S23": 116,
+  "BBA-F22": 117,
+  "A&F-F25": 118,
+  "A&F-F22": 119,
+  "BAN-F25": 120,
+  "SDAAT-F25": 121,
+  "SDAAT-S25": 122,
+  "GameDesign-F24": 123,
+  "GameDesign-F23": 124,
+  "GameDesign-F22": 125,
+  "AnimationDesign-F24": 126,
+  "AnimationDesign-S24": 127,
+  "AnimationDesign-F23": 128,
+  "AnimationDesign-S23": 129,
+  "AnimationDesign-F22": 130,
+  "InfoDesign-F24": 131,
+  "InfoDesign-S24": 132,
+  "InfoDesign-F23": 133,
+  "InfoDesign-S23": 134,
+  "InfoDesign-F22": 135,
+  "Architecture-F24": 136,
+  "Architecture-F23": 137,
+  "Architecture-F22": 138,
+  "IntDesign-F24": 139,
+  "IntDesign-S24": 140,
+  "IntDesign-F23": 141,
+  "TextileDesign-F24": 142,
+  "TextileDesign-S24": 143,
+  "TextileDesign-F23": 144,
+  "TextileDesign-S23": 145,
+  "TextileDesign-F22": 146,
+  "FashionDesign-F24": 147,
+  "FashionDesign-S24": 148,
+  "FashionDesign-F23": 149,
+  "FashionDesign-S23": 150,
+  "FashionDesign-F22": 151,
+  "BIF-F22": 153,
+
 };
 
 
@@ -175,7 +243,7 @@ const getProgramId = (sheetName) => {
   if (programMap[sheetName]) {
     return programMap[sheetName];
   }
-  
+
   // Try case-insensitive match
   const upperSheetName = sheetName.toUpperCase();
   for (const [programName, programId] of Object.entries(programMap)) {
@@ -183,14 +251,14 @@ const getProgramId = (sheetName) => {
       return programId;
     }
   }
-  
+
   // Try partial match (if sheet name contains program name)
   for (const [programName, programId] of Object.entries(programMap)) {
     if (upperSheetName.includes(programName.toUpperCase()) || programName.toUpperCase().includes(upperSheetName)) {
       return programId;
     }
   }
-  
+
   return null; // No match found
 };
 
@@ -236,7 +304,7 @@ const handleFileUpload = (event) => {
 
         // Get program ID instead of sheet name
         const programId = getProgramId(sheetName);
-        
+
         // Standardize field names for backend
         rowObj["Program"] = sheetName;
         rowObj["Program_ID"] = programId;
@@ -246,7 +314,7 @@ const handleFileUpload = (event) => {
         rowObj["Professor"] = rowObj["Professor"] || rowObj["professor"] || "";
         rowObj["Location"] = rowObj["Location"] || rowObj["location"] || "";
         rowObj["Subject"] = rowObj["Subject"] || rowObj["subject"] || "";
-        
+
         allSheetData.push(rowObj);
       });
     });
@@ -354,7 +422,7 @@ const handleDrop = (e) => {
   background: white;
   border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -474,7 +542,7 @@ h2 {
   overflow-x: auto;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 table {
@@ -482,7 +550,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 1rem;
   border-bottom: 1px solid #eee;
   text-align: left;
@@ -565,7 +634,7 @@ tr:hover {
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-top: 4px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
 

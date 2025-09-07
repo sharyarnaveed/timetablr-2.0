@@ -10,7 +10,9 @@
             <th>Program</th>
             <th>Course Name</th>
             <th>Venue</th>
-            <th>Actions</th>
+            <th>update</th>
+            <th>delete</th>
+
           </tr>
         </thead>
         <tbody>
@@ -55,6 +57,18 @@
                 {{ isUpdating ? 'Updating...' : 'Update' }}
               </button>
             </td>
+
+
+             <td>
+              <button 
+                @click="deletetimetable(entry.timetable_id)"
+                class="update-delete"
+                
+              >
+               Delete
+              </button>
+            </td>
+
           </tr>
         </tbody>
       </table>
@@ -64,6 +78,7 @@
   <script setup>
   import { onMounted, ref } from 'vue'
   import axios from 'axios'
+import api from '@/api'
   
   const props = defineProps({
     id: {
@@ -109,6 +124,25 @@
       alert('Failed to load timetable data. Please refresh the page.')
     }
   }
+
+  const deletetimetable=async(id)=>
+  {
+try {
+  console.log(id);
+  
+ const responce = await api.delete("/api/admin/deletethetimetablerow", {
+      data: { deleteid: id },   // ✅ you must wrap it inside "data"
+    });
+    if(responce.data.success)
+    {
+      alert("row deleted")
+      getTimetable(props.id)
+    }
+} catch (error) {
+  console.log(error);
+  
+}
+  }
   
   onMounted(async () => {
     await getTimetable(props.id)
@@ -116,6 +150,14 @@
   </script>
   
   <style scoped>
+  .update-delete{
+        background-color: #e72e0d;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
   .timetable-container {
     max-width: 100%;
     overflow-x: auto;
