@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { addprogram, deletprogram, graph, uploadtimetable, adminsigin, logout } = require("../controllers/admin.controller");
+const { addprogram, deletprogram, graph, uploadtimetable, adminsigin, logout, delettimetablerow, programsinfo } = require("../controllers/admin.controller");
 const { adminverifyjwt } = require("../middleware/adminauth.middleware");
 const { gettimetable, deletetimetable, getuserinfo, UpdateTimeTable } = require("../controllers/admintimetable.controller");
 const { getrepeatadmin } = require("../controllers/adminrepeat.controller");
@@ -20,6 +20,6 @@ router.route("/updatetimetable").post(adminverifyjwt,UpdateTimeTable)
 router.route("/adminrepeat").post(adminverifyjwt,getrepeatadmin)
 router.route("/getsubscribenitification").get(displayNotification)
 router.route("/sendmsg").post(sendcustomMsg)
-
-
+router.route("/deletethetimetablerow").delete(delettimetablerow)
+router.route("/getuserprograminfo").get(programsinfo)
 module.exports = router;

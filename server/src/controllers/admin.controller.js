@@ -199,6 +199,42 @@ const logout = async (req, res) => {
   }
 };
 
+const programsinfo=async(req,res)=>{
+  const sql=`SELECT program, COUNT(*) as count
+FROM user
+WHERE program IS NOT NULL AND program != ''
+GROUP BY program
+ORDER BY count DESC;`
+
+const [responce]=await pool.query(sql)
+console.log(responce);
+
+res.json(responce)
+
+}
+
+const delettimetablerow = async (req, res) => {
+  try {
+    const { deleteid } = req.body;  // ✅ get id from body
+
+
+const sql="DELETE FROM timetable WHERE timetable_id = ?;"
+
+await pool.query(sql,[deleteid])
+
+res.json({
+        message: "Deleted",
+        success: true,
+      });
+
+
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
 module.exports = {
   addprogram,
   deletprogram,
@@ -206,4 +242,6 @@ module.exports = {
   uploadtimetable,
   adminsigin,
   logout,
+  delettimetablerow,
+  programsinfo
 };

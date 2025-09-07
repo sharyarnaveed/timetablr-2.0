@@ -58,6 +58,7 @@ const storetokens = async (req, res) => {
 
 const sendnotification = async (req, res) => {
   try {
+    const {msg}=req.body
     const sql = "select * from notification";
     const [responcetoken] = await pool.query(sql);
     console.log(responcetoken);
@@ -73,8 +74,8 @@ const sendnotification = async (req, res) => {
           "https://exp.host/--/api/v2/push/send",
           tokenchunk.map((token) => ({
             to: token,
-            title: "Class Notification",
-            body: "Your Class Is about to Start",
+            title: "Announcement",
+            body: msg,
             sound: "default",
             priority: "high",
           })),
@@ -149,7 +150,7 @@ const classNotification = async (req, res) => {
         programs.program_name AS program_name,
         timetable.start_time,
         timetable.day,
-        timetable.course_name
+        timetable.course_name,
         timetable.venue
       FROM timetable
       INNER JOIN programs ON programs.program_id = timetable.program_name
@@ -249,7 +250,7 @@ const sendcustomMsg = async (req, res) => {
     if (!token || !msg) {
       return res.status(400).json({
         success: false,
-        message: "Token and message are required",
+        message: "Token and message are required"
       });
     }
 
@@ -274,13 +275,13 @@ const sendcustomMsg = async (req, res) => {
     if (response.status === 200) {
       return res.json({
         message: "Notification sent",
-        success: true,
+        success: true
       });
     } else {
       return res.status(500).json({
         success: false,
         message: "Failed to send notification",
-        response: response.data,
+        response: response.data
       });
     }
   } catch (error) {
@@ -288,7 +289,7 @@ const sendcustomMsg = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to send notification",
-      error: error.message || "Unknown error",
+      error: error.message || "Unknown error"
     });
   }
 };
@@ -297,5 +298,5 @@ module.exports = {
   sendnotification,
   displayNotification,
   classNotification,
-  sendcustomMsg,
+  sendcustomMsg
 };
