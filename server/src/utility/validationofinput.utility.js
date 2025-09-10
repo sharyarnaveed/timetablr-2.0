@@ -2,7 +2,7 @@ const fullPattern = /^[A-Za-z ]+$/; // Only letters and spaces
 const usernamePattern = /^[A-Za-z0-9_]+$/; // Letters, numbers, underscores
 const departmentPattern = /^[A-Za-z ]+$/; // Only letters and spaces
 const programPattern = /^[A-Za-z0-9 ]+$/; // Only letters and spaces
-const passwordPattern = /^[A-Za-z0-9_]+$/; // Letters, numbers, underscores
+const passwordPattern = /^[A-Za-z0-9_@]+$/; // Letters, numbers, underscores
 
 
 function validation(fullname, username, department, program, password, repeatpassword) {
