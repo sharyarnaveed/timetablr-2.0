@@ -1,7 +1,7 @@
 
 const { Router } = require("express");
 const { signup, getprogram } = require("../controllers/signup.controller.js");
-const { logout, signin } = require("../controllers/sigin.controller.js");
+const { logout, signin, forgotpassword } = require("../controllers/sigin.controller.js");
 const { homedata, getalltimetable, blank, getcoursesfromdb, addCourse } = require("../controllers/homedata.controller.js");
 const { verifyjwt } = require("../middleware/auth.middleware.js");
 const { changepassword, changeusername } = require("../controllers/settings.controller.js");
@@ -46,6 +46,7 @@ router.route("/classnotification").get(classNotification)
 
 router.route("/checkauth").get(checkToken)
 router.route("/deleteaccount").delete(verifyjwt,deleteaccont)
+router.route("/forgotpassword").post(forgotpassword)
 
 module.exports = router;
 

@@ -1,9 +1,9 @@
-import axios from 'axios';
-import router from './router';
+import axios from "axios";
+import router from "./router";
 
 const api = axios.create({
-  baseURL: 'https://timetablr.burjalsama.site',
-  withCredentials: true // Enable sending credentials by default
+  baseURL: "https://timetablr.burjalsama.site",
+  withCredentials: true, // Enable sending credentials by default
 });
 
 // Interceptor for handling authentication
@@ -12,10 +12,10 @@ api.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       // Clear any stored auth state if needed
-      router.push('/signin');
+      router.push("/signin");
     }
     return Promise.reject(error);
   }
 );
 
-export default api; 
+export default api;

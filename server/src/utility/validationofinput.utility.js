@@ -53,6 +53,9 @@ function validationpassword( password) {
     if (!passwordPattern.test(password)) {
         return false
     }
+    else{
+        return true
+    }
     
 }
 module.exports = { validation, validationsignin, validationpassword };

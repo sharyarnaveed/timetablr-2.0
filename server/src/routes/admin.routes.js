@@ -4,6 +4,7 @@ const { adminverifyjwt } = require("../middleware/adminauth.middleware");
 const { gettimetable, deletetimetable, getuserinfo, UpdateTimeTable } = require("../controllers/admintimetable.controller");
 const { getrepeatadmin } = require("../controllers/adminrepeat.controller");
 const { displayNotification, sendcustomMsg } = require("../controllers/sendNotification.controller");
+const { getpasswordreset, passwordreset } = require("../controllers/adminpassword.controller");
 
 const router=Router();
 
@@ -22,4 +23,7 @@ router.route("/getsubscribenitification").get(displayNotification)
 router.route("/sendmsg").post(sendcustomMsg)
 router.route("/deletethetimetablerow").delete(delettimetablerow)
 router.route("/getuserprograminfo").get(programsinfo)
+router.route("/getresetpassword").get(adminverifyjwt,getpasswordreset)
+router.route("/reset-password").post(adminverifyjwt,passwordreset)
+
 module.exports = router;

@@ -52,6 +52,10 @@
                 <i class="fas fa-bell"></i>
                 <span>Notification</span>
               </router-link>
+                <router-link to="/totheadmindashboard/password-reset" class="submenu-item" @click="closeMobileMenu">
+                <i class="fas fa-bell"></i>
+                <span>Password reset</span>
+              </router-link>
             </div>
           </transition>
         </div>

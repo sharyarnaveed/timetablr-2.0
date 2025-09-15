@@ -123,5 +123,47 @@ const logout=async(req,res)=>
       }
 }
 
+
+const forgotpassword=async(req,res)=>{
+    try {
+        const {username,email}=req.body
+
+        if(!username||!email)
+        {
+            return res.json({
+                message:"Fields Incomplete",
+                success:false
+            })
+        }
+
+        const sql=`INSERT INTO resetpassword (username,email)
+        VALUES (?,?) `
+        
+        const [responce]=await pool.query(sql,[username,email])
+
+        if(responce)
+        {
+              return res.json({
+                message:"Your Application Has Been Submitted",
+                success:true
+            })
+        }
+        else{
+            
+            return res.json({
+                message:"Error In Submission",
+                success:false
+            })
+        }
+
+
+    } catch (error) {
+        console.log("error in changing password");
+         return res.json({
+                message:"Error In Submission",
+                success:false
+            })
+    }
+}
 // export { signin,logout }
-module.exports = { signin,logout };
+module.exports = { signin,logout,forgotpassword };

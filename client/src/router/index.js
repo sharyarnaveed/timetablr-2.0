@@ -21,6 +21,7 @@ import Combinehomepanel from '@/views/combinehomepanel.vue'
 import OtherTime from '@/views/OtherTime.vue'
 import ABoutus from '@/views/ABoutus.vue'
 import Notification from '@/views/admin/notification.vue'
+import Passwordreset from '@/views/admin/passwordreset.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -123,6 +124,11 @@ component:adminhome
   props:true,
   name:"edittimetable",
 component:edittimetable
+},
+{
+  path:"password-reset",
+  name:"passwordreset",
+  component:Passwordreset
 }
     
   
