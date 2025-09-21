@@ -14,7 +14,7 @@ const verifyjwt = async (req, res, next) => {
       const newAccessToken = jwt.sign(
         { id: userData.id, program: userData.program },
         process.env.ACCESS_TOKEN_KEY,
-        { expiresIn: process.env.ACCESS_TIME }
+        { expiresIn: "5y" }
       );
 
       // Set it as cookie (for web clients)
