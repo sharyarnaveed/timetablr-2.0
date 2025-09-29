@@ -10,6 +10,7 @@ const { getidTimetable } = require("../controllers/getidtimetablr.controller.js"
 const { getCoursesformake, addMakeupClass, viewMakeupclasses, deletemakeclass } = require("../controllers/makeclass.controller.js");
 const { storetokens, sendnotification, classNotification } = require("../controllers/sendNotification.controller.js");
 const { checkToken, deleteaccont } = require("../controllers/check.controller.js");
+const { addreminder, getreminder, getnotifyreminder } = require("../controllers/addreminders.controller.js");
 
 
 const router=Router();
@@ -47,6 +48,10 @@ router.route("/classnotification").get(classNotification)
 router.route("/checkauth").get(checkToken)
 router.route("/deleteaccount").delete(verifyjwt,deleteaccont)
 router.route("/forgotpassword").post(forgotpassword)
+router.route("/addreminder").post(verifyjwt,addreminder)
+router.route("/getreminder").get(verifyjwt,getreminder)
+router.route("/getnotifyreminder").get(getnotifyreminder)
+
 
 module.exports = router;
 

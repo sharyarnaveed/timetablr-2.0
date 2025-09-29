@@ -33,9 +33,6 @@ app.use(express.urlencoded({ limit: "25mb", extended: true }));
 app.use(cookieParser());
 
 
-// routes
-
-// import userroutes from './routes/user.routes.js'
 const userroutes = require('./routes/user.routes.js');
 const adminroutes = require('./routes/admin.routes.js');
 
@@ -43,5 +40,3 @@ app.use("/api/user",userroutes)
 app.use("/api/admin",adminroutes)
 
 module.exports = { app };
-
-// export { app }
