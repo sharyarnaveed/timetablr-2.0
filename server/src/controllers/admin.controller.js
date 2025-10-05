@@ -79,7 +79,7 @@ ORDER BY month ASC;
 
 const uploadtimetable = async (req, res) => {
   try {
-    const data = req.body; // array of { program_id, rows }
+    const data = req.body;
 
     const sql =
       "INSERT INTO timetable (day, start_time, end_time, program_name, course_name, teacher_name, venue) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -89,11 +89,17 @@ const uploadtimetable = async (req, res) => {
 
       for (const element of rows) {
         const day = element[0];
-        const startTime = element[1];
-        const endTime = element[2];
+        let startTime = formatTimeValue(element[1]);
+        let endTime = formatTimeValue(element[2]);
         const courseName = element[3];
         const teacherName = element[4];
         const venue = element[5];
+
+        // Skip if both times are invalid
+        if (!startTime && !endTime) {
+          console.warn('Skipping row with invalid times:', element);
+          continue;
+        }
 
         await pool.query(sql, [
           day,
@@ -113,6 +119,37 @@ const uploadtimetable = async (req, res) => {
     res.status(500).json({ message: "Upload failed", success: false });
   }
 };
+
+// Add this helper function at the top of the file with other imports
+function formatTimeValue(time) {
+  if (!time || time === '--:--' || time === '') {
+    return null;
+  }
+
+  // Clean the time string
+  time = time.toString().trim();
+
+  // Handle different time formats
+  if (time.includes(':')) {
+    const [hours, minutes] = time.split(':');
+    
+    // Validate hours and minutes
+    const hrs = parseInt(hours);
+    const mins = parseInt(minutes);
+    
+    if (!isNaN(hrs) && !isNaN(mins) && hrs >= 0 && hrs < 24 && mins >= 0 && mins < 60) {
+      return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:00`;
+    }
+  }
+
+  // Try parsing time in other formats
+  const timeValue = new Date(`2000-01-01 ${time}`);
+  if (!isNaN(timeValue.getTime())) {
+    return timeValue.toTimeString().slice(0, 8); // Returns HH:MM:SS
+  }
+
+  return null;
+}
 
 const adminsigin = async (req, res) => {
   try {

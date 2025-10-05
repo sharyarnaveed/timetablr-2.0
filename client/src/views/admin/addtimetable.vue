@@ -224,7 +224,7 @@ const programMap = {
   "FashionDesign-S23": 150,
   "FashionDesign-F22": 151,
   "BIF-F22": 153,
-
+  "BSCYS-F25 Red":155
 };
 
 
@@ -276,7 +276,12 @@ const handleFileUpload = (event) => {
 
     workbook.SheetNames.forEach((sheetName) => {
       const sheet = workbook.Sheets[sheetName];
-      const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      // Add dateNF to properly format time cells
+      const jsonData = XLSX.utils.sheet_to_json(sheet, { 
+        header: 1,
+        dateNF: 'HH:mm',
+        raw: false
+      });
 
       if (jsonData.length < 2) return;
 
@@ -285,21 +290,29 @@ const handleFileUpload = (event) => {
 
       headers.forEach((h) => headersSet.add(h));
 
-      const timeColIndex = headers.findIndex(header =>
-        rows.some(row => typeof row[headers.indexOf(header)] === 'string' && row[headers.indexOf(header)].includes('-'))
-      );
-
       rows.forEach((row) => {
-        let startTime = "", endTime = "";
-        if (timeColIndex !== -1 && typeof row[timeColIndex] === "string") {
-          const [start, end] = row[timeColIndex].split("-").map(str => str?.trim());
-          startTime = start || "";
-          endTime = end || "";
-        }
-
         const rowObj = {};
         headers.forEach((h, i) => {
-          rowObj[h] = row[i] || "";
+          // Clean and validate time values
+          if (h === "Start Time" || h === "End Time") {
+            let timeValue = row[i];
+            if (timeValue) {
+              // Remove any unwanted characters and ensure proper time format
+              timeValue = timeValue.toString().trim();
+              if (timeValue === "--:--" || !timeValue) {
+                timeValue = "";
+              } else {
+                // Ensure time is in HH:mm format
+                if (timeValue.includes(":")) {
+                  const [hours, minutes] = timeValue.split(":");
+                  timeValue = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+                }
+              }
+            }
+            rowObj[h] = timeValue || "";
+          } else {
+            rowObj[h] = row[i] || "";
+          }
         });
 
         // Get program ID instead of sheet name
@@ -308,8 +321,6 @@ const handleFileUpload = (event) => {
         // Standardize field names for backend
         rowObj["Program"] = sheetName;
         rowObj["Program_ID"] = programId;
-        rowObj["Start Time"] = startTime;
-        rowObj["End Time"] = endTime;
         rowObj["Day"] = rowObj["Day"] || rowObj["day"] || "";
         rowObj["Professor"] = rowObj["Professor"] || rowObj["professor"] || "";
         rowObj["Location"] = rowObj["Location"] || rowObj["location"] || "";
@@ -319,7 +330,7 @@ const handleFileUpload = (event) => {
       });
     });
 
-    tableHeaders.value = Array.from(headersSet).concat(["Program", "Program_ID", "Start Time", "End Time"]);
+    tableHeaders.value = Array.from(headersSet).concat(["Program", "Program_ID"]);
     tableData.value = allSheetData;
   };
 

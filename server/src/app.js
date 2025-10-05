@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -13,6 +12,7 @@ dotenv.config({
 
 
 const app = express();
+app.set('trust proxy', 1); // Add this line
 app.use(xss());   
 app.use(helmet());
 app.use(compression());
@@ -23,8 +23,11 @@ app.use(
     })
 );
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 70, 
+  windowMs: 15 * 60 * 1000,
+  max: 70,
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  trustProxy: true // Use the client IP from X-Forwarded-For header
 });
 app.use(limiter);
 app.disable("x-powered-by");
