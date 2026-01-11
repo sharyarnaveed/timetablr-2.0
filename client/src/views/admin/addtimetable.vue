@@ -224,7 +224,14 @@ const programMap = {
   "FashionDesign-S23": 150,
   "FashionDesign-F22": 151,
   "BIF-F22": 153,
-  "BSCYS-F25 Red":155
+  "BSCYS-F25 Red":155,
+  "IntDesign-S25":156,
+  'FashionDesign-S25':157,
+  "TextileDesign-S25":158,
+  "InfoDesign-S25":159,
+  "AnimationDesign-S25":160,
+  "GameDesign-S25":161
+
 };
 
 
@@ -262,6 +269,77 @@ const getProgramId = (sheetName) => {
   return null; // No match found
 };
 
+// Helper function to convert Excel time values to HH:mm format
+const convertExcelTime = (value) => {
+  if (!value && value !== 0) return "";
+  
+  // If it's already a string in time format
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (trimmed === "--:--" || trimmed === "") return "";
+    
+    // If already in HH:mm or HH:mm:ss format
+    if (trimmed.includes(":")) {
+      const parts = trimmed.split(":");
+      const hours = parseInt(parts[0]);
+      const minutes = parseInt(parts[1]);
+      if (!isNaN(hours) && !isNaN(minutes)) {
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      }
+    }
+    
+    // Try parsing AM/PM format like "9:00 AM"
+    const ampmMatch = trimmed.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if (ampmMatch) {
+      let hours = parseInt(ampmMatch[1]);
+      const minutes = parseInt(ampmMatch[2]);
+      const period = ampmMatch[3].toUpperCase();
+      
+      if (period === 'PM' && hours !== 12) hours += 12;
+      if (period === 'AM' && hours === 12) hours = 0;
+      
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+  }
+  
+  // If it's a number (Excel stores time as fraction of day)
+  if (typeof value === 'number') {
+    // Excel time is fraction of day (0.5 = 12:00 PM)
+    const totalMinutes = Math.round(value * 24 * 60);
+    const hours = Math.floor(totalMinutes / 60) % 24;
+    const minutes = totalMinutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+  
+  return "";
+};
+
+// Helper to parse ranges like "10:30 - 12:00" or "9:00 AM - 11:15 AM"
+const parseTimeRange = (value) => {
+  if (!value) return { start: "", end: "" };
+
+  const text = value
+    .toString()
+    .replace(/[\u2013\u2014]/g, "-") // normalize dashes
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Match "hh:mm - hh:mm" optionally with AM/PM on either side
+  const match = text.match(/(\d{1,2}:\d{2})(?:\s*(AM|PM))?\s*-\s*(\d{1,2}:\d{2})(?:\s*(AM|PM))?/i);
+  if (match) {
+    const startRaw = `${match[1]}${match[2] ? ` ${match[2]}` : ""}`;
+    const endRaw = `${match[3]}${match[4] ? ` ${match[4]}` : ""}`;
+    return {
+      start: convertExcelTime(startRaw),
+      end: convertExcelTime(endRaw)
+    };
+  }
+
+  // If not a range, fall back to single-time conversion
+  const single = convertExcelTime(text);
+  return { start: single, end: "" };
+};
+
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
   if (!file) return;
@@ -269,51 +347,58 @@ const handleFileUpload = (event) => {
   const reader = new FileReader();
   reader.onload = (e) => {
     const data = new Uint8Array(e.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
+    const workbook = XLSX.read(data, { type: "array", cellDates: true });
 
     const allSheetData = [];
     const headersSet = new Set();
 
     workbook.SheetNames.forEach((sheetName) => {
       const sheet = workbook.Sheets[sheetName];
-      // Add dateNF to properly format time cells
-      const jsonData = XLSX.utils.sheet_to_json(sheet, { 
+      
+      // Get raw data to handle time values properly
+      const jsonDataRaw = XLSX.utils.sheet_to_json(sheet, { 
         header: 1,
-        dateNF: 'HH:mm',
-        raw: false
+        raw: true,
+        defval: null
       });
 
-      if (jsonData.length < 2) return;
+      if (jsonDataRaw.length < 2) return;
 
-      const headers = jsonData[0];
-      const rows = jsonData.slice(1);
+      const headers = jsonDataRaw[0];
+      const rows = jsonDataRaw.slice(1);
 
-      headers.forEach((h) => headersSet.add(h));
+      headers.forEach((h) => {
+        if (h) headersSet.add(h);
+      });
 
       rows.forEach((row) => {
         const rowObj = {};
         headers.forEach((h, i) => {
-          // Clean and validate time values
+          if (!h) return;
+          
+          // Convert time values from Excel format
           if (h === "Start Time" || h === "End Time") {
-            let timeValue = row[i];
-            if (timeValue) {
-              // Remove any unwanted characters and ensure proper time format
-              timeValue = timeValue.toString().trim();
-              if (timeValue === "--:--" || !timeValue) {
-                timeValue = "";
-              } else {
-                // Ensure time is in HH:mm format
-                if (timeValue.includes(":")) {
-                  const [hours, minutes] = timeValue.split(":");
-                  timeValue = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
-                }
-              }
-            }
-            rowObj[h] = timeValue || "";
+            rowObj[h] = convertExcelTime(row[i]);
+          } else if (h.toString().trim().toLowerCase().includes("time")) {
+            // Capture combined time columns like "10:30 - 12:00"
+            rowObj[h] = row[i] !== null && row[i] !== undefined ? row[i].toString().trim() : "";
           } else {
-            rowObj[h] = row[i] || "";
+            rowObj[h] = row[i] !== null && row[i] !== undefined ? row[i].toString().trim() : "";
           }
         });
+
+        // If Start/End are empty but a combined Time column exists, split it
+        if (!rowObj["Start Time"] || !rowObj["End Time"]) {
+          const timeKey = Object.keys(rowObj).find((key) => {
+            const lower = key.toString().toLowerCase();
+            return lower.includes("time") && lower !== "start time" && lower !== "end time";
+          });
+
+          const combinedTime = timeKey ? rowObj[timeKey] : "";
+          const { start, end } = parseTimeRange(combinedTime);
+          rowObj["Start Time"] = rowObj["Start Time"] || start;
+          rowObj["End Time"] = rowObj["End Time"] || end;
+        }
 
         // Get program ID instead of sheet name
         const programId = getProgramId(sheetName);
@@ -356,10 +441,21 @@ const sendDataToBackend = async () => {
 
   // Group data by program_id
   const groupedData = {};
+  let skippedRows = 0;
 
   tableData.value.forEach(row => {
     const program_id = row.Program_ID;
     if (!program_id) return;
+
+    // Skip rows with missing time values
+    const startTime = row["Start Time"];
+    const endTime = row["End Time"];
+    
+    if (!startTime || !endTime) {
+      skippedRows++;
+      console.warn('Skipping row with missing times:', row);
+      return;
+    }
 
     if (!groupedData[program_id]) {
       groupedData[program_id] = [];
@@ -371,13 +467,18 @@ const sendDataToBackend = async () => {
 
     groupedData[program_id].push([
       fullDayName,                  // full day name
-      row["Start Time"],            // start_time
-      row["End Time"],              // end_time
+      startTime,                    // start_time
+      endTime,                      // end_time
       row.Subject,                  // course_name (from Subject)
       row.Professor,                // teacher_name (from Professor)
       row.Location                  // venue (from Location)
     ]);
   });
+
+  if (skippedRows > 0) {
+    const proceed = confirm(`Warning: ${skippedRows} rows will be skipped because they have missing Start Time or End Time values. Do you want to continue?`);
+    if (!proceed) return;
+  }
 
   // Convert to array format expected by backend
   const dataToSend = Object.entries(groupedData).map(([program_id, rows]) => ({
